@@ -47,4 +47,12 @@ export class Agreement extends Entity<AgreementProps> {
   public static reconstitute(id: string, props: AgreementReconstitute): Agreement {
     return new Agreement(props, id);
   }
+
+  public get creditorPartyConsent(): PartyConsent {
+    return this.props.creditorPartyConsent;
+  }
+
+  public get debtorPartyConsent(): PartyConsent {
+    return this.props.debtorPartyConsent;
+  }
 }
