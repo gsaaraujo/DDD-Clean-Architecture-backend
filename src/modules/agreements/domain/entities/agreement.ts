@@ -48,6 +48,22 @@ export class Agreement extends Entity<AgreementProps> {
     return new Agreement(props, id);
   }
 
+  public get creditorPartyId(): string {
+    return this.props.creditorPartyId;
+  }
+
+  public get debtorPartyId(): string {
+    return this.props.debtorPartyId;
+  }
+
+  public get owingItem(): OwingItem {
+    return this.props.owingItem;
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt;
+  }
+
   public get creditorPartyConsent(): PartyConsent {
     return this.props.creditorPartyConsent;
   }

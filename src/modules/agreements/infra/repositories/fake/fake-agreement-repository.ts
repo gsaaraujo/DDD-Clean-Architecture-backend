@@ -8,8 +8,10 @@ import {
 export class FakeAgreementRepository implements IAgreementRepository {
   public existsCalledTimes = 0;
   public createCalledTimes = 0;
+  public updateCalledTimes = 0;
   public deleteCalledTimes = 0;
   public findByIdCalledTimes = 0;
+  public findByIdAndPartyIdCalledTimes = 0;
 
   public agreements: AgreementDTO[] = [];
 
@@ -34,6 +36,31 @@ export class FakeAgreementRepository implements IAgreementRepository {
 
     if (!agreement) return null;
     return agreement;
+  }
+
+  public async findByIdAndPartyId(id: string, partyId: string): Promise<Agreement | null> {
+    this.findByIdAndPartyIdCalledTimes += 1;
+
+    const agreement = this.agreements.find(
+      (agreement) =>
+        agreement.id === id &&
+        (agreement.creditorPartyId === partyId || agreement.debtorPartyId === partyId),
+    );
+
+    if (!agreement) return null;
+    return agreement;
+  }
+
+  public async update(newAgreement: Agreement): Promise<Agreement | null> {
+    this.updateCalledTimes += 1;
+
+    const agreementIndex = this.agreements.findIndex(
+      (agreement) => agreement.id === newAgreement.id,
+    );
+
+    this.agreements[agreementIndex] = newAgreement;
+    if (!agreementIndex) return null;
+    return newAgreement;
   }
 
   public async delete(id: string): Promise<void> {
