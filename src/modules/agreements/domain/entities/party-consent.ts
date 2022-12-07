@@ -67,7 +67,7 @@ export class PartyConsent extends Entity<PartyConsentProps> {
     return right(undefined);
   }
 
-  public paidAgreement(): Either<BaseError, void> {
+  public payAgreement(): Either<BaseError, void> {
     if (this.props.status !== PartyConsentStatus.ACCEPTED) {
       const error = new CurrentStatusMustBeAcceptedError(
         "To cancel the agreement it must be in 'accepted' status",

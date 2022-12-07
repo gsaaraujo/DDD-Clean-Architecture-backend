@@ -51,7 +51,7 @@ describe('PartyConsent', () => {
   it('should paid agreement', () => {
     const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED });
 
-    const sut = fakePartyConsent.paidAgreement();
+    const sut = fakePartyConsent.payAgreement();
 
     expect(sut.isRight()).toBeTruthy();
     expect(fakePartyConsent.status).toStrictEqual(PartyConsentStatus.PAID);
@@ -135,10 +135,10 @@ describe('PartyConsent', () => {
     const fakePartyConsent3 = PartyConsent.create({ status: PartyConsentStatus.CANCELED });
     const fakePartyConsent4 = PartyConsent.create({ status: PartyConsentStatus.PAID });
 
-    const sut1 = fakePartyConsent1.paidAgreement();
-    const sut2 = fakePartyConsent2.paidAgreement();
-    const sut3 = fakePartyConsent3.paidAgreement();
-    const sut4 = fakePartyConsent4.paidAgreement();
+    const sut1 = fakePartyConsent1.payAgreement();
+    const sut2 = fakePartyConsent2.payAgreement();
+    const sut3 = fakePartyConsent3.payAgreement();
+    const sut4 = fakePartyConsent4.payAgreement();
 
     expect(sut1.isLeft()).toBeTruthy();
     expect(sut1.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
