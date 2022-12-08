@@ -8,5 +8,6 @@ export interface IAgreementRepository {
   update(agreement: AgreementDTO): Promise<AgreementDTO | null>;
   findById(id: string): Promise<AgreementDTO | null>;
   findByIdAndPartyId(id: string, partyId: string): Promise<AgreementDTO | null>;
+  findAllByPartyId(partyId: string): Promise<AgreementDTO[]>;
   delete(id: string): Promise<void>;
 }

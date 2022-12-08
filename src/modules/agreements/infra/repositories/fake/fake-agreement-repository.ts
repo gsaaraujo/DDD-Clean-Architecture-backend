@@ -11,6 +11,7 @@ export class FakeAgreementRepository implements IAgreementRepository {
   public updateCalledTimes = 0;
   public deleteCalledTimes = 0;
   public findByIdCalledTimes = 0;
+  public findAllByPartyIdCalledTimes = 0;
   public findByIdAndPartyIdCalledTimes = 0;
 
   public agreements: AgreementDTO[] = [];
@@ -36,6 +37,16 @@ export class FakeAgreementRepository implements IAgreementRepository {
 
     if (!agreement) return null;
     return agreement;
+  }
+
+  public async findAllByPartyId(partyId: string): Promise<Agreement[]> {
+    this.findAllByPartyIdCalledTimes += 1;
+
+    const agreements = this.agreements.filter(
+      (agreement) => agreement.creditorPartyId === partyId || agreement.debtorPartyId === partyId,
+    );
+
+    return agreements;
   }
 
   public async findByIdAndPartyId(id: string, partyId: string): Promise<Agreement | null> {
