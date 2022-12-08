@@ -17,7 +17,10 @@ export class RemoveAnAgreementUsecase implements IRemoveAnAgreementUsecase {
   public constructor(private readonly agreementRepository: IAgreementRepository) {}
 
   async execute(input: RemoveAnAgreementUsecaseInput): Promise<RemoveAnAgreementUsecaseResponse> {
-    const agreement = await this.agreementRepository.findById(input.agreementId);
+    const agreement = await this.agreementRepository.findByIdAndPartyId(
+      input.agreementId,
+      input.partyId,
+    );
 
     if (!agreement) {
       const error = new AgreementNotFoundError('Agreement was not found');

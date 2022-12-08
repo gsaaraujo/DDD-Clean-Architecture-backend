@@ -20,7 +20,7 @@ describe('RemoveAnAgreementUsecase', () => {
 
   it('should remove agreement', async () => {
     const fakeAgreement = Agreement.reconstitute('21e9856b-8fef-47d9-94b7-88d3402bcd23', {
-      debtorPartyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
+      debtorPartyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
       creditorPartyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
       createdAt: new Date(),
       owingItem: OwingItem.reconstitute({
@@ -39,20 +39,22 @@ describe('RemoveAnAgreementUsecase', () => {
     fakeAgreementRepository.agreements = [fakeAgreement];
 
     const sut = await removeAnAgreementUsecase.execute({
+      partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
       agreementId: '21e9856b-8fef-47d9-94b7-88d3402bcd23',
     });
 
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toBeUndefined();
     expect(fakeAgreementRepository.agreements.length).toBe(0);
-    expect(fakeAgreementRepository.findByIdCalledTimes).toBe(1);
     expect(fakeAgreementRepository.deleteCalledTimes).toBe(1);
+    expect(fakeAgreementRepository.findByIdAndPartyIdCalledTimes).toBe(1);
   });
 
   it('should return AgreementNotFoundError if agreement was not found', async () => {
     fakeAgreementRepository.agreements = [];
 
     const sut = await removeAnAgreementUsecase.execute({
+      partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
       agreementId: '21e9856b-8fef-47d9-94b7-88d3402bcd23',
     });
 
@@ -62,7 +64,7 @@ describe('RemoveAnAgreementUsecase', () => {
 
   it('should return CannotRemoveAgreementError if both creditor and debtor consent of the agreement are not pending', async () => {
     const fakeAgreement = Agreement.reconstitute('21e9856b-8fef-47d9-94b7-88d3402bcd23', {
-      debtorPartyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
+      debtorPartyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
       creditorPartyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
       createdAt: new Date(),
       owingItem: OwingItem.reconstitute({
@@ -81,6 +83,7 @@ describe('RemoveAnAgreementUsecase', () => {
     fakeAgreementRepository.agreements = [fakeAgreement];
 
     const sut = await removeAnAgreementUsecase.execute({
+      partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
       agreementId: '21e9856b-8fef-47d9-94b7-88d3402bcd23',
     });
 

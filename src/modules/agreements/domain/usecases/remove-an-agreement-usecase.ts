@@ -3,6 +3,7 @@ import { Usecase } from '../../../shared/helpers/usecase';
 import { BaseError } from '../../../shared/helpers/base-error';
 
 export type RemoveAnAgreementUsecaseInput = {
+  partyId: string;
   agreementId: string;
 };
 
