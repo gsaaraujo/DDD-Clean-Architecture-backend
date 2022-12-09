@@ -5,7 +5,6 @@ import {
   ConflictException,
   NotFoundException,
   InternalServerErrorException,
-  Inject,
 } from '@nestjs/common';
 
 import { MakeAnAgreementInput } from './make-an-agreement-input';
@@ -13,10 +12,7 @@ import { IMakeAnAgreementUsecase } from '../../../domain/usecases/make-an-agreem
 
 @Controller('agreements')
 export class MakeAnAgreementController {
-  public constructor(
-    @Inject('IMakeAnAgreementUsecase')
-    private readonly makeAnAgreementUsecase: IMakeAnAgreementUsecase,
-  ) {}
+  public constructor(private readonly makeAnAgreementUsecase: IMakeAnAgreementUsecase) {}
 
   @Post()
   public async handle(@Body() input: MakeAnAgreementInput): Promise<void> {

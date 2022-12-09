@@ -1,6 +1,5 @@
 import { MakeAnAgreementUsecase } from './make-an-agreement-usecase';
 
-import { Agreement } from '../../domain/entities/agreement';
 import { MakeAnAgreementUsecaseInput } from '../../domain/usecases/make-an-agreement-usecase';
 
 import { FakePartyRepository } from '../../infra/repositories/fake/fake-party-repository';
@@ -47,7 +46,7 @@ describe('MakeAnAgreementUsecase', () => {
     const sut = await makeAnAgreementUsecase.execute(input);
 
     expect(sut.isRight()).toBeTruthy();
-    expect(sut.value).toBeInstanceOf(Agreement);
+    expect(sut.value).toBeUndefined();
 
     expect(fakePartyRepository.existsCalledTimes).toBe(2);
     expect(fakeAgreementRepository.agreements.length).toBe(1);

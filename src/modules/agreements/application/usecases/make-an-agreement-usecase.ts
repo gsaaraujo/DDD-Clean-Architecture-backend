@@ -70,6 +70,6 @@ export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
 
     this.notificationService.notifyParties(input.creditorPartyId, input.debtorPartyId);
 
-    return right(agreement);
+    return right(undefined);
   }
 }

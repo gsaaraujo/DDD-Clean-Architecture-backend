@@ -3,8 +3,6 @@ import { Usecase } from '../../../shared/helpers/usecase';
 
 import { BaseError } from '../../../shared/helpers/base-error';
 
-import { Agreement } from '../entities/agreement';
-
 export type MakeAnAgreementUsecaseInput = {
   debtorPartyId: string;
   creditorPartyId: string;
@@ -14,7 +12,7 @@ export type MakeAnAgreementUsecaseInput = {
   description: string;
 };
 
-export type MakeAnAgreementUsecaseOutput = Agreement;
+export type MakeAnAgreementUsecaseOutput = void;
 
 export type MakeAnAgreementResponse = Either<BaseError, MakeAnAgreementUsecaseOutput>;
 
