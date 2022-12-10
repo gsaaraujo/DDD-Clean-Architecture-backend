@@ -1,4 +1,5 @@
-import { left, right } from '../../../shared/helpers/either';
+import { BaseError } from 'src/modules/shared/helpers/base-error';
+import { Either, left, right } from '../../../shared/helpers/either';
 
 import { IPartyRepository } from '../repositories/party-repository';
 import { IAgreementRepository } from '../repositories/agreement-repository';
@@ -8,7 +9,7 @@ import { PartyNotFoundError } from '../errors/party-not-found-error';
 import {
   IGetAgreementsUsecase,
   GetAgreementsUsecaseInput,
-  GetAgreementsUsecaseResponse,
+  GetAgreementsUsecaseOutput,
 } from '../../domain/usecases/get-agreements-usecase';
 
 export class GetAgreementsUsecase implements IGetAgreementsUsecase {
@@ -17,7 +18,9 @@ export class GetAgreementsUsecase implements IGetAgreementsUsecase {
     private readonly agreementRepository: IAgreementRepository,
   ) {}
 
-  async execute(input: GetAgreementsUsecaseInput): Promise<GetAgreementsUsecaseResponse> {
+  async execute(
+    input: GetAgreementsUsecaseInput,
+  ): Promise<Either<BaseError, GetAgreementsUsecaseOutput>> {
     const doesPartyExist = await this.partyRepository.exists(input.partyId);
 
     if (!doesPartyExist) {

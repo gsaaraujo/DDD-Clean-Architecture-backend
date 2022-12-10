@@ -1,4 +1,5 @@
-import { left, right } from '../../../shared/helpers/either';
+import { BaseError } from 'src/modules/shared/helpers/base-error';
+import { Either, left, right } from '../../../shared/helpers/either';
 
 import { PartyConsentStatus } from '../../domain/entities/party-consent';
 
@@ -10,13 +11,15 @@ import { CannotRemoveAgreementError } from '../errors/cannot-remove-agreement-er
 import {
   IRemoveAnAgreementUsecase,
   RemoveAnAgreementUsecaseInput,
-  RemoveAnAgreementUsecaseResponse,
+  RemoveAnAgreementUsecaseOutput,
 } from '../../domain/usecases/remove-an-agreement-usecase';
 
 export class RemoveAnAgreementUsecase implements IRemoveAnAgreementUsecase {
   public constructor(private readonly agreementRepository: IAgreementRepository) {}
 
-  async execute(input: RemoveAnAgreementUsecaseInput): Promise<RemoveAnAgreementUsecaseResponse> {
+  async execute(
+    input: RemoveAnAgreementUsecaseInput,
+  ): Promise<Either<BaseError, RemoveAnAgreementUsecaseOutput>> {
     const agreement = await this.agreementRepository.findByIdAndPartyId(
       input.agreementId,
       input.partyId,

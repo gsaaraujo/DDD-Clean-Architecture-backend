@@ -1,6 +1,4 @@
-import { Either } from '../../../shared/helpers/either';
 import { Usecase } from '../../../shared/helpers/usecase';
-import { BaseError } from '../../../shared/helpers/base-error';
 
 export type DenyAnAgreementUsecaseInput = {
   partyId: string;
@@ -9,7 +7,5 @@ export type DenyAnAgreementUsecaseInput = {
 
 export type DenyAnAgreementUsecaseOutput = void;
 
-export type DenyAnAgreementUsecaseResponse = Either<BaseError, DenyAnAgreementUsecaseOutput>;
-
 export interface IDenyAnAgreementUsecase
-  extends Usecase<DenyAnAgreementUsecaseInput, DenyAnAgreementUsecaseResponse> {}
+  extends Usecase<DenyAnAgreementUsecaseInput, DenyAnAgreementUsecaseOutput> {}

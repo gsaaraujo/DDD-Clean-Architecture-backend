@@ -1,7 +1,4 @@
-import { Either } from '../../../shared/helpers/either';
 import { Usecase } from '../../../shared/helpers/usecase';
-
-import { BaseError } from '../../../shared/helpers/base-error';
 
 export type MakeAnAgreementUsecaseInput = {
   debtorPartyId: string;
@@ -14,7 +11,5 @@ export type MakeAnAgreementUsecaseInput = {
 
 export type MakeAnAgreementUsecaseOutput = void;
 
-export type MakeAnAgreementResponse = Either<BaseError, MakeAnAgreementUsecaseOutput>;
-
 export interface IMakeAnAgreementUsecase
-  extends Usecase<MakeAnAgreementUsecaseInput, MakeAnAgreementResponse> {}
+  extends Usecase<MakeAnAgreementUsecaseInput, MakeAnAgreementUsecaseOutput> {}

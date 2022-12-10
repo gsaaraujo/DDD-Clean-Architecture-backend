@@ -1,4 +1,5 @@
-import { left, right } from '../../../shared/helpers/either';
+import { BaseError } from 'src/modules/shared/helpers/base-error';
+import { Either, left, right } from '../../../shared/helpers/either';
 
 import { Agreement } from '../../domain/entities/agreement';
 import { OwingItem } from '../../domain/value-objects/owing-item';
@@ -13,8 +14,8 @@ import { CreditorPartyNotFoundError } from '../errors/creditor-party-not-found-e
 
 import {
   IMakeAnAgreementUsecase,
-  MakeAnAgreementResponse,
   MakeAnAgreementUsecaseInput,
+  MakeAnAgreementUsecaseOutput,
 } from '../../domain/usecases/make-an-agreement-usecase';
 
 export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
@@ -24,7 +25,9 @@ export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
     private readonly notificationService: INotificationService,
   ) {}
 
-  async execute(input: MakeAnAgreementUsecaseInput): Promise<MakeAnAgreementResponse> {
+  async execute(
+    input: MakeAnAgreementUsecaseInput,
+  ): Promise<Either<BaseError, MakeAnAgreementUsecaseOutput>> {
     const doesCreditorPartyExists: boolean = await this.partyRepository.exists(
       input.creditorPartyId,
     );

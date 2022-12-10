@@ -12,7 +12,7 @@ import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
 import {
   IAcceptAnAgreementUsecase,
   AcceptAnAgreementUsecaseInput,
-  AcceptAnAgreementUsecaseResponse,
+  AcceptAnAgreementUsecaseOutput,
 } from '../../domain/usecases/accept-an-agreement-usecase';
 
 export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
@@ -22,7 +22,9 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
     private readonly notificationService: INotificationService,
   ) {}
 
-  async execute(input: AcceptAnAgreementUsecaseInput): Promise<AcceptAnAgreementUsecaseResponse> {
+  async execute(
+    input: AcceptAnAgreementUsecaseInput,
+  ): Promise<Either<BaseError, AcceptAnAgreementUsecaseOutput>> {
     const doesPartyExist = await this.partyRepository.exists(input.partyId);
 
     if (!doesPartyExist) {

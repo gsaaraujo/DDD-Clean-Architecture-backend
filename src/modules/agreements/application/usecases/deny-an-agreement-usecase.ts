@@ -12,7 +12,7 @@ import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
 import {
   IDenyAnAgreementUsecase,
   DenyAnAgreementUsecaseInput,
-  DenyAnAgreementUsecaseResponse,
+  DenyAnAgreementUsecaseOutput,
 } from '../../domain/usecases/deny-an-agreement-usecase';
 
 export class DenyAnAgreementUsecase implements IDenyAnAgreementUsecase {
@@ -22,7 +22,9 @@ export class DenyAnAgreementUsecase implements IDenyAnAgreementUsecase {
     private readonly notificationService: INotificationService,
   ) {}
 
-  async execute(input: DenyAnAgreementUsecaseInput): Promise<DenyAnAgreementUsecaseResponse> {
+  async execute(
+    input: DenyAnAgreementUsecaseInput,
+  ): Promise<Either<BaseError, DenyAnAgreementUsecaseOutput>> {
     const doesPartyExist = await this.partyRepository.exists(input.partyId);
 
     if (!doesPartyExist) {
