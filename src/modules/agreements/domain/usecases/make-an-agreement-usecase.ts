@@ -6,7 +6,7 @@ export type MakeAnAgreementUsecaseInput = {
 
   amount: number;
   isCurrency: boolean;
-  description: string;
+  description?: string;
 };
 
 export type MakeAnAgreementUsecaseOutput = void;

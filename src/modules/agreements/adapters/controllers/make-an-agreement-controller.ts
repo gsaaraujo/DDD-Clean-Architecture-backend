@@ -6,7 +6,7 @@ export type MakeAnAgreementControllerInput = {
 
   amount: number;
   isCurrency: boolean;
-  description: string;
+  description?: string;
 };
 
 export type MakeAnAgreementControllerOutput = void;
