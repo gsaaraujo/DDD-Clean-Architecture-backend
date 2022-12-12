@@ -1,5 +1,7 @@
-import { BaseError } from '../../../shared/helpers/base-error';
 import { Either, left, right } from '../../../shared/helpers/either';
+import { BaseError } from '../../../shared/helpers/errors/base-error';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
 import { INotificationService } from '../services/notification-service';
 
@@ -24,7 +26,7 @@ export class PayAnAgreementUsecase implements IPayAnAgreementUsecase {
 
   async execute(
     input: PayAnAgreementUsecaseInput,
-  ): Promise<Either<BaseError, PayAnAgreementUsecaseOutput>> {
+  ): Promise<Either<DomainError | ApplicationError, PayAnAgreementUsecaseOutput>> {
     const doesPartyExist = await this.partyRepository.exists(input.partyId);
 
     if (!doesPartyExist) {

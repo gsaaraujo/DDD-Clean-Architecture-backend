@@ -1,4 +1,4 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { BaseError } from '../../../shared/helpers/errors/base-error';
 import { ValueObject } from '../../../shared/helpers/value-object';
 import { Either, left, right } from '../../../shared/helpers/either';
 

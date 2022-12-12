@@ -1,5 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
 import { Either, left, right } from '../../../shared/helpers/either';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
 import { INotificationService } from '../services/notification-service';
 
@@ -24,7 +25,7 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
 
   async execute(
     input: AcceptAnAgreementUsecaseInput,
-  ): Promise<Either<BaseError, AcceptAnAgreementUsecaseOutput>> {
+  ): Promise<Either<DomainError | ApplicationError, AcceptAnAgreementUsecaseOutput>> {
     const doesPartyExist = await this.partyRepository.exists(input.partyId);
 
     if (!doesPartyExist) {
@@ -42,7 +43,7 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
       return left(error);
     }
 
-    let acceptAgreementOrError: Either<BaseError, void>;
+    let acceptAgreementOrError: Either<DomainError | ApplicationError, void>;
 
     if (agreement.creditorPartyId === input.partyId) {
       acceptAgreementOrError = agreement.creditorPartyConsent.acceptAgreement();

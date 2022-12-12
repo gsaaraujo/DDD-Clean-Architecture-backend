@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
-export class DebtorPartyNotFoundError extends BaseError {
+export class DebtorPartyNotFoundError extends ApplicationError {
   public constructor(message: string) {
     super('DebtorPartyNotFoundError', message);
   }

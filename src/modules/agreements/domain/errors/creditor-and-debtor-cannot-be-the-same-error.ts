@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
 
-export class CreditorAndDebtorCannotBeTheSameError extends BaseError {
+export class CreditorAndDebtorCannotBeTheSameError extends DomainError {
   public constructor(message: string) {
     super('CreditorAndDebtorCannotBeTheSameError', message);
   }

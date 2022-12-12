@@ -1,5 +1,7 @@
-import { BaseError } from 'src/modules/shared/helpers/base-error';
 import { Either, left, right } from '../../../shared/helpers/either';
+import { BaseError } from '../../../shared/helpers/errors/base-error';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
 import { IPartyRepository } from '../repositories/party-repository';
 import { IAgreementRepository } from '../repositories/agreement-repository';
@@ -20,7 +22,7 @@ export class GetAgreementsUsecase implements IGetAgreementsUsecase {
 
   async execute(
     input: GetAgreementsUsecaseInput,
-  ): Promise<Either<BaseError, GetAgreementsUsecaseOutput>> {
+  ): Promise<Either<DomainError | ApplicationError, GetAgreementsUsecaseOutput>> {
     const doesPartyExist = await this.partyRepository.exists(input.partyId);
 
     if (!doesPartyExist) {

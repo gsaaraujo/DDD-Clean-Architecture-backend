@@ -1,5 +1,7 @@
-import { BaseError } from 'src/modules/shared/helpers/base-error';
 import { Either, left, right } from '../../../shared/helpers/either';
+import { BaseError } from '../../../shared/helpers/errors/base-error';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
 import { Agreement } from '../../domain/entities/agreement';
 import { OwingItem } from '../../domain/value-objects/owing-item';
@@ -27,7 +29,7 @@ export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
 
   async execute(
     input: MakeAnAgreementUsecaseInput,
-  ): Promise<Either<BaseError, MakeAnAgreementUsecaseOutput>> {
+  ): Promise<Either<DomainError | ApplicationError, MakeAnAgreementUsecaseOutput>> {
     const doesCreditorPartyExists: boolean = await this.partyRepository.exists(
       input.creditorPartyId,
     );

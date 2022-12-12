@@ -4,7 +4,7 @@ import { Either, left, right } from '../../../shared/helpers/either';
 import { OwingItem } from '../value-objects/owing-item';
 import { PartyConsent, PartyConsentStatus } from './party-consent';
 
-import { BaseError } from '../../../shared/helpers/base-error';
+import { BaseError } from '../../../shared/helpers/errors/base-error';
 import { CreditorAndDebtorCannotBeTheSameError } from '../errors/creditor-and-debtor-cannot-be-the-same-error';
 
 type AgreementProps = {

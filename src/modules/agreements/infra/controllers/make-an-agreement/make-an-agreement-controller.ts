@@ -3,9 +3,11 @@ import Joi from 'joi';
 
 import { Ok } from '../../../../shared/helpers/http/status-codes/ok';
 import { HttpResponse } from '../../../../shared/helpers/http/http-response';
+import { DomainError } from '../../../../shared/helpers/errors/domain-error';
 import { Conflict } from '../../../../shared/helpers/http/status-codes/conflict';
 import { NotFound } from '../../../../shared/helpers/http/status-codes/not-found';
 import { BadRequest } from '../../../../shared/helpers/http/status-codes/bad-request';
+import { ApplicationError } from '../../../../shared/helpers/errors/application-error';
 import { InternalServerError } from '../../../../shared/helpers/http/status-codes/internal-server-error';
 
 import { IMakeAnAgreementUsecase } from '../../../domain/usecases/make-an-agreement-usecase';
@@ -47,39 +49,20 @@ export class MakeAnAgreementController implements IMakeAnAgreementController {
 
     const error = makeAnAgreementOrError.value;
 
-    switch (error.type) {
-      case 'CreditorPartyNotFoundError':
-        return new NotFound(error.message);
-
-      case 'DebtorPartyNotFoundError':
-        return new NotFound(error.message);
-
-      case 'ItemAmountLimitError':
-        return new Conflict(error.message);
-
-      case 'CreditorAndDebtorCannotBeTheSameError':
-        return new Conflict(error.message);
-
-      case 'CurrencyItemAmountLimitError':
-        return new Conflict(error.message);
-
-      case 'CurrencyAmountMustBeInCentsError':
-        return new Conflict(error.message);
-
-      case 'CurrentStatusMustBeAcceptedError':
-        return new Conflict(error.message);
-
-      case 'CurrentStatusMustBeOfferedError':
-        return new Conflict(error.message);
-
-      case 'CurrentStatusMustBePendingError':
-        return new Conflict(error.message);
-
-      case 'PartyConsentAgreementMustInitiateAsPendingError':
-        return new Conflict(error.message);
-
-      default:
-        return new InternalServerError('Internal server error');
+    if (error.type === 'DomainError') {
+      return new Conflict(error.message);
     }
+
+    if (error.type === 'ApplicationError') {
+      switch (error.name) {
+        case 'CreditorPartyNotFoundError':
+          return new NotFound(error.message);
+
+        case 'DebtorPartyNotFoundError':
+          return new NotFound(error.message);
+      }
+    }
+
+    return new InternalServerError('Internal server error');
   }
 }

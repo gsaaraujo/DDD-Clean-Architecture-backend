@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
-export class CannotRemoveAgreementError extends BaseError {
+export class CannotRemoveAgreementError extends ApplicationError {
   public constructor(message: string) {
     super('CannotRemoveAgreementError', message);
   }

@@ -1,6 +1,7 @@
 import { Either } from './either';
-import { BaseError } from './base-error';
+import { DomainError } from './errors/domain-error';
+import { ApplicationError } from './errors/application-error';
 
 export interface Usecase<I, O> {
-  execute(input?: I): Promise<Either<BaseError, O>>;
+  execute(input?: I): Promise<Either<DomainError | ApplicationError, O>>;
 }

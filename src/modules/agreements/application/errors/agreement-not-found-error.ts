@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
-export class AgreementNotFoundError extends BaseError {
+export class AgreementNotFoundError extends ApplicationError {
   public constructor(message: string) {
     super('AgreementNotFoundError', message);
   }

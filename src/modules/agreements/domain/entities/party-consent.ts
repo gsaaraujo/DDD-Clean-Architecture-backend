@@ -1,5 +1,5 @@
 import { Entity } from '../../../shared/helpers/entity';
-import { BaseError } from '../../../shared/helpers/base-error';
+import { BaseError } from '../../../shared/helpers/errors/base-error';
 import { Either, left, right } from '../../../shared/helpers/either';
 
 import { CurrentStatusMustBePendingError } from '../errors/current-status-must-be-pending-error';

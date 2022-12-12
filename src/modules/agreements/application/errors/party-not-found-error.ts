@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
-export class PartyNotFoundError extends BaseError {
+export class PartyNotFoundError extends ApplicationError {
   public constructor(message: string) {
     super('PartyNotFoundError', message);
   }

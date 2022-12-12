@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
 
-export class CurrentStatusMustBePendingError extends BaseError {
+export class CurrentStatusMustBePendingError extends DomainError {
   public constructor(message: string) {
     super('CurrentStatusMustBePendingError', message);
   }

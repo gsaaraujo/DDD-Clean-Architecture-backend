@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/base-error';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
 
-export class PartyConsentAgreementMustInitiateAsPendingError extends BaseError {
+export class PartyConsentAgreementMustInitiateAsPendingError extends DomainError {
   public constructor(message: string) {
     super('PartyConsentAgreementMustInitiateAsPendingError', message);
   }
