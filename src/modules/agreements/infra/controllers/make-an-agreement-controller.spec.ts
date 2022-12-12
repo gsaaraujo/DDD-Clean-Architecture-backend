@@ -1,16 +1,16 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '../../../../shared/helpers/either';
-import { HttpResponseType } from '../../../../shared/helpers/http/http-response';
+import { left, right } from '../../../shared/helpers/either';
+import { HttpResponseType } from '../../../shared/helpers/http/http-response';
 
 import { MakeAnAgreementController } from './make-an-agreement-controller';
-import { MakeAnAgreementControllerInput } from '../../../adapters/controllers/make-an-agreement-controller';
+import { MakeAnAgreementControllerInput } from '../../adapters/controllers/make-an-agreement-controller';
 
-import { IMakeAnAgreementUsecase } from '../../../domain/usecases/make-an-agreement-usecase';
+import { IMakeAnAgreementUsecase } from '../../domain/usecases/make-an-agreement-usecase';
 
-import { DebtorPartyNotFoundError } from '../../../application/errors/debtor-party-not-found-error';
-import { CreditorPartyNotFoundError } from '../../../application/errors/creditor-party-not-found-error';
-import { CreditorAndDebtorCannotBeTheSameError } from '../../../domain/errors/creditor-and-debtor-cannot-be-the-same-error';
+import { DebtorPartyNotFoundError } from '../../application/errors/debtor-party-not-found-error';
+import { CreditorPartyNotFoundError } from '../../application/errors/creditor-party-not-found-error';
+import { CreditorAndDebtorCannotBeTheSameError } from '../../domain/errors/creditor-and-debtor-cannot-be-the-same-error';
 
 describe('MakeAnAgreementController', () => {
   let makeAnAgreementController: MakeAnAgreementController;
