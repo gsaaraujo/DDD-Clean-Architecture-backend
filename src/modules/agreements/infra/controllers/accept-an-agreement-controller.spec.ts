@@ -8,8 +8,6 @@ import { AcceptAnAgreementControllerInput } from '../../adapters/controllers/acc
 
 import { IAcceptAnAgreementUsecase } from '../../domain/usecases/accept-an-agreement-usecase';
 
-import { DebtorPartyNotFoundError } from '../../application/errors/debtor-party-not-found-error';
-import { CreditorPartyNotFoundError } from '../../application/errors/creditor-party-not-found-error';
 import { CurrentStatusMustBePendingError } from '../../domain/errors/current-status-must-be-pending-error';
 import { PartyNotFoundError } from '../../application/errors/party-not-found-error';
 import { AgreementNotFoundError } from '../../application/errors/agreement-not-found-error';
