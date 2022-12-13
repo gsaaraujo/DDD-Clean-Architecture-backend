@@ -1,5 +1,4 @@
 import { Either, left, right } from '../../../shared/helpers/either';
-import { BaseError } from '../../../shared/helpers/errors/base-error';
 import { DomainError } from '../../../shared/helpers/errors/domain-error';
 import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
@@ -44,7 +43,7 @@ export class DenyAnAgreementUsecase implements IDenyAnAgreementUsecase {
       return left(error);
     }
 
-    let denyAgreementOrError: Either<BaseError, void>;
+    let denyAgreementOrError: Either<DomainError, void>;
 
     if (agreement.creditorPartyId === input.partyId) {
       denyAgreementOrError = agreement.creditorPartyConsent.denyAgreement();

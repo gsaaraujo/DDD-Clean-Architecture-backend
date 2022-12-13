@@ -1,6 +1,6 @@
-import { BaseError } from '../../../shared/helpers/errors/base-error';
 import { ValueObject } from '../../../shared/helpers/value-object';
 import { Either, left, right } from '../../../shared/helpers/either';
+import { DomainError } from '../../../shared/helpers/errors/domain-error';
 
 import { ItemAmountLimitError } from '../errors/item-amount-limit-error';
 import { CurrencyItemAmountLimitError } from '../errors/currency-amount-limit-error';
@@ -17,7 +17,7 @@ type OwingItemCreate = OwingItemProps;
 type OwingItemReconstitute = OwingItemProps;
 
 export class OwingItem extends ValueObject<OwingItemProps> {
-  public static create(props: OwingItemCreate): Either<BaseError, OwingItem> {
+  public static create(props: OwingItemCreate): Either<DomainError, OwingItem> {
     if (props.isCurrency && !Number.isInteger(props.amount)) {
       const error = new CurrencyAmountMustBeInCentsError('Currency amount must be in cents');
       return left(error);

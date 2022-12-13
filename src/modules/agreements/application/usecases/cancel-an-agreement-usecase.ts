@@ -1,5 +1,4 @@
 import { Either, left, right } from '../../../shared/helpers/either';
-import { BaseError } from '../../../shared/helpers/errors/base-error';
 import { DomainError } from '../../../shared/helpers/errors/domain-error';
 import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
@@ -44,7 +43,7 @@ export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
       return left(error);
     }
 
-    let cancelAgreementOrError: Either<BaseError, void>;
+    let cancelAgreementOrError: Either<DomainError, void>;
 
     if (agreement.creditorPartyId === input.partyId) {
       cancelAgreementOrError = agreement.creditorPartyConsent.cancelAgreement();
