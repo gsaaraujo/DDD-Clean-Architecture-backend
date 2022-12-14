@@ -17,17 +17,10 @@ type AgreementProps = {
   creditorPartyConsent: PartyConsent;
 };
 
-type AgreementCreate = {
-  debtorPartyId: string;
-  creditorPartyId: string;
-
-  owingItem: OwingItem;
-};
-
-type AgreementReconstitute = AgreementProps;
+type OmitProps = 'createdAt' | 'creditorPartyConsent' | 'debtorPartyConsent';
 
 export class Agreement extends Entity<AgreementProps> {
-  public static create(props: AgreementCreate): Either<DomainError, Agreement> {
+  public static create(props: Omit<AgreementProps, OmitProps>): Either<DomainError, Agreement> {
     if (props.creditorPartyId === props.debtorPartyId) {
       const error = new CreditorAndDebtorCannotBeTheSameError(
         'Creditor and debtor parties cannot be the same',
@@ -44,7 +37,7 @@ export class Agreement extends Entity<AgreementProps> {
     return right(agreement);
   }
 
-  public static reconstitute(id: string, props: AgreementReconstitute): Agreement {
+  public static reconstitute(id: string, props: AgreementProps): Agreement {
     return new Agreement(props, id);
   }
 

@@ -17,17 +17,13 @@ type PartyConsentProps = {
   status: PartyConsentStatus;
 };
 
-type PartyConsentCreate = PartyConsentProps;
-
-type PartyConsentReconstitute = PartyConsentProps;
-
 export class PartyConsent extends Entity<PartyConsentProps> {
-  public static create(props: PartyConsentCreate): PartyConsent {
+  public static create(props: PartyConsentProps): PartyConsent {
     const partyConsent = new PartyConsent(props);
     return partyConsent;
   }
 
-  public static reconstitute(id: string, props: PartyConsentReconstitute): PartyConsent {
+  public static reconstitute(id: string, props: PartyConsentProps): PartyConsent {
     return new PartyConsent(props, id);
   }
 
