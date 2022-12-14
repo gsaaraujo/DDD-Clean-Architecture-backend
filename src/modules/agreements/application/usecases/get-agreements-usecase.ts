@@ -2,8 +2,8 @@ import { Either, left, right } from '../../../shared/helpers/either';
 import { DomainError } from '../../../shared/helpers/errors/domain-error';
 import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
-import { IPartyRepository } from '../repositories/party-repository';
-import { IAgreementRepository } from '../repositories/agreement-repository';
+import { IPartyRepository } from '../../adapters/repositories/party-repository';
+import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
 
 import { PartyNotFoundError } from '../errors/party-not-found-error';
 

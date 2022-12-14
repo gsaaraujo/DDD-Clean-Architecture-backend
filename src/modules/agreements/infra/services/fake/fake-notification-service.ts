@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { INotificationService } from '../../../../agreements/application/services/notification-service';
+import { INotificationService } from '../../../adapters/services/notification-service';
 
 export class FakeNotificationService implements INotificationService {
   public notifyPartiesCalledTimes = 0;

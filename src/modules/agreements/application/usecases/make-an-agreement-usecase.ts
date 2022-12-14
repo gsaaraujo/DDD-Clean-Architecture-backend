@@ -5,10 +5,10 @@ import { ApplicationError } from '../../../shared/helpers/errors/application-err
 import { Agreement } from '../../domain/entities/agreement';
 import { OwingItem } from '../../domain/value-objects/owing-item';
 
-import { IPartyRepository } from '../repositories/party-repository';
-import { IAgreementRepository } from '../repositories/agreement-repository';
+import { IPartyRepository } from '../../adapters/repositories/party-repository';
+import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
 
-import { INotificationService } from '../services/notification-service';
+import { INotificationService } from '../../adapters/services/notification-service';
 
 import { DebtorPartyNotFoundError } from '../errors/debtor-party-not-found-error';
 import { CreditorPartyNotFoundError } from '../errors/creditor-party-not-found-error';

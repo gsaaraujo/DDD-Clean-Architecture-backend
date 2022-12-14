@@ -1,4 +1,4 @@
-import { IPartyRepository, PartyDTO } from '../../../application/repositories/party-repository';
+import { IPartyRepository, PartyDTO } from '../../../adapters/repositories/party-repository';
 
 export class FakePartyRepository implements IPartyRepository {
   public existsCalledTimes = 0;

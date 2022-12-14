@@ -4,7 +4,7 @@ import { ApplicationError } from '../../../shared/helpers/errors/application-err
 
 import { PartyConsentStatus } from '../../domain/entities/party-consent';
 
-import { IAgreementRepository } from '../repositories/agreement-repository';
+import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
 
 import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
 import { CannotRemoveAgreementError } from '../errors/cannot-remove-agreement-error';

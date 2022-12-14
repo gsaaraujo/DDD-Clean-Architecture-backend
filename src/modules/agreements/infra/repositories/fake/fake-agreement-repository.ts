@@ -3,7 +3,7 @@ import { Agreement } from '../../../../agreements/domain/entities/agreement';
 import {
   AgreementDTO,
   IAgreementRepository,
-} from '../../../application/repositories/agreement-repository';
+} from '../../../adapters/repositories/agreement-repository';
 
 export class FakeAgreementRepository implements IAgreementRepository {
   public existsCalledTimes = 0;
