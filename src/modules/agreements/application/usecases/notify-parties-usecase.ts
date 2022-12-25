@@ -3,6 +3,7 @@
 import { Either, left, right } from '../../../shared/helpers/either';
 import { DomainError } from '../../../shared/helpers/errors/domain-error';
 import { ApplicationError } from '../../../shared/helpers/errors/application-error';
+import { IVerifyPartyExistsUsecase } from '../../../shared/domain/usecases/verify-party-exists-usecase';
 
 import { Notification } from '../../domain/entities/notification';
 
@@ -13,15 +14,11 @@ import {
 
 import { INotificationService } from '../../adapters/services/notification-service';
 
-import { IPartyRepository } from '../../adapters/repositories/party-repository';
 import { INotificationRepository } from '../../adapters/repositories/notification-repository';
-
-import { DebtorPartyNotFoundError } from '../errors/debtor-party-not-found-error';
-import { CreditorPartyNotFoundError } from '../errors/creditor-party-not-found-error';
 
 export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
   public constructor(
-    private readonly partyRepository: IPartyRepository,
+    private readonly verifyPartyExistsUsecase: IVerifyPartyExistsUsecase,
     private readonly notificationRepository: INotificationRepository,
     private readonly notificationService: INotificationService,
   ) {}
@@ -29,21 +26,8 @@ export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
   async execute(
     input: NotifyPartiesUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, void>> {
-    const doesCreditorPartyExists: boolean = await this.partyRepository.exists(
-      input.creditorPartyId,
-    );
-
-    if (!doesCreditorPartyExists) {
-      const error = new CreditorPartyNotFoundError('Creditor party not found');
-      return left(error);
-    }
-
-    const doesDebtorPartyExists: boolean = await this.partyRepository.exists(input.debtorPartyId);
-
-    if (!doesDebtorPartyExists) {
-      const error = new DebtorPartyNotFoundError('Debtor party not found');
-      return left(error);
-    }
+    await this.verifyPartyExistsUsecase.execute({ partyId: input.debtorPartyId });
+    await this.verifyPartyExistsUsecase.execute({ partyId: input.creditorPartyId });
 
     const recipientPartyIds: string[] = [input.creditorPartyId, input.debtorPartyId];
 
