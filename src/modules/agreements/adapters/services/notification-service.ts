@@ -1,3 +1,10 @@
+export type NotificationDTO = {
+  recipientPartyId: string;
+
+  title: string;
+  content: string;
+};
+
 export interface INotificationService {
-  notifyParties(creditorPartyId: string, debtorPartyId: string): Promise<void>;
+  send(notificationDTO: NotificationDTO): Promise<void>;
 }

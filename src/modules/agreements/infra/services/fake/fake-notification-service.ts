@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { NotificationProps } from 'src/modules/agreements/domain/entities/notification';
+
 import { INotificationService } from '../../../adapters/services/notification-service';
 
 export class FakeNotificationService implements INotificationService {
-  public notifyPartiesCalledTimes = 0;
+  public sendCalledTimes = 0;
 
-  async notifyParties(creditorPartyId: string, debtorPartyId: string): Promise<void> {
-    this.notifyPartiesCalledTimes += 1;
-
+  async send(notificationDTO: NotificationProps): Promise<void> {
+    this.sendCalledTimes += 1;
     return;
   }
 }

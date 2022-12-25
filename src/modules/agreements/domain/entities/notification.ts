@@ -5,7 +5,7 @@ import { DomainError } from '../../../shared/helpers/errors/domain-error';
 import { CharactersLimitError } from '../errors/characters-limit-error';
 import { NotificationHasAlreadyBeenReadError } from '../errors/notification-has-already-been-read-error';
 
-type NotificationProps = {
+export type NotificationProps = {
   recipientPartyId: string;
 
   title: string;
@@ -53,6 +53,10 @@ export class Notification extends Entity<NotificationProps> {
 
     this.props.readAt = new Date();
     return right(undefined);
+  }
+
+  public get recipientPartyId(): string {
+    return this.props.recipientPartyId;
   }
 
   public get title(): string {
