@@ -1,17 +1,23 @@
-import { Either, left, right } from '../../../shared/helpers/either';
 import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import {
+  chainAsyncEithers,
+  chainEithers,
+  Either,
+  left,
+  right,
+} from '../../../shared/helpers/either';
 import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 import { IVerifyPartyExistsUsecase } from '../../../shared/domain/usecases/verify-party-exists-usecase';
 
 import { Agreement } from '../../domain/entities/agreement';
 import { OwingItem } from '../../domain/value-objects/owing-item';
+import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
 
 import {
   IMakeAnAgreementUsecase,
   MakeAnAgreementUsecaseInput,
   MakeAnAgreementUsecaseOutput,
 } from '../../domain/usecases/make-an-agreement-usecase';
-import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
 
 import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
 
@@ -25,8 +31,12 @@ export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
   async execute(
     input: MakeAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, MakeAnAgreementUsecaseOutput>> {
-    await this.verifyPartyExistsUsecase.execute({ partyId: input.creditorPartyId });
-    await this.verifyPartyExistsUsecase.execute({ partyId: input.debtorPartyId });
+    const error = await chainAsyncEithers([
+      this.verifyPartyExistsUsecase.execute({ partyId: input.creditorPartyId }),
+      this.verifyPartyExistsUsecase.execute({ partyId: input.debtorPartyId }),
+    ]);
+
+    if (error) return left(error);
 
     const owingItemOrError = OwingItem.create({
       amount: input.amount,

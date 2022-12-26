@@ -1,3 +1,5 @@
+import { BaseError } from './errors/base-error';
+
 export type Either<L, R> = Left<L, R> | Right<L, R>;
 
 class Left<L, R> {
@@ -30,4 +32,19 @@ export const left = <L, R>(l: L): Either<L, R> => {
 
 export const right = <L, R>(r: R): Either<L, R> => {
   return new Right<L, R>(r);
+};
+
+export const chainEithers = (eithers: Either<BaseError, any>[]): BaseError | void => {
+  for (const either of eithers) {
+    if (either.isLeft()) return either.value;
+  }
+};
+
+export const chainAsyncEithers = async (
+  asyncEithers: Promise<Either<BaseError, any>>[],
+): Promise<BaseError | void> => {
+  for (const asyncEither of asyncEithers) {
+    const either = await asyncEither;
+    if (either.isLeft()) return either.value;
+  }
 };
