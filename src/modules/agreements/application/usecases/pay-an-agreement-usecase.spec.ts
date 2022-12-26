@@ -1,16 +1,16 @@
 import { any, mock } from 'jest-mock-extended';
 
-import { right } from '../../../core/helpers/either';
-import { Agreement } from '../../domain/entities/agreement';
-import { OwingItem } from '../../domain/value-objects/owing-item';
-import { PartyConsent, PartyConsentStatus } from '../../domain/entities/party-consent';
+import { right } from '@core/helpers/either';
 
-import { PayAnAgreementUsecase } from './pay-an-agreement-usecase';
-import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
+import { Agreement } from '@agreements/domain/entities/agreement';
+import { OwingItem } from '@agreements/domain/value-objects/owing-item';
+import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
 
-import { FakeAgreementRepository } from '../../infra/repositories/fake/fake-agreement-repository';
+import { PayAnAgreementUsecase } from '@agreements/application/usecases/pay-an-agreement-usecase';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
-import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
+import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
 describe('pay-an-agreement-usecase', () => {
   let payAnAgreementUsecase: PayAnAgreementUsecase;

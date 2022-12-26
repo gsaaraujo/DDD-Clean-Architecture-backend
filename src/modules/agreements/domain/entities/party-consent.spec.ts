@@ -1,6 +1,6 @@
-import { PartyConsent, PartyConsentStatus } from './party-consent';
-import { CurrentStatusMustBePendingError } from '../errors/current-status-must-be-pending-error';
-import { CurrentStatusMustBeAcceptedError } from '../errors/current-status-must-be-accepted-error';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
+import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';
 
 describe('PartyConsent', () => {
   beforeEach(() => {

@@ -1,17 +1,17 @@
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
-import { ApplicationError } from '../../../core/helpers/errors/application-error';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
+import { ApplicationError } from '@core/helpers/errors/application-error';
 
 import {
   ICancelAnAgreementUsecase,
   CancelAnAgreementUsecaseInput,
   CancelAnAgreementUsecaseOutput,
-} from '../../domain/usecases/cancel-an-agreement-usecase';
-import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
+} from '@agreements/domain/usecases/cancel-an-agreement-usecase';
+import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
 
-import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
-import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
+import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
   public constructor(

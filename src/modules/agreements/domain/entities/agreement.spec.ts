@@ -1,7 +1,7 @@
-import { Agreement } from './agreement';
-import { OwingItem } from '../value-objects/owing-item';
-import { CreditorAndDebtorCannotBeTheSameError } from '../errors/creditor-and-debtor-cannot-be-the-same-error';
-import { PartyConsent, PartyConsentStatus } from './party-consent';
+import { Agreement } from '@agreements/domain/entities/agreement';
+import { OwingItem } from '@agreements/domain/value-objects/owing-item';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { CreditorAndDebtorCannotBeTheSameError } from '@agreements/domain/errors/creditor-and-debtor-cannot-be-the-same-error';
 
 describe('Agreement', () => {
   beforeEach(() => {

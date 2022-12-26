@@ -1,14 +1,14 @@
-import { Either, left, right } from '../../helpers/either';
-import { ApplicationError } from '../../helpers/errors/application-error';
+import { Either, left, right } from '@core/helpers/either';
+import { ApplicationError } from '@core/helpers/errors/application-error';
 
 import {
   IVerifyPartyExistsUsecase,
   VerifyPartyExistsUsecaseInput,
-} from '../../domain/usecases/verify-party-exists-usecase';
+} from '@core/domain/usecases/verify-party-exists-usecase';
 
-import { IPartyRepository } from '../../adapters/repositories/party-repository';
+import { IPartyRepository } from '@core/adapters/repositories/party-repository';
 
-import { PartyNotFoundError } from '../errors/party-not-found-error';
+import { PartyNotFoundError } from '@core/application/errors/party-not-found-error';
 
 export class VerifyPartyExistsUsecase implements IVerifyPartyExistsUsecase {
   public constructor(private readonly partyRepository: IPartyRepository) {}

@@ -1,4 +1,4 @@
-import { Usecase } from '../../../core/helpers/usecase';
+import { Usecase } from '@core/helpers/usecase';
 
 export type MakeAnAgreementUsecaseInput = {
   debtorPartyId: string;

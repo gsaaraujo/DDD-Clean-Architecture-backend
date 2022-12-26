@@ -1,4 +1,4 @@
-import { HttpResponse, HttpResponseType } from '../http-response';
+import { HttpResponse, HttpResponseType } from '@core/helpers/http/http-response';
 
 export abstract class HttpErrorResponse extends HttpResponse {
   protected constructor(public readonly status: number, public readonly message: string) {

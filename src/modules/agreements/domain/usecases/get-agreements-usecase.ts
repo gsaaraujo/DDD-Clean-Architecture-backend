@@ -1,5 +1,6 @@
-import { Agreement } from '../entities/agreement';
-import { Usecase } from '../../../core/helpers/usecase';
+import { Usecase } from '@core/helpers/usecase';
+
+import { Agreement } from '@agreements/domain/entities/agreement';
 
 export type GetAgreementsUsecaseInput = {
   partyId: string;

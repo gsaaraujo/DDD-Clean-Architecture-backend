@@ -1,9 +1,9 @@
-import { NotificationProps } from '../../../domain/entities/notification';
+import { NotificationProps } from '@agreements/domain/entities/notification';
 
 import {
   NotificationDTO,
   INotificationRepository,
-} from '../../../adapters/repositories/notification-repository';
+} from '@agreements/adapters/repositories/notification-repository';
 
 export class FakeNotificationRepository implements INotificationRepository {
   public createCalledTimes = 0;

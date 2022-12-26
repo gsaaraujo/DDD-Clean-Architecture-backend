@@ -1,4 +1,4 @@
-import { NotificationProps } from '../../domain/entities/notification';
+import { NotificationProps } from '@agreements/domain/entities/notification';
 
 export type NotificationDTO = NotificationProps;
 

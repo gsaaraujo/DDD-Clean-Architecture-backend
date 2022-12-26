@@ -1,13 +1,14 @@
 import { any, mock } from 'jest-mock-extended';
 
-import { right } from '../../../core/helpers/either';
-import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
+import { right } from '@core/helpers/either';
 
-import { MakeAnAgreementUsecase } from './make-an-agreement-usecase';
+import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
-import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
+import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
 
-import { FakeAgreementRepository } from '../../infra/repositories/fake/fake-agreement-repository';
+import { MakeAnAgreementUsecase } from '@agreements/application/usecases/make-an-agreement-usecase';
+
+import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
 describe('MakeAnAgreementUsecase', () => {
   let makeAnAgreementUsecase: MakeAnAgreementUsecase;

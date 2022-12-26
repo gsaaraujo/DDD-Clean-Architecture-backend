@@ -1,4 +1,4 @@
-import { Agreement } from '../../domain/entities/agreement';
+import { Agreement } from '@agreements/domain/entities/agreement';
 
 export type AgreementDTO = Agreement;
 

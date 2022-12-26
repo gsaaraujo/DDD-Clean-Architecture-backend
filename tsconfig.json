@@ -17,6 +17,10 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@core/*": ["./src/modules/core/*"],
+      "@agreements/*": ["./src/modules/agreements/*"]
+    }
   }
 }

@@ -1,18 +1,18 @@
 import Joi from 'joi';
 
-import { Ok } from '../../../core/helpers/http/status-codes/ok';
-import { HttpResponse } from '../../../core/helpers/http/http-response';
-import { Conflict } from '../../../core/helpers/http/status-codes/conflict';
-import { NotFound } from '../../../core/helpers/http/status-codes/not-found';
-import { BadRequest } from '../../../core/helpers/http/status-codes/bad-request';
-import { InternalServerError } from '../../../core/helpers/http/status-codes/internal-server-error';
+import { Ok } from '@core/helpers/http/status-codes/ok';
+import { HttpResponse } from '@core/helpers/http/http-response';
+import { Conflict } from '@core/helpers/http/status-codes/conflict';
+import { NotFound } from '@core/helpers/http/status-codes/not-found';
+import { BadRequest } from '@core/helpers/http/status-codes/bad-request';
+import { InternalServerError } from '@core/helpers/http/status-codes/internal-server-error';
 
-import { IAcceptAnAgreementUsecase } from '../../domain/usecases/accept-an-agreement-usecase';
+import { IAcceptAnAgreementUsecase } from '@agreements/domain/usecases/accept-an-agreement-usecase';
 
 import {
   AcceptAnAgreementControllerInput,
   IAcceptAnAgreementController,
-} from '../../adapters/controllers/accept-an-agreement-controller';
+} from '@agreements/adapters/controllers/accept-an-agreement-controller';
 
 export class AcceptAnAgreementController implements IAcceptAnAgreementController {
   public constructor(private readonly acceptAnAgreementUsecase: IAcceptAnAgreementUsecase) {}

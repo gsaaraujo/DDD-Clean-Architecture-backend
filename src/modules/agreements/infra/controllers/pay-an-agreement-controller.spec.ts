@@ -1,16 +1,17 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '../../../core/helpers/either';
-import { HttpResponseType } from '../../../core/helpers/http/http-response';
+import { left, right } from '@core/helpers/either';
+import { HttpResponseType } from '@core/helpers/http/http-response';
 
-import { PayAnAgreementController } from './pay-an-agreement-controller';
-import { PayAnAgreementControllerInput } from '../../adapters/controllers/pay-an-agreement-controller';
+import { IPayAnAgreementUsecase } from '@agreements/domain/usecases/pay-an-agreement-usecase';
+import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';
 
-import { IPayAnAgreementUsecase } from '../../domain/usecases/pay-an-agreement-usecase';
-import { CurrentStatusMustBeAcceptedError } from '../../domain/errors/current-status-must-be-accepted-error';
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
-import { PartyNotFoundError } from '../../application/errors/party-not-found-error';
-import { AgreementNotFoundError } from '../../application/errors/agreement-not-found-error';
+import { PayAnAgreementController } from '@agreements/infra/controllers/pay-an-agreement-controller';
+
+import { PayAnAgreementControllerInput } from '@agreements/adapters/controllers/pay-an-agreement-controller';
 
 describe('PayAnAgreementController', () => {
   let payAnAgreementController: PayAnAgreementController;

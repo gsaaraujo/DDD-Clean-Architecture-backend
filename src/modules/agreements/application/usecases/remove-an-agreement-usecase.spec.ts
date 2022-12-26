@@ -1,13 +1,12 @@
-import { Agreement } from '../../domain/entities/agreement';
-import { OwingItem } from '../../domain/value-objects/owing-item';
-import { PartyConsent, PartyConsentStatus } from '../../domain/entities/party-consent';
+import { Agreement } from '@agreements/domain/entities/agreement';
+import { OwingItem } from '@agreements/domain/value-objects/owing-item';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
 
-import { RemoveAnAgreementUsecase } from './remove-an-agreement-usecase';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
+import { RemoveAnAgreementUsecase } from '@agreements/application/usecases/remove-an-agreement-usecase';
+import { CannotRemoveAgreementError } from '@agreements/application/errors/cannot-remove-agreement-error';
 
-import { FakeAgreementRepository } from '../../infra/repositories/fake/fake-agreement-repository';
-
-import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
-import { CannotRemoveAgreementError } from '../errors/cannot-remove-agreement-error';
+import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
 describe('RemoveAnAgreementUsecase', () => {
   let removeAnAgreementUsecase: RemoveAnAgreementUsecase;

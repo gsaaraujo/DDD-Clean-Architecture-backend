@@ -1,19 +1,19 @@
 import { Post, Body, Controller } from '@nestjs/common';
 import Joi from 'joi';
 
-import { Ok } from '../../../core/helpers/http/status-codes/ok';
-import { HttpResponse } from '../../../core/helpers/http/http-response';
-import { Conflict } from '../../../core/helpers/http/status-codes/conflict';
-import { NotFound } from '../../../core/helpers/http/status-codes/not-found';
-import { BadRequest } from '../../../core/helpers/http/status-codes/bad-request';
-import { InternalServerError } from '../../../core/helpers/http/status-codes/internal-server-error';
+import { Ok } from '@core/helpers/http/status-codes/ok';
+import { HttpResponse } from '@core/helpers/http/http-response';
+import { Conflict } from '@core/helpers/http/status-codes/conflict';
+import { NotFound } from '@core/helpers/http/status-codes/not-found';
+import { BadRequest } from '@core/helpers/http/status-codes/bad-request';
+import { InternalServerError } from '@core/helpers/http/status-codes/internal-server-error';
 
-import { IMakeAnAgreementUsecase } from '../../domain/usecases/make-an-agreement-usecase';
+import { IMakeAnAgreementUsecase } from '@agreements/domain/usecases/make-an-agreement-usecase';
 
 import {
   IMakeAnAgreementController,
   MakeAnAgreementControllerInput,
-} from '../../adapters/controllers/make-an-agreement-controller';
+} from '@agreements/adapters/controllers/make-an-agreement-controller';
 
 @Controller('agreements')
 export class MakeAnAgreementController implements IMakeAnAgreementController {

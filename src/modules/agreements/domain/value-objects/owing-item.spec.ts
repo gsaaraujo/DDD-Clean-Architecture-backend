@@ -1,7 +1,7 @@
-import { OwingItem } from './owing-item';
-import { ItemAmountLimitError } from '../errors/item-amount-limit-error';
-import { CurrencyItemAmountLimitError } from '../errors/currency-amount-limit-error';
-import { CurrencyAmountMustBeInCentsError } from '../errors/currency-amount-must-be-in-cents-error';
+import { OwingItem } from '@agreements/domain/value-objects/owing-item';
+import { ItemAmountLimitError } from '@agreements/domain/errors/item-amount-limit-error';
+import { CurrencyItemAmountLimitError } from '@agreements/domain/errors/currency-amount-limit-error';
+import { CurrencyAmountMustBeInCentsError } from '@agreements/domain/errors/currency-amount-must-be-in-cents-error';
 
 describe('OwingItem', () => {
   beforeEach(() => {

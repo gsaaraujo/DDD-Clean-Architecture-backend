@@ -1,4 +1,4 @@
-import { Controller } from '../../../core/helpers/controller';
+import { Controller } from '@core/helpers/controller';
 
 export type MakeAnAgreementControllerInput = {
   debtorPartyId: string;

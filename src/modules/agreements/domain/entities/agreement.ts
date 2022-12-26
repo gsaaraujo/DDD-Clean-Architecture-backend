@@ -1,11 +1,10 @@
-import { Entity } from '../../../core/helpers/entity';
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
+import { Entity } from '@core/helpers/entity';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
 
-import { OwingItem } from '../value-objects/owing-item';
-import { PartyConsent, PartyConsentStatus } from './party-consent';
-
-import { CreditorAndDebtorCannotBeTheSameError } from '../errors/creditor-and-debtor-cannot-be-the-same-error';
+import { OwingItem } from '@agreements/domain/value-objects/owing-item';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { CreditorAndDebtorCannotBeTheSameError } from '@agreements/domain/errors/creditor-and-debtor-cannot-be-the-same-error';
 
 type AgreementProps = {
   debtorPartyId: string;

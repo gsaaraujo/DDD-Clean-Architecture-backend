@@ -1,13 +1,12 @@
-import { Agreement } from '../../domain/entities/agreement';
-import { OwingItem } from '../../domain/value-objects/owing-item';
-import { PartyConsent, PartyConsentStatus } from '../../domain/entities/party-consent';
+import { Agreement } from '@agreements/domain/entities/agreement';
+import { OwingItem } from '@agreements/domain/value-objects/owing-item';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
 
-import { GetAgreementsUsecase } from './get-agreements-usecase';
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
+import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agreements-usecase';
 
-import { FakePartyRepository } from '../../infra/repositories/fake/fake-party-repository';
-import { FakeAgreementRepository } from '../../infra/repositories/fake/fake-agreement-repository';
-
-import { PartyNotFoundError } from '../errors/party-not-found-error';
+import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
+import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
 describe('GetAgreementsUsecase', () => {
   let getAgreementsUsecase: GetAgreementsUsecase;

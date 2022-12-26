@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
-import { Notification } from './notification';
-import { CharactersLimitError } from '../errors/characters-limit-error';
+import { Notification } from '@agreements/domain/entities/notification';
+import { CharactersLimitError } from '@agreements/domain/errors/characters-limit-error';
 
 describe('Notification', () => {
   beforeEach(() => {

@@ -1,19 +1,18 @@
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
-import { ApplicationError } from '../../../core/helpers/errors/application-error';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
+import { ApplicationError } from '@core/helpers/errors/application-error';
 
-import { PartyConsentStatus } from '../../domain/entities/party-consent';
-
-import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
-
-import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
-import { CannotRemoveAgreementError } from '../errors/cannot-remove-agreement-error';
-
+import { PartyConsentStatus } from '@agreements/domain/entities/party-consent';
 import {
   IRemoveAnAgreementUsecase,
   RemoveAnAgreementUsecaseInput,
   RemoveAnAgreementUsecaseOutput,
-} from '../../domain/usecases/remove-an-agreement-usecase';
+} from '@agreements/domain/usecases/remove-an-agreement-usecase';
+
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
+import { CannotRemoveAgreementError } from '@agreements/application/errors/cannot-remove-agreement-error';
+
+import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class RemoveAnAgreementUsecase implements IRemoveAnAgreementUsecase {
   public constructor(private readonly agreementRepository: IAgreementRepository) {}

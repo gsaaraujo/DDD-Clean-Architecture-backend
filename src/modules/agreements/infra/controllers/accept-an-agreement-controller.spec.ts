@@ -1,16 +1,17 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '../../../core/helpers/either';
-import { HttpResponseType } from '../../../core/helpers/http/http-response';
+import { left, right } from '@core/helpers/either';
+import { HttpResponseType } from '@core/helpers/http/http-response';
 
-import { AcceptAnAgreementController } from './accept-an-agreement-controller';
-import { AcceptAnAgreementControllerInput } from '../../adapters/controllers/accept-an-agreement-controller';
+import { IAcceptAnAgreementUsecase } from '@agreements/domain/usecases/accept-an-agreement-usecase';
+import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
 
-import { IAcceptAnAgreementUsecase } from '../../domain/usecases/accept-an-agreement-usecase';
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
-import { CurrentStatusMustBePendingError } from '../../domain/errors/current-status-must-be-pending-error';
-import { PartyNotFoundError } from '../../application/errors/party-not-found-error';
-import { AgreementNotFoundError } from '../../application/errors/agreement-not-found-error';
+import { AcceptAnAgreementController } from '@agreements/infra/controllers/accept-an-agreement-controller';
+
+import { AcceptAnAgreementControllerInput } from '@agreements/adapters/controllers/accept-an-agreement-controller';
 
 describe('AcceptAnAgreementController', () => {
   let acceptAnAgreementController: AcceptAnAgreementController;

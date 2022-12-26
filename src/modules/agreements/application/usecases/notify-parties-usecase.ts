@@ -1,20 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
-import { ApplicationError } from '../../../core/helpers/errors/application-error';
-import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
-
-import { Notification } from '../../domain/entities/notification';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
+import { ApplicationError } from '@core/helpers/errors/application-error';
+import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
 import {
   INotifyPartiesUsecase,
   NotifyPartiesUsecaseInput,
-} from '../../domain/usecases/notify-parties-usecase';
+} from '@agreements/domain/usecases/notify-parties-usecase';
+import { Notification } from '@agreements/domain/entities/notification';
 
-import { INotificationService } from '../../adapters/services/notification-service';
-
-import { INotificationRepository } from '../../adapters/repositories/notification-repository';
+import { INotificationService } from '@agreements/adapters/services/notification-service';
+import { INotificationRepository } from '@agreements/adapters/repositories/notification-repository';
 
 export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
   public constructor(

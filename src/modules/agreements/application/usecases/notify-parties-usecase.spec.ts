@@ -1,13 +1,12 @@
 import { mock } from 'jest-mock-extended';
 
-import { right } from '../../../core/helpers/either';
-import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
+import { right } from '@core/helpers/either';
+import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
-import { NotifyPartiesUsecase } from './notify-parties-usecase';
+import { NotifyPartiesUsecase } from '@agreements/application/usecases/notify-parties-usecase';
 
-import { FakeNotificationRepository } from '../../infra/repositories/fake/fake-notification-repository';
-
-import { FakeNotificationService } from '../../infra/services/fake/fake-notification-service';
+import { FakeNotificationService } from '@agreements/infra/services/fake/fake-notification-service';
+import { FakeNotificationRepository } from '@agreements/infra/repositories/fake/fake-notification-repository';
 
 describe('notify-parties-usecase', () => {
   let notifyPartiesUsecase: NotifyPartiesUsecase;

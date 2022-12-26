@@ -1,9 +1,9 @@
-import { Entity } from '../../../core/helpers/entity';
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
+import { Entity } from '@core/helpers/entity';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
 
-import { CurrentStatusMustBePendingError } from '../errors/current-status-must-be-pending-error';
-import { CurrentStatusMustBeAcceptedError } from '../errors/current-status-must-be-accepted-error';
+import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
+import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';
 
 export enum PartyConsentStatus {
   PENDING = 'PENDING',

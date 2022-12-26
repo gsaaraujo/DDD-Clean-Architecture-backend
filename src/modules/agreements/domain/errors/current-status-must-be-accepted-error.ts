@@ -1,4 +1,4 @@
-import { DomainError } from '../../../core/helpers/errors/domain-error';
+import { DomainError } from '@core/helpers/errors/domain-error';
 
 export class CurrentStatusMustBeAcceptedError extends DomainError {
   public constructor(message: string) {

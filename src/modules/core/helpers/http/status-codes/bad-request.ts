@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '../error-responses/http-error-response';
+import { HttpErrorResponse } from '@core/helpers/http/error-responses/http-error-response';
 
 export class BadRequest extends HttpErrorResponse {
   public constructor(public readonly message: string) {

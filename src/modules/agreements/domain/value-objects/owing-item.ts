@@ -1,10 +1,10 @@
-import { ValueObject } from '../../../core/helpers/value-object';
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
+import { ValueObject } from '@core/helpers/value-object';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
 
-import { ItemAmountLimitError } from '../errors/item-amount-limit-error';
-import { CurrencyItemAmountLimitError } from '../errors/currency-amount-limit-error';
-import { CurrencyAmountMustBeInCentsError } from '../errors/currency-amount-must-be-in-cents-error';
+import { ItemAmountLimitError } from '@agreements/domain/errors/item-amount-limit-error';
+import { CurrencyItemAmountLimitError } from '@agreements/domain/errors/currency-amount-limit-error';
+import { CurrencyAmountMustBeInCentsError } from '@agreements/domain/errors/currency-amount-must-be-in-cents-error';
 
 type OwingItemProps = {
   amount: number;

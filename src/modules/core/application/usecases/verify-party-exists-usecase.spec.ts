@@ -1,8 +1,7 @@
-import { VerifyPartyExistsUsecase } from './verify-party-exists-usecase';
+import { PartyNotFoundError } from '@core/application/errors/party-not-found-error';
+import { VerifyPartyExistsUsecase } from '@core/application/usecases/verify-party-exists-usecase';
 
-import { FakePartyRepository } from '../../infra/fake/fake-party-repository';
-
-import { PartyNotFoundError } from '../errors/party-not-found-error';
+import { FakePartyRepository } from '@core/infra/fake/fake-party-repository';
 
 describe('verify-party-exists', () => {
   let verifyPartyExistsUsecase: VerifyPartyExistsUsecase;

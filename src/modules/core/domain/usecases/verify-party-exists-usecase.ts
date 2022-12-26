@@ -1,4 +1,4 @@
-import { Usecase } from '../../helpers/usecase';
+import { Usecase } from '@core/helpers/usecase';
 
 export type VerifyPartyExistsUsecaseInput = {
   partyId: string;

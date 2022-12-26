@@ -1,19 +1,18 @@
-import { DomainError } from '../../../core/helpers/errors/domain-error';
-import { chainAsyncEithers, chainEithers, Either, left, right } from '../../../core/helpers/either';
-import { ApplicationError } from '../../../core/helpers/errors/application-error';
-import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
+import { DomainError } from '@core/helpers/errors/domain-error';
+import { ApplicationError } from '@core/helpers/errors/application-error';
+import { chainAsyncEithers, Either, left, right } from '@core/helpers/either';
+import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
-import { Agreement } from '../../domain/entities/agreement';
-import { OwingItem } from '../../domain/value-objects/owing-item';
-import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
-
+import { Agreement } from '@agreements/domain/entities/agreement';
+import { OwingItem } from '@agreements/domain/value-objects/owing-item';
+import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
 import {
   IMakeAnAgreementUsecase,
   MakeAnAgreementUsecaseInput,
   MakeAnAgreementUsecaseOutput,
-} from '../../domain/usecases/make-an-agreement-usecase';
+} from '@agreements/domain/usecases/make-an-agreement-usecase';
 
-import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
+import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
   public constructor(

@@ -1,16 +1,17 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '../../../core/helpers/either';
-import { HttpResponseType } from '../../../core/helpers/http/http-response';
+import { left, right } from '@core/helpers/either';
+import { HttpResponseType } from '@core/helpers/http/http-response';
 
-import { MakeAnAgreementController } from './make-an-agreement-controller';
-import { MakeAnAgreementControllerInput } from '../../adapters/controllers/make-an-agreement-controller';
+import { IMakeAnAgreementUsecase } from '@agreements/domain/usecases/make-an-agreement-usecase';
+import { CreditorAndDebtorCannotBeTheSameError } from '@agreements/domain/errors/creditor-and-debtor-cannot-be-the-same-error';
 
-import { IMakeAnAgreementUsecase } from '../../domain/usecases/make-an-agreement-usecase';
+import { DebtorPartyNotFoundError } from '@agreements/application/errors/debtor-party-not-found-error';
+import { CreditorPartyNotFoundError } from '@agreements/application/errors/creditor-party-not-found-error';
 
-import { DebtorPartyNotFoundError } from '../../application/errors/debtor-party-not-found-error';
-import { CreditorPartyNotFoundError } from '../../application/errors/creditor-party-not-found-error';
-import { CreditorAndDebtorCannotBeTheSameError } from '../../domain/errors/creditor-and-debtor-cannot-be-the-same-error';
+import { MakeAnAgreementController } from '@agreements/infra/controllers/make-an-agreement-controller';
+
+import { MakeAnAgreementControllerInput } from '@agreements/adapters/controllers/make-an-agreement-controller';
 
 describe('MakeAnAgreementController', () => {
   let makeAnAgreementController: MakeAnAgreementController;

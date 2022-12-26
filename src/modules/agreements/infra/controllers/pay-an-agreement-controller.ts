@@ -1,18 +1,18 @@
 import Joi from 'joi';
 
-import { Ok } from '../../../core/helpers/http/status-codes/ok';
-import { HttpResponse } from '../../../core/helpers/http/http-response';
-import { Conflict } from '../../../core/helpers/http/status-codes/conflict';
-import { NotFound } from '../../../core/helpers/http/status-codes/not-found';
-import { BadRequest } from '../../../core/helpers/http/status-codes/bad-request';
-import { InternalServerError } from '../../../core/helpers/http/status-codes/internal-server-error';
+import { Ok } from '@core/helpers/http/status-codes/ok';
+import { HttpResponse } from '@core/helpers/http/http-response';
+import { Conflict } from '@core/helpers/http/status-codes/conflict';
+import { NotFound } from '@core/helpers/http/status-codes/not-found';
+import { BadRequest } from '@core/helpers/http/status-codes/bad-request';
+import { InternalServerError } from '@core/helpers/http/status-codes/internal-server-error';
 
-import { IPayAnAgreementUsecase } from '../../domain/usecases/pay-an-agreement-usecase';
+import { IPayAnAgreementUsecase } from '@agreements/domain/usecases/pay-an-agreement-usecase';
 
 import {
   IPayAnAgreementController,
   PayAnAgreementControllerInput,
-} from '../../adapters/controllers/pay-an-agreement-controller';
+} from '@agreements/adapters/controllers/pay-an-agreement-controller';
 
 export class PayAnAgreementController implements IPayAnAgreementController {
   public constructor(private readonly payAnAgreementUsecase: IPayAnAgreementUsecase) {}

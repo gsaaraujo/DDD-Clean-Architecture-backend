@@ -1,14 +1,14 @@
-import { Either, right } from '../../../core/helpers/either';
-import { ApplicationError } from '../../../core/helpers/errors/application-error';
-import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
+import { Either, right } from '@core/helpers/either';
+import { ApplicationError } from '@core/helpers/errors/application-error';
+import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
 import {
   IGetAgreementsUsecase,
   GetAgreementsUsecaseInput,
   GetAgreementsUsecaseOutput,
-} from '../../domain/usecases/get-agreements-usecase';
+} from '@agreements/domain/usecases/get-agreements-usecase';
 
-import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
+import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class GetAgreementsUsecase implements IGetAgreementsUsecase {
   public constructor(

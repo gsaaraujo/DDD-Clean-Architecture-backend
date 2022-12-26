@@ -1,4 +1,4 @@
-import { IPartyRepository } from '../../adapters/repositories/party-repository';
+import { IPartyRepository } from '@core/adapters/repositories/party-repository';
 
 export class FakePartyRepository implements IPartyRepository {
   public existsCalledTimes = 0;

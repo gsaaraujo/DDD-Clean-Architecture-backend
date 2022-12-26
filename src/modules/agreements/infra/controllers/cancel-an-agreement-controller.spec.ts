@@ -1,16 +1,17 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '../../../core/helpers/either';
-import { HttpResponseType } from '../../../core/helpers/http/http-response';
+import { left, right } from '@core/helpers/either';
+import { HttpResponseType } from '@core/helpers/http/http-response';
 
-import { CancelAnAgreementController } from './cancel-an-agreement-controller';
-import { CancelAnAgreementControllerInput } from '../../adapters/controllers/cancel-an-agreement-controller';
+import { ICancelAnAgreementUsecase } from '@agreements/domain/usecases/cancel-an-agreement-usecase';
+import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';
 
-import { ICancelAnAgreementUsecase } from '../../domain/usecases/cancel-an-agreement-usecase';
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
-import { PartyNotFoundError } from '../../application/errors/party-not-found-error';
-import { AgreementNotFoundError } from '../../application/errors/agreement-not-found-error';
-import { CurrentStatusMustBeAcceptedError } from '../../domain/errors/current-status-must-be-accepted-error';
+import { CancelAnAgreementController } from '@agreements/infra/controllers/cancel-an-agreement-controller';
+
+import { CancelAnAgreementControllerInput } from '@agreements/adapters/controllers/cancel-an-agreement-controller';
 
 describe('CancelAnAgreementController', () => {
   let cancelAnAgreementController: CancelAnAgreementController;

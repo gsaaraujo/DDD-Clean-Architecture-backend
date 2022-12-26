@@ -1,9 +1,9 @@
-import { Agreement } from '../../../../agreements/domain/entities/agreement';
+import { Agreement } from '@agreements/domain/entities/agreement';
 
 import {
   AgreementDTO,
   IAgreementRepository,
-} from '../../../adapters/repositories/agreement-repository';
+} from '@agreements/adapters/repositories/agreement-repository';
 
 export class FakeAgreementRepository implements IAgreementRepository {
   public existsCalledTimes = 0;

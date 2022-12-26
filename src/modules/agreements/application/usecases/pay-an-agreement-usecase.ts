@@ -1,18 +1,17 @@
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
-import { ApplicationError } from '../../../core/helpers/errors/application-error';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
+import { ApplicationError } from '@core/helpers/errors/application-error';
 
 import {
   IPayAnAgreementUsecase,
   PayAnAgreementUsecaseInput,
   PayAnAgreementUsecaseOutput,
-} from '../../domain/usecases/pay-an-agreement-usecase';
+} from '@agreements/domain/usecases/pay-an-agreement-usecase';
+import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
 
-import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
-import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
-
-import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
+import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class PayAnAgreementUsecase implements IPayAnAgreementUsecase {
   public constructor(

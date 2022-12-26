@@ -1,16 +1,17 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '../../../core/helpers/either';
-import { HttpResponseType } from '../../../core/helpers/http/http-response';
+import { left, right } from '@core/helpers/either';
+import { HttpResponseType } from '@core/helpers/http/http-response';
 
-import { DenyAnAgreementController } from './deny-an-agreement-controller';
-import { DenyAnAgreementControllerInput } from '../../adapters/controllers/deny-an-agreement-controller';
+import { IDenyAnAgreementUsecase } from '@agreements/domain/usecases/deny-an-agreement-usecase';
+import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
 
-import { IDenyAnAgreementUsecase } from '../../domain/usecases/deny-an-agreement-usecase';
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
+import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
-import { CurrentStatusMustBePendingError } from '../../domain/errors/current-status-must-be-pending-error';
-import { PartyNotFoundError } from '../../application/errors/party-not-found-error';
-import { AgreementNotFoundError } from '../../application/errors/agreement-not-found-error';
+import { DenyAnAgreementController } from '@agreements/infra/controllers/deny-an-agreement-controller';
+
+import { DenyAnAgreementControllerInput } from '@agreements/adapters/controllers/deny-an-agreement-controller';
 
 describe('DenyAnAgreementController', () => {
   let denyAnAgreementController: DenyAnAgreementController;

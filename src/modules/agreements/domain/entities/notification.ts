@@ -1,9 +1,9 @@
-import { Entity } from '../../../core/helpers/entity';
-import { Either, left, right } from '../../../core/helpers/either';
-import { DomainError } from '../../../core/helpers/errors/domain-error';
+import { Entity } from '@core/helpers/entity';
+import { Either, left, right } from '@core/helpers/either';
+import { DomainError } from '@core/helpers/errors/domain-error';
 
-import { CharactersLimitError } from '../errors/characters-limit-error';
-import { NotificationHasAlreadyBeenReadError } from '../errors/notification-has-already-been-read-error';
+import { CharactersLimitError } from '@agreements/domain/errors/characters-limit-error';
+import { NotificationHasAlreadyBeenReadError } from '@agreements/domain/errors/notification-has-already-been-read-error';
 
 export type NotificationProps = {
   recipientPartyId: string;
