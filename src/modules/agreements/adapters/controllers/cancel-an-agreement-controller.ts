@@ -1,4 +1,4 @@
-import { Controller } from '../../../shared/helpers/controller';
+import { Controller } from '../../../core/helpers/controller';
 
 export type CancelAnAgreementControllerInput = {
   partyId: string;

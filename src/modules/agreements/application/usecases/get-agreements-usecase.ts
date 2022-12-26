@@ -1,6 +1,6 @@
-import { Either, right } from '../../../shared/helpers/either';
-import { ApplicationError } from '../../../shared/helpers/errors/application-error';
-import { IVerifyPartyExistsUsecase } from '../../../shared/domain/usecases/verify-party-exists-usecase';
+import { Either, right } from '../../../core/helpers/either';
+import { ApplicationError } from '../../../core/helpers/errors/application-error';
+import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
 
 import {
   IGetAgreementsUsecase,

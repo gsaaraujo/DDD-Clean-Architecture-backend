@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '../../../shared/helpers/either';
-import { HttpResponseType } from '../../../shared/helpers/http/http-response';
+import { left, right } from '../../../core/helpers/either';
+import { HttpResponseType } from '../../../core/helpers/http/http-response';
 
 import { PayAnAgreementController } from './pay-an-agreement-controller';
 import { PayAnAgreementControllerInput } from '../../adapters/controllers/pay-an-agreement-controller';

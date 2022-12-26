@@ -1,6 +1,6 @@
-import { Entity } from '../../../shared/helpers/entity';
-import { Either, left, right } from '../../../shared/helpers/either';
-import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import { Entity } from '../../../core/helpers/entity';
+import { Either, left, right } from '../../../core/helpers/either';
+import { DomainError } from '../../../core/helpers/errors/domain-error';
 
 import { CharactersLimitError } from '../errors/characters-limit-error';
 import { NotificationHasAlreadyBeenReadError } from '../errors/notification-has-already-been-read-error';

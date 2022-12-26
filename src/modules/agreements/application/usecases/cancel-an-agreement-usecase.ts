@@ -1,6 +1,6 @@
-import { Either, left, right } from '../../../shared/helpers/either';
-import { DomainError } from '../../../shared/helpers/errors/domain-error';
-import { ApplicationError } from '../../../shared/helpers/errors/application-error';
+import { Either, left, right } from '../../../core/helpers/either';
+import { DomainError } from '../../../core/helpers/errors/domain-error';
+import { ApplicationError } from '../../../core/helpers/errors/application-error';
 
 import {
   ICancelAnAgreementUsecase,

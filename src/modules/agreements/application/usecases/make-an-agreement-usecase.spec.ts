@@ -1,7 +1,7 @@
 import { any, mock } from 'jest-mock-extended';
 
-import { right } from '../../../shared/helpers/either';
-import { IVerifyPartyExistsUsecase } from '../../../shared/domain/usecases/verify-party-exists-usecase';
+import { right } from '../../../core/helpers/either';
+import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
 
 import { MakeAnAgreementUsecase } from './make-an-agreement-usecase';
 

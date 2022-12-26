@@ -1,4 +1,4 @@
-import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import { DomainError } from '../../../core/helpers/errors/domain-error';
 
 export class CurrencyAmountMustBeInCentsError extends DomainError {
   public constructor(message: string) {

@@ -1,6 +1,6 @@
-import { ValueObject } from '../../../shared/helpers/value-object';
-import { Either, left, right } from '../../../shared/helpers/either';
-import { DomainError } from '../../../shared/helpers/errors/domain-error';
+import { ValueObject } from '../../../core/helpers/value-object';
+import { Either, left, right } from '../../../core/helpers/either';
+import { DomainError } from '../../../core/helpers/errors/domain-error';
 
 import { ItemAmountLimitError } from '../errors/item-amount-limit-error';
 import { CurrencyItemAmountLimitError } from '../errors/currency-amount-limit-error';

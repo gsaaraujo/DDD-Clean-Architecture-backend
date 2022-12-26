@@ -1,6 +1,6 @@
 import { any, mock } from 'jest-mock-extended';
 
-import { right } from '../../../shared/helpers/either';
+import { right } from '../../../core/helpers/either';
 import { Agreement } from '../../domain/entities/agreement';
 import { OwingItem } from '../../domain/value-objects/owing-item';
 import { PartyConsent, PartyConsentStatus } from '../../domain/entities/party-consent';

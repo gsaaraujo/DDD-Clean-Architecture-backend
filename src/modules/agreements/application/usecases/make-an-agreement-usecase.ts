@@ -1,13 +1,7 @@
-import { DomainError } from '../../../shared/helpers/errors/domain-error';
-import {
-  chainAsyncEithers,
-  chainEithers,
-  Either,
-  left,
-  right,
-} from '../../../shared/helpers/either';
-import { ApplicationError } from '../../../shared/helpers/errors/application-error';
-import { IVerifyPartyExistsUsecase } from '../../../shared/domain/usecases/verify-party-exists-usecase';
+import { DomainError } from '../../../core/helpers/errors/domain-error';
+import { chainAsyncEithers, chainEithers, Either, left, right } from '../../../core/helpers/either';
+import { ApplicationError } from '../../../core/helpers/errors/application-error';
+import { IVerifyPartyExistsUsecase } from '../../../core/domain/usecases/verify-party-exists-usecase';
 
 import { Agreement } from '../../domain/entities/agreement';
 import { OwingItem } from '../../domain/value-objects/owing-item';

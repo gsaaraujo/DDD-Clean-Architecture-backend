@@ -1,4 +1,4 @@
-import { Usecase } from '../../../shared/helpers/usecase';
+import { Usecase } from '../../../core/helpers/usecase';
 
 export type NotifyPartiesUsecaseInput = {
   debtorPartyId: string;

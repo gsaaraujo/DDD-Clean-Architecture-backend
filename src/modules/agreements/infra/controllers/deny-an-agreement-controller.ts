@@ -1,11 +1,11 @@
 import Joi from 'joi';
 
-import { Ok } from '../../../shared/helpers/http/status-codes/ok';
-import { HttpResponse } from '../../../shared/helpers/http/http-response';
-import { Conflict } from '../../../shared/helpers/http/status-codes/conflict';
-import { NotFound } from '../../../shared/helpers/http/status-codes/not-found';
-import { BadRequest } from '../../../shared/helpers/http/status-codes/bad-request';
-import { InternalServerError } from '../../../shared/helpers/http/status-codes/internal-server-error';
+import { Ok } from '../../../core/helpers/http/status-codes/ok';
+import { HttpResponse } from '../../../core/helpers/http/http-response';
+import { Conflict } from '../../../core/helpers/http/status-codes/conflict';
+import { NotFound } from '../../../core/helpers/http/status-codes/not-found';
+import { BadRequest } from '../../../core/helpers/http/status-codes/bad-request';
+import { InternalServerError } from '../../../core/helpers/http/status-codes/internal-server-error';
 
 import { IDenyAnAgreementUsecase } from '../../domain/usecases/deny-an-agreement-usecase';
 
