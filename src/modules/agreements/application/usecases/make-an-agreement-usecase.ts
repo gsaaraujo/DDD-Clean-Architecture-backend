@@ -1,49 +1,32 @@
 import { Either, left, right } from '../../../shared/helpers/either';
 import { DomainError } from '../../../shared/helpers/errors/domain-error';
 import { ApplicationError } from '../../../shared/helpers/errors/application-error';
+import { IVerifyPartyExistsUsecase } from '../../../shared/domain/usecases/verify-party-exists-usecase';
 
 import { Agreement } from '../../domain/entities/agreement';
 import { OwingItem } from '../../domain/value-objects/owing-item';
-
-import { IPartyRepository } from '../../adapters/repositories/party-repository';
-import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
-
-import { INotificationService } from '../../adapters/services/notification-service';
-
-import { DebtorPartyNotFoundError } from '../errors/debtor-party-not-found-error';
-import { CreditorPartyNotFoundError } from '../errors/creditor-party-not-found-error';
 
 import {
   IMakeAnAgreementUsecase,
   MakeAnAgreementUsecaseInput,
   MakeAnAgreementUsecaseOutput,
 } from '../../domain/usecases/make-an-agreement-usecase';
+import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
+
+import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
 
 export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
   public constructor(
-    private readonly partyRepository: IPartyRepository,
+    private readonly verifyPartyExistsUsecase: IVerifyPartyExistsUsecase,
+    private readonly notifyPartiesUsecase: INotifyPartiesUsecase,
     private readonly agreementRepository: IAgreementRepository,
-    private readonly notificationService: INotificationService,
   ) {}
 
   async execute(
     input: MakeAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, MakeAnAgreementUsecaseOutput>> {
-    const doesCreditorPartyExists: boolean = await this.partyRepository.exists(
-      input.creditorPartyId,
-    );
-
-    if (!doesCreditorPartyExists) {
-      const error = new CreditorPartyNotFoundError('Creditor party not found');
-      return left(error);
-    }
-
-    const doesDebtorPartyExists: boolean = await this.partyRepository.exists(input.debtorPartyId);
-
-    if (!doesDebtorPartyExists) {
-      const error = new DebtorPartyNotFoundError('Debtor party not found');
-      return left(error);
-    }
+    await this.verifyPartyExistsUsecase.execute({ partyId: input.creditorPartyId });
+    await this.verifyPartyExistsUsecase.execute({ partyId: input.debtorPartyId });
 
     const owingItemOrError = OwingItem.create({
       amount: input.amount,
@@ -72,7 +55,13 @@ export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
     const agreement = agreementOrError.value;
     await this.agreementRepository.create(agreement);
 
-    this.notificationService.notifyParties(input.creditorPartyId, input.debtorPartyId);
+    await this.notifyPartiesUsecase.execute({
+      title: 'A agreement was created',
+      content: '',
+      // content: `${input.partyId} has created a new agreement and would like you to review and accept it.`,
+      debtorPartyId: agreement.debtorPartyId,
+      creditorPartyId: agreement.creditorPartyId,
+    });
 
     return right(undefined);
   }

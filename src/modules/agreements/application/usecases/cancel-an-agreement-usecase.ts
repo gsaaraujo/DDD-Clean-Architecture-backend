@@ -2,37 +2,26 @@ import { Either, left, right } from '../../../shared/helpers/either';
 import { DomainError } from '../../../shared/helpers/errors/domain-error';
 import { ApplicationError } from '../../../shared/helpers/errors/application-error';
 
-import { INotificationService } from '../../adapters/services/notification-service';
-
-import { IPartyRepository } from '../../adapters/repositories/party-repository';
-import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
-
-import { PartyNotFoundError } from '../errors/party-not-found-error';
-import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
-
 import {
   ICancelAnAgreementUsecase,
   CancelAnAgreementUsecaseInput,
   CancelAnAgreementUsecaseOutput,
 } from '../../domain/usecases/cancel-an-agreement-usecase';
+import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
+
+import { IAgreementRepository } from '../../adapters/repositories/agreement-repository';
+
+import { AgreementNotFoundError } from '../errors/agreement-not-found-error';
 
 export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
   public constructor(
-    private readonly partyRepository: IPartyRepository,
+    private readonly notifyPartiesUsecase: INotifyPartiesUsecase,
     private readonly agreementRepository: IAgreementRepository,
-    private readonly notificationService: INotificationService,
   ) {}
 
   async execute(
     input: CancelAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, CancelAnAgreementUsecaseOutput>> {
-    const doesPartyExist = await this.partyRepository.exists(input.partyId);
-
-    if (!doesPartyExist) {
-      const error = new PartyNotFoundError('Party was not found');
-      return left(error);
-    }
-
     const agreement = await this.agreementRepository.findByIdAndPartyId(
       input.agreementId,
       input.partyId,
@@ -43,13 +32,10 @@ export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
       return left(error);
     }
 
-    let cancelAgreementOrError: Either<DomainError, void>;
-
-    if (agreement.creditorPartyId === input.partyId) {
-      cancelAgreementOrError = agreement.creditorPartyConsent.cancelAgreement();
-    } else {
-      cancelAgreementOrError = agreement.debtorPartyConsent.cancelAgreement();
-    }
+    // prettier-ignore
+    const cancelAgreementOrError = input.partyId === agreement.creditorPartyId
+        ? agreement.creditorPartyConsent.cancelAgreement()
+        : agreement.debtorPartyConsent.cancelAgreement();
 
     if (cancelAgreementOrError.isLeft()) {
       const error = cancelAgreementOrError.value;
@@ -57,7 +43,13 @@ export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
     }
 
     await this.agreementRepository.update(agreement);
-    this.notificationService.notifyParties(agreement.creditorPartyId, agreement.debtorPartyId);
+
+    await this.notifyPartiesUsecase.execute({
+      title: 'The agreement was canceled',
+      content: `The party ${input.partyId} has canceled the agreeement`,
+      debtorPartyId: agreement.debtorPartyId,
+      creditorPartyId: agreement.creditorPartyId,
+    });
 
     return right(undefined);
   }

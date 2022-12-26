@@ -1,98 +1,65 @@
+import { any, mock } from 'jest-mock-extended';
+
+import { right } from '../../../shared/helpers/either';
+import { IVerifyPartyExistsUsecase } from '../../../shared/domain/usecases/verify-party-exists-usecase';
+
 import { MakeAnAgreementUsecase } from './make-an-agreement-usecase';
 
+import { INotifyPartiesUsecase } from '../../domain/usecases/notify-parties-usecase';
 import { MakeAnAgreementUsecaseInput } from '../../domain/usecases/make-an-agreement-usecase';
 
-import { FakePartyRepository } from '../../infra/repositories/fake/fake-party-repository';
 import { FakeAgreementRepository } from '../../infra/repositories/fake/fake-agreement-repository';
 
 import { DebtorPartyNotFoundError } from '../errors/debtor-party-not-found-error';
 import { CreditorPartyNotFoundError } from '../errors/creditor-party-not-found-error';
-import { FakeNotificationService } from '../../infra/services/fake/fake-notification-service';
 
 describe('MakeAnAgreementUsecase', () => {
   let makeAnAgreementUsecase: MakeAnAgreementUsecase;
-  let fakePartyRepository: FakePartyRepository;
   let fakeAgreementRepository: FakeAgreementRepository;
-  let fakeNotificationService: FakeNotificationService;
+  let mockNotifyPartiesUsecase: INotifyPartiesUsecase;
+  let mockVerifyPartyExistsUsecase: IVerifyPartyExistsUsecase;
 
   beforeEach(() => {
-    fakePartyRepository = new FakePartyRepository();
+    mockNotifyPartiesUsecase = mock<INotifyPartiesUsecase>();
+    mockVerifyPartyExistsUsecase = mock<IVerifyPartyExistsUsecase>();
     fakeAgreementRepository = new FakeAgreementRepository();
-    fakeNotificationService = new FakeNotificationService();
 
     makeAnAgreementUsecase = new MakeAnAgreementUsecase(
-      fakePartyRepository,
+      mockVerifyPartyExistsUsecase,
+      mockNotifyPartiesUsecase,
       fakeAgreementRepository,
-      fakeNotificationService,
     );
   });
 
   it('should make an agreement and notify parties', async () => {
-    const input: MakeAnAgreementUsecaseInput = {
+    const sut = await makeAnAgreementUsecase.execute({
       amount: 2,
       isCurrency: false,
-      description: 'any description',
-      debtorPartyId: '9c491d19-cbb6-483c-904b-af83bb0a4bbd',
-      creditorPartyId: '4aa56fca-4d0f-4eb8-9918-a53ffac0c443',
-    };
+      description: 'any_description',
+      debtorPartyId: 'any_debtor_party_id',
+      creditorPartyId: 'any_creditor_party_id',
+    });
 
-    fakePartyRepository.parties.push(
-      { id: '9c491d19-cbb6-483c-904b-af83bb0a4bbd' },
-      { id: '4aa56fca-4d0f-4eb8-9918-a53ffac0c443' },
-      { id: '5bbeec93-1049-4209-88ef-195f5acb28bc' },
-      { id: '13d3215f-ec71-42cc-83b1-f051d030e43a' },
-    );
-
-    const sut = await makeAnAgreementUsecase.execute(input);
+    jest.spyOn(mockNotifyPartiesUsecase, 'execute').mockResolvedValueOnce(right(undefined));
+    jest.spyOn(mockVerifyPartyExistsUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toBeUndefined();
 
-    expect(fakePartyRepository.existsCalledTimes).toBe(2);
     expect(fakeAgreementRepository.agreements.length).toBe(1);
     expect(fakeAgreementRepository.createCalledTimes).toBe(1);
-    expect(fakeNotificationService.notifyPartiesCalledTimes).toBe(1);
-  });
 
-  it('should return CreditorPartyNotFoundError if creditor was not found', async () => {
-    const fakeInput: MakeAnAgreementUsecaseInput = {
-      amount: 2,
-      isCurrency: false,
-      description: 'any description',
-      debtorPartyId: '9c491d19-cbb6-483c-904b-af83bb0a4bbd',
-      creditorPartyId: '4aa56fca-4d0f-4eb8-9918-a53ffac0c443',
-    };
-
-    fakePartyRepository.parties.push(
-      { id: '9c491d19-cbb6-483c-904b-af83bb0a4bbd' },
-      { id: '5bbeec93-1049-4209-88ef-195f5acb28bc' },
-      { id: '13d3215f-ec71-42cc-83b1-f051d030e43a' },
-    );
-
-    const sut = await makeAnAgreementUsecase.execute(fakeInput);
-
-    expect(sut.isLeft()).toBeTruthy();
-    expect(sut.value).toBeInstanceOf(CreditorPartyNotFoundError);
-  });
-
-  it('should return DebtorPartyNotFoundError if debtor was not found', async () => {
-    const fakeInput: MakeAnAgreementUsecaseInput = {
-      amount: 2,
-      isCurrency: false,
-      description: 'any description',
-      debtorPartyId: '9c491d19-cbb6-483c-904b-af83bb0a4bbd',
-      creditorPartyId: '4aa56fca-4d0f-4eb8-9918-a53ffac0c443',
-    };
-
-    fakePartyRepository.parties.push(
-      { id: '4aa56fca-4d0f-4eb8-9918-a53ffac0c443' },
-      { id: '5bbeec93-1049-4209-88ef-195f5acb28bc' },
-      { id: '13d3215f-ec71-42cc-83b1-f051d030e43a' },
-    );
-
-    const sut = await makeAnAgreementUsecase.execute(fakeInput);
-
-    expect(sut.isLeft()).toBeTruthy();
-    expect(sut.value).toBeInstanceOf(DebtorPartyNotFoundError);
+    expect(mockVerifyPartyExistsUsecase.execute).toHaveBeenCalledWith({
+      partyId: 'any_debtor_party_id',
+    });
+    expect(mockVerifyPartyExistsUsecase.execute).toHaveBeenCalledWith({
+      partyId: 'any_creditor_party_id',
+    });
+    expect(mockNotifyPartiesUsecase.execute).toHaveBeenCalledWith({
+      title: any(),
+      content: any(),
+      debtorPartyId: 'any_debtor_party_id',
+      creditorPartyId: 'any_creditor_party_id',
+    });
   });
 });
