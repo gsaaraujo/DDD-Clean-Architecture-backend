@@ -62,22 +62,25 @@ export class FakeAgreementRepository implements IAgreementRepository {
     return agreement;
   }
 
-  public async update(newAgreement: Agreement): Promise<Agreement | null> {
+  public async update(updatedAgreement: Agreement): Promise<Agreement | null> {
     this.updateCalledTimes += 1;
 
     const agreementIndex = this.agreements.findIndex(
-      (agreement) => agreement.id === newAgreement.id,
+      (agreement) => agreement.id === updatedAgreement.id,
     );
 
-    this.agreements[agreementIndex] = newAgreement;
+    this.agreements[agreementIndex] = updatedAgreement;
     if (!agreementIndex) return null;
-    return newAgreement;
+    return updatedAgreement;
   }
 
-  public async delete(id: string): Promise<void> {
+  public async delete(id: string): Promise<boolean> {
     this.deleteCalledTimes += 1;
 
-    const newAgreements = this.agreements.filter((agreement) => agreement.id !== id);
-    this.agreements = newAgreements;
+    const agreementIndex = this.agreements.findIndex((agreement) => agreement.id === id);
+
+    if (agreementIndex === -1) return false;
+    this.agreements.splice(agreementIndex, 1);
+    return true;
   }
 }
