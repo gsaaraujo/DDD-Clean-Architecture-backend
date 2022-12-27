@@ -1,3 +1,9 @@
+import { mock } from 'jest-mock-extended';
+
+import { right } from '@core/helpers/either';
+
+import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
+
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
@@ -5,19 +11,21 @@ import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/pa
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
 import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agreements-usecase';
 
-import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
 import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
 describe('GetAgreementsUsecase', () => {
   let getAgreementsUsecase: GetAgreementsUsecase;
-  let fakePartyRepository: FakePartyRepository;
+  let mockVerifyPartyExistsUsecase: IVerifyPartyExistsUsecase;
   let fakeAgreementRepository: FakeAgreementRepository;
 
   beforeEach(() => {
-    fakePartyRepository = new FakePartyRepository();
+    mockVerifyPartyExistsUsecase = mock<IVerifyPartyExistsUsecase>();
     fakeAgreementRepository = new FakeAgreementRepository();
 
-    getAgreementsUsecase = new GetAgreementsUsecase(fakePartyRepository, fakeAgreementRepository);
+    getAgreementsUsecase = new GetAgreementsUsecase(
+      mockVerifyPartyExistsUsecase,
+      fakeAgreementRepository,
+    );
   });
 
   it('should get agreements', async () => {
@@ -40,11 +48,7 @@ describe('GetAgreementsUsecase', () => {
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
 
-    fakePartyRepository.parties.push(
-      { id: '7e25135b-7ee3-447a-a722-aa81e0285b26' },
-      { id: '5bbeec93-1049-4209-88ef-195f5acb28bc' },
-      { id: '13d3215f-ec71-42cc-83b1-f051d030e43a' },
-    );
+    jest.spyOn(mockVerifyPartyExistsUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
     const sut = await getAgreementsUsecase.execute({
       partyId: '7e25135b-7ee3-447a-a722-aa81e0285b26',
@@ -52,22 +56,6 @@ describe('GetAgreementsUsecase', () => {
 
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toEqual(expect.arrayContaining([fakeAgreement]));
-    expect(fakePartyRepository.existsCalledTimes).toBe(1);
     expect(fakeAgreementRepository.findAllByPartyIdCalledTimes).toBe(1);
-  });
-
-  it('should return PartyNotFoundError if party was not found', async () => {
-    fakePartyRepository.parties.push(
-      { id: '9c491d19-cbb6-483c-904b-af83bb0a4bbd' },
-      { id: '5bbeec93-1049-4209-88ef-195f5acb28bc' },
-      { id: '13d3215f-ec71-42cc-83b1-f051d030e43a' },
-    );
-
-    const sut = await getAgreementsUsecase.execute({
-      partyId: '7e25135b-7ee3-447a-a722-aa81e0285b26',
-    });
-
-    expect(sut.isLeft()).toBeTruthy();
-    expect(sut.value).toBeInstanceOf(PartyNotFoundError);
   });
 });

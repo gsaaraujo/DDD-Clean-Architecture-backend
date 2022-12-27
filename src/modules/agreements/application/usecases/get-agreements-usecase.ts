@@ -1,5 +1,8 @@
-import { Either, right } from '@core/helpers/either';
+import { Either, left, right } from '@core/helpers/either';
 import { ApplicationError } from '@core/helpers/errors/application-error';
+
+import { PartyNotFoundError } from '@core/application/errors/party-not-found-error';
+
 import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
 import {
@@ -19,7 +22,12 @@ export class GetAgreementsUsecase implements IGetAgreementsUsecase {
   async execute(
     input: GetAgreementsUsecaseInput,
   ): Promise<Either<ApplicationError, GetAgreementsUsecaseOutput>> {
-    await this.verifyPartyExistsUsecase.execute({ partyId: input.partyId });
+    const partyExists = await this.verifyPartyExistsUsecase.execute({ partyId: input.partyId });
+
+    if (!partyExists) {
+      const error = new PartyNotFoundError('Party was not found');
+      return left(error);
+    }
 
     const agreement = await this.agreementRepository.findAllByPartyId(input.partyId);
 
