@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '@core/helpers/either';
-import { HttpResponseType } from '@core/helpers/http/http-response';
+import { left, right } from '@core/domain/helpers/either';
+import { HttpResponseType } from '@core/domain/http/http-response';
 
 import { ICancelAnAgreementUsecase } from '@agreements/domain/usecases/cancel-an-agreement-usecase';
 import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';

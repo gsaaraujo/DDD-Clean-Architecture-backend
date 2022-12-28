@@ -1,6 +1,6 @@
 import { any, mock } from 'jest-mock-extended';
 
-import { right } from '@core/helpers/either';
+import { right } from '@core/domain/helpers/either';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';

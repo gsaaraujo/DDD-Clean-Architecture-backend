@@ -1,4 +1,4 @@
-import { BaseError } from '@core/helpers/errors/base-error';
+import { BaseError } from '@core/domain/errors/base-error';
 
 export type Either<L, R> = Left<L, R> | Right<L, R>;
 

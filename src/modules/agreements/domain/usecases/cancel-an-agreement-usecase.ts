@@ -1,4 +1,4 @@
-import { Usecase } from '@core/helpers/usecase';
+import { Usecase } from '@core/domain/helpers/usecase';
 
 export type CancelAnAgreementUsecaseInput = {
   partyId: string;

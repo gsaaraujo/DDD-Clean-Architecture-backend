@@ -1,6 +1,6 @@
-import { ValueObject } from '@core/helpers/value-object';
-import { Either, left, right } from '@core/helpers/either';
-import { DomainError } from '@core/helpers/errors/domain-error';
+import { ValueObject } from '@core/domain/helpers/value-object';
+import { Either, left, right } from '@core/domain/helpers/either';
+import { DomainError } from '@core/domain/errors/domain-error';
 
 import { ItemAmountLimitError } from '@agreements/domain/errors/item-amount-limit-error';
 import { CurrencyItemAmountLimitError } from '@agreements/domain/errors/currency-amount-limit-error';

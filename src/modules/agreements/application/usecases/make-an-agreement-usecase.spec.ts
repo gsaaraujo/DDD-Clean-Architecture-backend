@@ -1,6 +1,6 @@
 import { any, mock } from 'jest-mock-extended';
 
-import { right } from '@core/helpers/either';
+import { right } from '@core/domain/helpers/either';
 
 import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
 

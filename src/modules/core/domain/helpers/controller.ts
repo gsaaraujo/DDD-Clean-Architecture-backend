@@ -1,4 +1,4 @@
-import { HttpResponse } from '@core/helpers/http/http-response';
+import { HttpResponse } from '@core/domain/http/http-response';
 
 export interface Controller<I, O> {
   handle(request?: I): Promise<HttpResponse<O>>;

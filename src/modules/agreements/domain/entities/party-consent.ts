@@ -1,6 +1,6 @@
-import { Entity } from '@core/helpers/entity';
-import { Either, left, right } from '@core/helpers/either';
-import { DomainError } from '@core/helpers/errors/domain-error';
+import { Entity } from '@core/domain/helpers/entity';
+import { Either, left, right } from '@core/domain/helpers/either';
+import { DomainError } from '@core/domain/errors/domain-error';
 
 import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
 import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';

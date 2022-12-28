@@ -1,4 +1,4 @@
-import { Controller } from '@core/helpers/controller';
+import { Controller } from '@core/domain/helpers/controller';
 
 export type AcceptAnAgreementControllerInput = {
   partyId: string;

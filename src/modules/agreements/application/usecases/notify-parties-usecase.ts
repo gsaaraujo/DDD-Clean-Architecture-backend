@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { Either, left, right } from '@core/helpers/either';
-import { DomainError } from '@core/helpers/errors/domain-error';
-import { ApplicationError } from '@core/helpers/errors/application-error';
+import { Either, left, right } from '@core/domain/helpers/either';
+import { DomainError } from '@core/domain/errors/domain-error';
+import { ApplicationError } from '@core/domain/errors/application-error';
 
 import {
   INotifyPartiesUsecase,

@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended';
 
-import { left, right } from '@core/helpers/either';
-import { HttpResponseType } from '@core/helpers/http/http-response';
+import { left, right } from '@core/domain/helpers/either';
+import { HttpResponseType } from '@core/domain/http/http-response';
 
 import { IMakeAnAgreementUsecase } from '@agreements/domain/usecases/make-an-agreement-usecase';
 import { CreditorAndDebtorCannotBeTheSameError } from '@agreements/domain/errors/creditor-and-debtor-cannot-be-the-same-error';
