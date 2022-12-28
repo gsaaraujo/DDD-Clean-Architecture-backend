@@ -3,7 +3,6 @@
 import { Either, left, right } from '@core/helpers/either';
 import { DomainError } from '@core/helpers/errors/domain-error';
 import { ApplicationError } from '@core/helpers/errors/application-error';
-import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
 import {
   INotifyPartiesUsecase,
@@ -11,12 +10,15 @@ import {
 } from '@agreements/domain/usecases/notify-parties-usecase';
 import { Notification } from '@agreements/domain/entities/notification';
 
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
+
+import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
 import { INotificationService } from '@agreements/adapters/services/notification-service';
 import { INotificationRepository } from '@agreements/adapters/repositories/notification-repository';
 
 export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
   public constructor(
-    private readonly verifyPartyExistsUsecase: IVerifyPartyExistsUsecase,
+    private readonly partyRepository: IPartyRepository,
     private readonly notificationRepository: INotificationRepository,
     private readonly notificationService: INotificationService,
   ) {}
@@ -24,8 +26,15 @@ export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
   async execute(
     input: NotifyPartiesUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, void>> {
-    await this.verifyPartyExistsUsecase.execute({ partyId: input.debtorPartyId });
-    await this.verifyPartyExistsUsecase.execute({ partyId: input.creditorPartyId });
+    const [creditorExists, debtorExists] = await Promise.all([
+      this.partyRepository.exists(input.creditorPartyId),
+      this.partyRepository.exists(input.debtorPartyId),
+    ]);
+
+    if (!creditorExists || !debtorExists) {
+      const error = new PartyNotFoundError('Party was not found');
+      return left(error);
+    }
 
     const recipientPartyIds: string[] = [input.creditorPartyId, input.debtorPartyId];
 

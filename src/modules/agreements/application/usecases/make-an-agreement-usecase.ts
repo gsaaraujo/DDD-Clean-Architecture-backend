@@ -1,7 +1,6 @@
+import { Either, left, right } from '@core/helpers/either';
 import { DomainError } from '@core/helpers/errors/domain-error';
 import { ApplicationError } from '@core/helpers/errors/application-error';
-import { chainAsyncEithers, Either, left, right } from '@core/helpers/either';
-import { IVerifyPartyExistsUsecase } from '@core/domain/usecases/verify-party-exists-usecase';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
@@ -12,24 +11,30 @@ import {
   MakeAnAgreementUsecaseOutput,
 } from '@agreements/domain/usecases/make-an-agreement-usecase';
 
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
+
+import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
 import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
   public constructor(
-    private readonly verifyPartyExistsUsecase: IVerifyPartyExistsUsecase,
     private readonly notifyPartiesUsecase: INotifyPartiesUsecase,
+    private readonly partyRepository: IPartyRepository,
     private readonly agreementRepository: IAgreementRepository,
   ) {}
 
   async execute(
     input: MakeAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, MakeAnAgreementUsecaseOutput>> {
-    const error = await chainAsyncEithers([
-      this.verifyPartyExistsUsecase.execute({ partyId: input.creditorPartyId }),
-      this.verifyPartyExistsUsecase.execute({ partyId: input.debtorPartyId }),
+    const [creditorExists, debtorExists] = await Promise.all([
+      this.partyRepository.exists(input.creditorPartyId),
+      this.partyRepository.exists(input.debtorPartyId),
     ]);
 
-    if (error) return left(error);
+    if (!creditorExists || !debtorExists) {
+      const error = new PartyNotFoundError('Party was not found');
+      return left(error);
+    }
 
     const owingItemOrError = OwingItem.create({
       amount: input.amount,
