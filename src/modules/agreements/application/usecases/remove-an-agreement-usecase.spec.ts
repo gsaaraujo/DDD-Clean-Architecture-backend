@@ -45,8 +45,6 @@ describe('RemoveAnAgreementUsecase', () => {
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toBeUndefined();
     expect(fakeAgreementRepository.agreements.length).toBe(0);
-    expect(fakeAgreementRepository.deleteCalledTimes).toBe(1);
-    expect(fakeAgreementRepository.findByIdAndPartyIdCalledTimes).toBe(1);
   });
 
   it('should return AgreementNotFoundError if agreement was not found', async () => {

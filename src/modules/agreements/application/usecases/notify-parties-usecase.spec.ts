@@ -1,5 +1,3 @@
-import { right } from '@core/helpers/either';
-
 import { NotifyPartiesUsecase } from '@agreements/application/usecases/notify-parties-usecase';
 
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
@@ -43,6 +41,5 @@ describe('notify-parties-usecase', () => {
     expect(sut.value).toBeUndefined();
 
     expect(fakeNotificationService.sendCalledTimes).toBe(2);
-    expect(fakeNotificationRepository.createCalledTimes).toBe(2);
   });
 });

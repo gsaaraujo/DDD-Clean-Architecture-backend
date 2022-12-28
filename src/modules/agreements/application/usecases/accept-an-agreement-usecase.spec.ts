@@ -64,8 +64,6 @@ describe('accept-an-agreement-usecase', () => {
       debtorPartyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
       creditorPartyId: 'any_creditor_party_id',
     });
-    expect(fakeAgreementRepository.updateCalledTimes).toBe(1);
-    expect(fakeAgreementRepository.findByIdAndPartyIdCalledTimes).toBe(1);
   });
 
   it('should return AgreementNotFoundError if agreement was not found', async () => {
