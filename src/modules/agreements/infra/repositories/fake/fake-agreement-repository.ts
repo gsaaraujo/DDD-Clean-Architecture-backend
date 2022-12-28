@@ -69,8 +69,8 @@ export class FakeAgreementRepository implements IAgreementRepository {
       (agreement) => agreement.id === updatedAgreement.id,
     );
 
+    if (agreementIndex === -1) return null;
     this.agreements[agreementIndex] = updatedAgreement;
-    if (!agreementIndex) return null;
     return updatedAgreement;
   }
 

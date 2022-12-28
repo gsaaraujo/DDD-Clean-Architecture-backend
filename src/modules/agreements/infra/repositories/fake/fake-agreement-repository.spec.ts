@@ -45,7 +45,7 @@ describe('fake-agreement-repository', () => {
   });
 
   describe('create', () => {
-    it('should create and return the agreement', async () => {
+    it('should persist and return the agreement', async () => {
       const fakeAgreement = Agreement.create({
         debtorPartyId: 'any_debtor_party_id',
         creditorPartyId: 'any_creditor_party_id',
@@ -59,7 +59,7 @@ describe('fake-agreement-repository', () => {
       const sut = await fakeAgreementRepository.create(fakeAgreement);
 
       expect(sut).toStrictEqual(fakeAgreement);
-      expect(fakeAgreementRepository.agreements).toBe(1);
+      expect(fakeAgreementRepository.agreements.length).toBe(1);
     });
   });
 
@@ -155,19 +155,19 @@ describe('fake-agreement-repository', () => {
       });
 
       const fakeUpdatedAgreement = Agreement.reconstitute('any_agreement_id', {
-        debtorPartyId: 'any_debtor_party_id',
-        creditorPartyId: 'any_creditor_party_id',
+        debtorPartyId: 'any_debtor_party_id_updated',
+        creditorPartyId: 'any_creditor_party_id_updated',
         createdAt: new Date(),
         owingItem: OwingItem.reconstitute({
           amount: 2,
           isCurrency: false,
-          description: 'any_description',
+          description: 'any_description_updated',
         }),
-        debtorPartyConsent: PartyConsent.reconstitute('any_debtor_party_consent', {
-          status: PartyConsentStatus.ACCEPTED,
+        debtorPartyConsent: PartyConsent.reconstitute('any_debtor_party_consent_updated', {
+          status: PartyConsentStatus.PENDING,
         }),
-        creditorPartyConsent: PartyConsent.reconstitute('any_creditor_party_consent', {
-          status: PartyConsentStatus.ACCEPTED,
+        creditorPartyConsent: PartyConsent.reconstitute('any_creditor_party_consent_updated', {
+          status: PartyConsentStatus.PENDING,
         }),
       });
 
@@ -176,8 +176,8 @@ describe('fake-agreement-repository', () => {
       const sut = await fakeAgreementRepository.update(fakeUpdatedAgreement);
 
       expect(sut).toStrictEqual(fakeUpdatedAgreement);
-      expect(fakeAgreementRepository.agreements).toBe(1);
-      expect(fakeAgreementRepository.agreements[0]).toStrictEqual(fakeUpdatedAgreement);
+      expect(fakeAgreementRepository.agreements.length).toBe(1);
+      expect(fakeAgreement.isEquals(fakeAgreementRepository.agreements[0])).toBeTruthy();
     });
   });
 
@@ -205,7 +205,7 @@ describe('fake-agreement-repository', () => {
       const sut = await fakeAgreementRepository.delete('a6f75ab2-989f-4e51-87ac-d3c5da03ce48');
 
       expect(sut).toBeTruthy();
-      expect(fakeAgreementRepository.agreements).toBe(0);
+      expect(fakeAgreementRepository.agreements.length).toBe(0);
     });
   });
 });
