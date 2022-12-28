@@ -1,13 +1,11 @@
-import { IPartyRepository, PartyDTO } from '@agreements/adapters/repositories/party-repository';
+import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
 
 export class FakePartyRepository implements IPartyRepository {
   public existsCalledTimes = 0;
-  public parties: PartyDTO[] = [];
+  public partiesIds: string[] = [];
 
   async exists(id: string): Promise<boolean> {
     this.existsCalledTimes += 1;
-
-    const party: PartyDTO | undefined = this.parties.find((party) => party.id === id);
-    return !!party;
+    return this.partiesIds.includes(id);
   }
 }
