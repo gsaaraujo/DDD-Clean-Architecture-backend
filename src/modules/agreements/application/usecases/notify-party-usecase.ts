@@ -5,9 +5,9 @@ import { DomainError } from '@core/domain/errors/domain-error';
 import { ApplicationError } from '@core/domain/errors/application-error';
 
 import {
-  INotifyPartiesUsecase,
-  NotifyPartiesUsecaseInput,
-} from '@agreements/domain/usecases/notify-parties-usecase';
+  INotifyPartyUsecase,
+  NotifyPartyUsecaseInput,
+} from '@agreements/domain/usecases/notify-party-usecase';
 import { Notification } from '@agreements/domain/entities/notification';
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
@@ -16,7 +16,7 @@ import { IPartyRepository } from '@agreements/adapters/repositories/party-reposi
 import { INotificationService } from '@agreements/adapters/services/notification-service';
 import { INotificationRepository } from '@agreements/adapters/repositories/notification-repository';
 
-export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
+export class NotifyPartyUsecase implements INotifyPartyUsecase {
   public constructor(
     private readonly partyRepository: IPartyRepository,
     private readonly notificationRepository: INotificationRepository,
@@ -24,7 +24,7 @@ export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
   ) {}
 
   async execute(
-    input: NotifyPartiesUsecaseInput,
+    input: NotifyPartyUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, void>> {
     const partyExists = await this.partyRepository.exists(input.partyId);
 

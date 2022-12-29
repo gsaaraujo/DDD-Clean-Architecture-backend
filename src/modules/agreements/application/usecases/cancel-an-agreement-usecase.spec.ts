@@ -6,7 +6,7 @@ import { MockBaseError } from '@core/domain/errors/mocks/mock-base-error';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
-import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
+import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
@@ -17,15 +17,15 @@ import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fak
 describe('cancel-an-agreement-usecase', () => {
   let cancelAnAgreementUsecase: CancelAnAgreementUsecase;
 
-  let mockNotifyPartiesUsecase: INotifyPartiesUsecase;
+  let mockNotifyPartyUsecase: INotifyPartyUsecase;
   let fakeAgreementRepository: FakeAgreementRepository;
 
   beforeEach(() => {
-    mockNotifyPartiesUsecase = mock<INotifyPartiesUsecase>();
+    mockNotifyPartyUsecase = mock<INotifyPartyUsecase>();
     fakeAgreementRepository = new FakeAgreementRepository();
 
     cancelAnAgreementUsecase = new CancelAnAgreementUsecase(
-      mockNotifyPartiesUsecase,
+      mockNotifyPartyUsecase,
       fakeAgreementRepository,
     );
   });
@@ -49,7 +49,7 @@ describe('cancel-an-agreement-usecase', () => {
     });
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
-    jest.spyOn(mockNotifyPartiesUsecase, 'execute').mockResolvedValueOnce(right(undefined));
+    jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
     const sut = await cancelAnAgreementUsecase.execute({
       partyId: '0e9f8d3b-4c66-49b0-b739-d443b15e1f4e',
@@ -59,7 +59,7 @@ describe('cancel-an-agreement-usecase', () => {
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toBeUndefined();
 
-    expect(mockNotifyPartiesUsecase.execute).toHaveBeenCalledWith({
+    expect(mockNotifyPartyUsecase.execute).toHaveBeenCalledWith({
       title: any(),
       content:
         'The creditor 0e9f8d3b-4c66-49b0-b739-d443b15e1f4e has canceled his part of the agreement.',
@@ -86,7 +86,7 @@ describe('cancel-an-agreement-usecase', () => {
     });
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
-    jest.spyOn(mockNotifyPartiesUsecase, 'execute').mockResolvedValueOnce(right(undefined));
+    jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
     const sut = await cancelAnAgreementUsecase.execute({
       partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
@@ -96,7 +96,7 @@ describe('cancel-an-agreement-usecase', () => {
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toBeUndefined();
 
-    expect(mockNotifyPartiesUsecase.execute).toHaveBeenCalledWith({
+    expect(mockNotifyPartyUsecase.execute).toHaveBeenCalledWith({
       title: any(),
       content:
         'The debtor 5bbeec93-1049-4209-88ef-195f5acb28bc has canceled his part of the agreement.',
@@ -210,9 +210,7 @@ describe('cancel-an-agreement-usecase', () => {
     });
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
-    jest
-      .spyOn(mockNotifyPartiesUsecase, 'execute')
-      .mockResolvedValueOnce(left(new MockBaseError()));
+    jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(left(new MockBaseError()));
 
     const sut = await cancelAnAgreementUsecase.execute({
       partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',

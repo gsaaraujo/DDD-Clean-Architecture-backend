@@ -1,11 +1,11 @@
-import { NotifyPartiesUsecase } from '@agreements/application/usecases/notify-parties-usecase';
+import { NotifyPartyUsecase } from '@agreements/application/usecases/notify-party-usecase';
 
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
 import { FakeNotificationService } from '@agreements/infra/services/fake/fake-notification-service';
 import { FakeNotificationRepository } from '@agreements/infra/repositories/fake/fake-notification-repository';
 
-describe('notify-parties-usecase', () => {
-  let notifyPartiesUsecase: NotifyPartiesUsecase;
+describe('notify-party-usecase', () => {
+  let notifyPartyUsecase: NotifyPartyUsecase;
 
   let fakePartyRepository: FakePartyRepository;
   let fakeNotificationRepository: FakeNotificationRepository;
@@ -16,7 +16,7 @@ describe('notify-parties-usecase', () => {
     fakeNotificationRepository = new FakeNotificationRepository();
     fakeNotificationService = new FakeNotificationService();
 
-    notifyPartiesUsecase = new NotifyPartiesUsecase(
+    notifyPartyUsecase = new NotifyPartyUsecase(
       fakePartyRepository,
       fakeNotificationRepository,
       fakeNotificationService,
@@ -30,7 +30,7 @@ describe('notify-parties-usecase', () => {
       'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
     ];
 
-    const sut = await notifyPartiesUsecase.execute({
+    const sut = await notifyPartyUsecase.execute({
       partyId: '7e25135b-7ee3-447a-a722-aa81e0285b26',
       title: 'any_title',
       content: 'any_content',

@@ -4,7 +4,7 @@ import { ApplicationError } from '@core/domain/errors/application-error';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
-import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
+import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 import {
   IMakeAnAgreementUsecase,
   MakeAnAgreementUsecaseInput,
@@ -18,7 +18,7 @@ import { IAgreementRepository } from '@agreements/adapters/repositories/agreemen
 
 export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
   public constructor(
-    private readonly notifyPartiesUsecase: INotifyPartiesUsecase,
+    private readonly notifyPartyUsecase: INotifyPartyUsecase,
     private readonly partyRepository: IPartyRepository,
     private readonly agreementRepository: IAgreementRepository,
   ) {}
@@ -64,12 +64,12 @@ export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
     await this.agreementRepository.create(agreement);
 
     const [notifyCreditorOrError, notifyDebtorOrError] = await Promise.all([
-      this.notifyPartiesUsecase.execute({
+      this.notifyPartyUsecase.execute({
         title: 'Agreement created!',
         content: `A agreement between ${agreement.creditorPartyId} (creditor) and ${agreement.debtorPartyId} (debtor) has been created.`,
         partyId: agreement.creditorPartyId,
       }),
-      this.notifyPartiesUsecase.execute({
+      this.notifyPartyUsecase.execute({
         title: 'Agreement created!',
         content: `A agreement between ${agreement.creditorPartyId} (creditor) and ${agreement.debtorPartyId} (debtor) has been created.`,
         partyId: agreement.debtorPartyId,

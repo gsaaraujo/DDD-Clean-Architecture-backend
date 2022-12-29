@@ -4,7 +4,7 @@ import { left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
 import { MockBaseError } from '@core/domain/errors/mocks/mock-base-error';
 
-import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
+import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
 import { MakeAnAgreementUsecase } from '@agreements/application/usecases/make-an-agreement-usecase';
@@ -15,24 +15,24 @@ import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fak
 describe('MakeAnAgreementUsecase', () => {
   let makeAnAgreementUsecase: MakeAnAgreementUsecase;
   let fakeAgreementRepository: FakeAgreementRepository;
-  let mockNotifyPartiesUsecase: INotifyPartiesUsecase;
+  let mockNotifyPartyUsecase: INotifyPartyUsecase;
   let fakePartyRepository: FakePartyRepository;
 
   beforeEach(() => {
-    mockNotifyPartiesUsecase = mock<INotifyPartiesUsecase>();
+    mockNotifyPartyUsecase = mock<INotifyPartyUsecase>();
     fakePartyRepository = new FakePartyRepository();
     fakeAgreementRepository = new FakeAgreementRepository();
 
     makeAnAgreementUsecase = new MakeAnAgreementUsecase(
-      mockNotifyPartiesUsecase,
+      mockNotifyPartyUsecase,
       fakePartyRepository,
       fakeAgreementRepository,
     );
   });
 
   it('should make an agreement and notify the parties', async () => {
-    jest.spyOn(mockNotifyPartiesUsecase, 'execute').mockResolvedValueOnce(right(undefined));
-    jest.spyOn(mockNotifyPartiesUsecase, 'execute').mockResolvedValueOnce(right(undefined));
+    jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
+    jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
     fakePartyRepository.partiesIds = [
       '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
       '7e25135b-7ee3-447a-a722-aa81e0285b26',
@@ -52,13 +52,13 @@ describe('MakeAnAgreementUsecase', () => {
 
     expect(fakeAgreementRepository.agreements.length).toBe(1);
 
-    expect(mockNotifyPartiesUsecase.execute).toHaveBeenCalledWith({
+    expect(mockNotifyPartyUsecase.execute).toHaveBeenCalledWith({
       title: any(),
       content:
         'A agreement between a2adf2a3-0c0e-4e91-b131-6beb87b8af35 (creditor) and 3e41372f-1f25-4b4d-9a04-eafa55e0f259 (debtor) has been created.',
       partyId: 'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
     });
-    expect(mockNotifyPartiesUsecase.execute).toHaveBeenCalledWith({
+    expect(mockNotifyPartyUsecase.execute).toHaveBeenCalledWith({
       title: any(),
       content:
         'A agreement between a2adf2a3-0c0e-4e91-b131-6beb87b8af35 (creditor) and 3e41372f-1f25-4b4d-9a04-eafa55e0f259 (debtor) has been created.',
@@ -162,11 +162,9 @@ describe('MakeAnAgreementUsecase', () => {
   });
 
   it('should return an error if the sending of the notification fails', async () => {
-    jest
-      .spyOn(mockNotifyPartiesUsecase, 'execute')
-      .mockResolvedValueOnce(left(new MockBaseError()));
+    jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(left(new MockBaseError()));
 
-    jest.spyOn(mockNotifyPartiesUsecase, 'execute').mockResolvedValueOnce(right(undefined));
+    jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
     fakePartyRepository.partiesIds = [
       '3e41372f-1f25-4b4d-9a04-eafa55e0f259',

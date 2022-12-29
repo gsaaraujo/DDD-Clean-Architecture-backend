@@ -7,7 +7,7 @@ import {
   AcceptAnAgreementUsecaseInput,
   AcceptAnAgreementUsecaseOutput,
 } from '@agreements/domain/usecases/accept-an-agreement-usecase';
-import { INotifyPartiesUsecase } from '@agreements/domain/usecases/notify-parties-usecase';
+import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 
@@ -15,7 +15,7 @@ import { IAgreementRepository } from '@agreements/adapters/repositories/agreemen
 
 export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
   public constructor(
-    private readonly notifyPartiesUsecase: INotifyPartiesUsecase,
+    private readonly notifyPartyUsecase: INotifyPartyUsecase,
     private readonly agreementRepository: IAgreementRepository,
   ) {}
 
@@ -45,7 +45,7 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
 
     await this.agreementRepository.update(agreement);
 
-    const notifyPartiesOrError = await this.notifyPartiesUsecase.execute({
+    const notifyPartyOrError = await this.notifyPartyUsecase.execute({
       title: 'Agreement accepted!',
       content: `The ${
         isCreditor ? `creditor ${agreement.creditorPartyId}` : `debtor ${agreement.debtorPartyId}`
@@ -53,8 +53,8 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
       partyId: isCreditor ? agreement.debtorPartyId : agreement.creditorPartyId,
     });
 
-    if (notifyPartiesOrError.isLeft()) {
-      const error = notifyPartiesOrError.value;
+    if (notifyPartyOrError.isLeft()) {
+      const error = notifyPartyOrError.value;
       return left(error);
     }
 
