@@ -17,6 +17,18 @@ type OwingItemCreate = OwingItemProps;
 type OwingItemReconstitute = OwingItemProps;
 
 export class OwingItem extends ValueObject<OwingItemProps> {
+  public get amount(): number {
+    return this.props.amount;
+  }
+
+  public get isCurrency(): boolean {
+    return this.props.isCurrency;
+  }
+
+  public get description(): string {
+    return this.props.description ?? 'No description';
+  }
+
   public static create(props: OwingItemCreate): Either<DomainError, OwingItem> {
     if (props.isCurrency && !Number.isInteger(props.amount)) {
       const error = new CurrencyAmountMustBeInCentsError('Currency amount must be in cents');
@@ -42,17 +54,5 @@ export class OwingItem extends ValueObject<OwingItemProps> {
   public static reconstitute(props: OwingItemReconstitute): OwingItem {
     const owingItem = new OwingItem(props);
     return owingItem;
-  }
-
-  public get amount(): number {
-    return this.props.amount;
-  }
-
-  public get isCurrency(): boolean {
-    return this.props.isCurrency;
-  }
-
-  public get description(): string {
-    return this.props.description ?? 'No description';
   }
 }

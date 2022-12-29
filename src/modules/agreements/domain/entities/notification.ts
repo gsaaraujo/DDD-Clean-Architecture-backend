@@ -17,6 +17,26 @@ export type NotificationProps = {
 type OmitProps = 'createdAt' | 'readAt';
 
 export class Notification extends Entity<NotificationProps> {
+  public get recipientPartyId(): string {
+    return this.props.recipientPartyId;
+  }
+
+  public get title(): string {
+    return this.props.title;
+  }
+
+  public get content(): string {
+    return this.props.content;
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt;
+  }
+
+  public get readAt(): Date | null {
+    return this.props.readAt;
+  }
+
   public static create(
     props: Omit<NotificationProps, OmitProps>,
   ): Either<DomainError, Notification> {
@@ -53,25 +73,5 @@ export class Notification extends Entity<NotificationProps> {
 
     this.props.readAt = new Date();
     return right(undefined);
-  }
-
-  public get recipientPartyId(): string {
-    return this.props.recipientPartyId;
-  }
-
-  public get title(): string {
-    return this.props.title;
-  }
-
-  public get content(): string {
-    return this.props.content;
-  }
-
-  public get createdAt(): Date {
-    return this.props.createdAt;
-  }
-
-  public get readAt(): Date | null {
-    return this.props.readAt;
   }
 }

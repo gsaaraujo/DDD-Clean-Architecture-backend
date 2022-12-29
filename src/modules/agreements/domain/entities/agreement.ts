@@ -19,27 +19,6 @@ type AgreementProps = {
 type OmitProps = 'createdAt' | 'creditorPartyConsent' | 'debtorPartyConsent';
 
 export class Agreement extends Entity<AgreementProps> {
-  public static create(props: Omit<AgreementProps, OmitProps>): Either<DomainError, Agreement> {
-    if (props.creditorPartyId === props.debtorPartyId) {
-      const error = new CreditorAndDebtorCannotBeTheSameError(
-        'Creditor and debtor parties cannot be the same',
-      );
-      return left(error);
-    }
-
-    const agreement = new Agreement({
-      ...props,
-      createdAt: new Date(),
-      debtorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING }),
-      creditorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING }),
-    });
-    return right(agreement);
-  }
-
-  public static reconstitute(id: string, props: AgreementProps): Agreement {
-    return new Agreement(props, id);
-  }
-
   public get creditorPartyId(): string {
     return this.props.creditorPartyId;
   }
@@ -62,5 +41,26 @@ export class Agreement extends Entity<AgreementProps> {
 
   public get debtorPartyConsent(): PartyConsent {
     return this.props.debtorPartyConsent;
+  }
+
+  public static create(props: Omit<AgreementProps, OmitProps>): Either<DomainError, Agreement> {
+    if (props.creditorPartyId === props.debtorPartyId) {
+      const error = new CreditorAndDebtorCannotBeTheSameError(
+        'Creditor and debtor parties cannot be the same',
+      );
+      return left(error);
+    }
+
+    const agreement = new Agreement({
+      ...props,
+      createdAt: new Date(),
+      debtorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING }),
+      creditorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING }),
+    });
+    return right(agreement);
+  }
+
+  public static reconstitute(id: string, props: AgreementProps): Agreement {
+    return new Agreement(props, id);
   }
 }

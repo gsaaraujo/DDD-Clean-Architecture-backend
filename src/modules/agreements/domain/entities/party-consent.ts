@@ -18,6 +18,10 @@ type PartyConsentProps = {
 };
 
 export class PartyConsent extends Entity<PartyConsentProps> {
+  public get status(): PartyConsentStatus {
+    return this.props.status;
+  }
+
   public static create(props: PartyConsentProps): PartyConsent {
     const partyConsent = new PartyConsent(props);
     return partyConsent;
@@ -73,9 +77,5 @@ export class PartyConsent extends Entity<PartyConsentProps> {
 
     this.props.status = PartyConsentStatus.PAID;
     return right(undefined);
-  }
-
-  public get status(): PartyConsentStatus {
-    return this.props.status;
   }
 }
