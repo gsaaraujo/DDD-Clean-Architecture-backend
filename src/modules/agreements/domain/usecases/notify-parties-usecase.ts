@@ -1,9 +1,7 @@
 import { Usecase } from '@core/domain/helpers/usecase';
 
 export type NotifyPartiesUsecaseInput = {
-  debtorPartyId: string;
-  creditorPartyId: string;
-
+  partyId: string;
   title: string;
   content: string;
 };

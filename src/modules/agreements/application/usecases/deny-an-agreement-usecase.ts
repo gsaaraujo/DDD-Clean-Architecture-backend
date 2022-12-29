@@ -32,10 +32,11 @@ export class DenyAnAgreementUsecase implements IDenyAnAgreementUsecase {
       return left(error);
     }
 
-    // prettier-ignore
-    const denyAgreementOrError = input.partyId === agreement.creditorPartyId
-        ? agreement.creditorPartyConsent.denyAgreement()
-        : agreement.debtorPartyConsent.denyAgreement();
+    const isCreditor = input.partyId === agreement.creditorPartyId;
+
+    const denyAgreementOrError = isCreditor
+      ? agreement.creditorPartyConsent.denyAgreement()
+      : agreement.debtorPartyConsent.denyAgreement();
 
     if (denyAgreementOrError.isLeft()) {
       const error = denyAgreementOrError.value;
@@ -44,12 +45,18 @@ export class DenyAnAgreementUsecase implements IDenyAnAgreementUsecase {
 
     await this.agreementRepository.update(agreement);
 
-    await this.notifyPartiesUsecase.execute({
-      title: 'The agreement was denyed',
-      content: `The party ${input.partyId} has denyed the agreeement`,
-      debtorPartyId: agreement.debtorPartyId,
-      creditorPartyId: agreement.creditorPartyId,
+    const notifyPartiesOrError = await this.notifyPartiesUsecase.execute({
+      title: 'Agreement denied!',
+      content: `The ${
+        isCreditor ? `creditor ${agreement.creditorPartyId}` : `debtor ${agreement.debtorPartyId}`
+      } has denied his part of the agreement.`,
+      partyId: isCreditor ? agreement.debtorPartyId : agreement.creditorPartyId,
     });
+
+    if (notifyPartiesOrError.isLeft()) {
+      const error = notifyPartiesOrError.value;
+      return left(error);
+    }
 
     return right(undefined);
   }

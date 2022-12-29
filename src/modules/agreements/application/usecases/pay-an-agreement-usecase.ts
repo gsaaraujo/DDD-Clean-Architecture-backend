@@ -32,10 +32,11 @@ export class PayAnAgreementUsecase implements IPayAnAgreementUsecase {
       return left(error);
     }
 
-    // prettier-ignore
-    const payAgreementOrError = input.partyId === agreement.creditorPartyId
-        ? agreement.creditorPartyConsent.payAgreement()
-        : agreement.debtorPartyConsent.payAgreement();
+    const isCreditor = input.partyId === agreement.creditorPartyId;
+
+    const payAgreementOrError = isCreditor
+      ? agreement.creditorPartyConsent.payAgreement()
+      : agreement.debtorPartyConsent.payAgreement();
 
     if (payAgreementOrError.isLeft()) {
       const error = payAgreementOrError.value;
@@ -44,12 +45,18 @@ export class PayAnAgreementUsecase implements IPayAnAgreementUsecase {
 
     await this.agreementRepository.update(agreement);
 
-    await this.notifyPartiesUsecase.execute({
-      title: 'The agreement was payed',
-      content: `The party ${input.partyId} has payed the agreeement`,
-      debtorPartyId: agreement.debtorPartyId,
-      creditorPartyId: agreement.creditorPartyId,
+    const notifyPartiesOrError = await this.notifyPartiesUsecase.execute({
+      title: 'Agreement paid!',
+      content: `The ${
+        isCreditor ? `creditor ${agreement.creditorPartyId}` : `debtor ${agreement.debtorPartyId}`
+      } has paid his part of the agreement.`,
+      partyId: isCreditor ? agreement.debtorPartyId : agreement.creditorPartyId,
     });
+
+    if (notifyPartiesOrError.isLeft()) {
+      const error = notifyPartiesOrError.value;
+      return left(error);
+    }
 
     return right(undefined);
   }

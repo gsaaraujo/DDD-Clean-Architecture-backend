@@ -2,6 +2,7 @@ import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
 
+import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
 import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agreements-usecase';
 
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
@@ -65,5 +66,20 @@ describe('GetAgreementsUsecase', () => {
 
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toStrictEqual([]);
+  });
+
+  it('shold return PartyNotFoundError if party was not found', async () => {
+    fakePartyRepository.partiesIds = [
+      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
+      '7e25135b-7ee3-447a-a722-aa81e0285b26',
+      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
+    ];
+
+    const sut = await getAgreementsUsecase.execute({
+      partyId: '6760eff7-9e96-44c6-828f-34e490a7df27',
+    });
+
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(PartyNotFoundError);
   });
 });

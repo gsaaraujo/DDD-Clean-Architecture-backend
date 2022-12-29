@@ -63,13 +63,26 @@ export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
     const agreement = agreementOrError.value;
     await this.agreementRepository.create(agreement);
 
-    await this.notifyPartiesUsecase.execute({
-      title: 'A agreement was created',
-      content: '',
-      // content: `${input.partyId} has created a new agreement and would like you to review and accept it.`,
-      debtorPartyId: agreement.debtorPartyId,
-      creditorPartyId: agreement.creditorPartyId,
-    });
+    const [notifyCreditorOrError, notifyDebtorOrError] = await Promise.all([
+      this.notifyPartiesUsecase.execute({
+        title: 'Agreement created!',
+        content: `A agreement between ${agreement.creditorPartyId} (creditor) and ${agreement.debtorPartyId} (debtor) has been created.`,
+        partyId: agreement.creditorPartyId,
+      }),
+      this.notifyPartiesUsecase.execute({
+        title: 'Agreement created!',
+        content: `A agreement between ${agreement.creditorPartyId} (creditor) and ${agreement.debtorPartyId} (debtor) has been created.`,
+        partyId: agreement.debtorPartyId,
+      }),
+    ]);
+
+    if (notifyCreditorOrError.isLeft() || notifyDebtorOrError.isLeft()) {
+      const error = notifyCreditorOrError.isLeft()
+        ? (notifyCreditorOrError.value as DomainError | ApplicationError)
+        : (notifyDebtorOrError.value as DomainError | ApplicationError);
+
+      return left(error);
+    }
 
     return right(undefined);
   }

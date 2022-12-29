@@ -31,15 +31,12 @@ describe('notify-parties-usecase', () => {
     ];
 
     const sut = await notifyPartiesUsecase.execute({
-      debtorPartyId: '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      creditorPartyId: 'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
+      partyId: '7e25135b-7ee3-447a-a722-aa81e0285b26',
       title: 'any_title',
       content: 'any_content',
     });
 
     expect(sut.isRight()).toBeTruthy();
     expect(sut.value).toBeUndefined();
-
-    expect(fakeNotificationService.sendCalledTimes).toBe(2);
   });
 });

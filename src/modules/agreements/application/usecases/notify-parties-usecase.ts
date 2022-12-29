@@ -26,46 +26,39 @@ export class NotifyPartiesUsecase implements INotifyPartiesUsecase {
   async execute(
     input: NotifyPartiesUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, void>> {
-    const [creditorExists, debtorExists] = await Promise.all([
-      this.partyRepository.exists(input.creditorPartyId),
-      this.partyRepository.exists(input.debtorPartyId),
-    ]);
+    const partyExists = await this.partyRepository.exists(input.partyId);
 
-    if (!creditorExists || !debtorExists) {
+    if (!partyExists) {
       const error = new PartyNotFoundError('Party was not found');
       return left(error);
     }
 
-    const recipientPartyIds: string[] = [input.creditorPartyId, input.debtorPartyId];
+    const notificationOrError = Notification.create({
+      recipientPartyId: input.partyId,
+      title: input.title,
+      content: input.content,
+    });
 
-    for (const recipientPartyId of recipientPartyIds) {
-      const notificationOrError = Notification.create({
-        recipientPartyId: recipientPartyId,
-        title: input.title,
-        content: input.content,
-      });
-
-      if (notificationOrError.isLeft()) {
-        const error = notificationOrError.value;
-        return left(error);
-      }
-
-      const notification = notificationOrError.value;
-
-      await this.notificationRepository.create({
-        title: notification.title,
-        readAt: notification.readAt,
-        content: notification.content,
-        createdAt: notification.createdAt,
-        recipientPartyId: notification.recipientPartyId,
-      });
-
-      this.notificationService.send({
-        recipientPartyId: recipientPartyId,
-        title: input.title,
-        content: input.content,
-      });
+    if (notificationOrError.isLeft()) {
+      const error = notificationOrError.value;
+      return left(error);
     }
+
+    const notification = notificationOrError.value;
+
+    await this.notificationRepository.create({
+      title: notification.title,
+      readAt: notification.readAt,
+      content: notification.content,
+      createdAt: notification.createdAt,
+      recipientPartyId: notification.recipientPartyId,
+    });
+
+    this.notificationService.send({
+      recipientPartyId: input.partyId,
+      title: input.title,
+      content: input.content,
+    });
 
     return right(undefined);
   }

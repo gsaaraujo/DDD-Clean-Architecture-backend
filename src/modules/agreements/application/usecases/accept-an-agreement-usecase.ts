@@ -32,10 +32,11 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
       return left(error);
     }
 
-    // prettier-ignore
-    const acceptAgreementOrError = input.partyId === agreement.creditorPartyId
-        ? agreement.creditorPartyConsent.acceptAgreement()
-        : agreement.debtorPartyConsent.acceptAgreement();
+    const isCreditor = input.partyId === agreement.creditorPartyId;
+
+    const acceptAgreementOrError = isCreditor
+      ? agreement.creditorPartyConsent.acceptAgreement()
+      : agreement.debtorPartyConsent.acceptAgreement();
 
     if (acceptAgreementOrError.isLeft()) {
       const error = acceptAgreementOrError.value;
@@ -44,12 +45,18 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
 
     await this.agreementRepository.update(agreement);
 
-    await this.notifyPartiesUsecase.execute({
-      title: 'The agreement was accepted',
-      content: `The party ${input.partyId} has accepted the agreeement`,
-      debtorPartyId: agreement.debtorPartyId,
-      creditorPartyId: agreement.creditorPartyId,
+    const notifyPartiesOrError = await this.notifyPartiesUsecase.execute({
+      title: 'Agreement accepted!',
+      content: `The ${
+        isCreditor ? `creditor ${agreement.creditorPartyId}` : `debtor ${agreement.debtorPartyId}`
+      } has accepted his part of the agreement.`,
+      partyId: isCreditor ? agreement.debtorPartyId : agreement.creditorPartyId,
     });
+
+    if (notifyPartiesOrError.isLeft()) {
+      const error = notifyPartiesOrError.value;
+      return left(error);
+    }
 
     return right(undefined);
   }

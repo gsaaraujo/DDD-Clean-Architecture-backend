@@ -32,10 +32,11 @@ export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
       return left(error);
     }
 
-    // prettier-ignore
-    const cancelAgreementOrError = input.partyId === agreement.creditorPartyId
-        ? agreement.creditorPartyConsent.cancelAgreement()
-        : agreement.debtorPartyConsent.cancelAgreement();
+    const isCreditor = input.partyId === agreement.creditorPartyId;
+
+    const cancelAgreementOrError = isCreditor
+      ? agreement.creditorPartyConsent.cancelAgreement()
+      : agreement.debtorPartyConsent.cancelAgreement();
 
     if (cancelAgreementOrError.isLeft()) {
       const error = cancelAgreementOrError.value;
@@ -44,12 +45,18 @@ export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
 
     await this.agreementRepository.update(agreement);
 
-    await this.notifyPartiesUsecase.execute({
-      title: 'The agreement was canceled',
-      content: `The party ${input.partyId} has canceled the agreeement`,
-      debtorPartyId: agreement.debtorPartyId,
-      creditorPartyId: agreement.creditorPartyId,
+    const notifyPartiesOrError = await this.notifyPartiesUsecase.execute({
+      title: 'Agreement canceled!',
+      content: `The ${
+        isCreditor ? `creditor ${agreement.creditorPartyId}` : `debtor ${agreement.debtorPartyId}`
+      } has canceled his part of the agreement.`,
+      partyId: isCreditor ? agreement.debtorPartyId : agreement.creditorPartyId,
     });
+
+    if (notifyPartiesOrError.isLeft()) {
+      const error = notifyPartiesOrError.value;
+      return left(error);
+    }
 
     return right(undefined);
   }

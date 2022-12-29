@@ -34,7 +34,7 @@ export class RemoveAnAgreementUsecase implements IRemoveAnAgreementUsecase {
       agreement.debtorPartyConsent.status !== PartyConsentStatus.PENDING ||
       agreement.creditorPartyConsent.status !== PartyConsentStatus.PENDING
     ) {
-      const error = new CannotRemoveAgreementError('Only pending agreements can be removed');
+      const error = new CannotRemoveAgreementError('Both agreements must be pending to be removed');
       return left(error);
     }
 
