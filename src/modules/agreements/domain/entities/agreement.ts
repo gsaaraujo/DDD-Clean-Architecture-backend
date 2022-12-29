@@ -54,8 +54,10 @@ export class Agreement extends Entity<AgreementProps> {
     const agreement = new Agreement({
       ...props,
       createdAt: new Date(),
-      debtorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING }),
-      creditorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING }),
+      debtorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING })
+        .value as PartyConsent,
+      creditorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING })
+        .value as PartyConsent,
     });
     return right(agreement);
   }

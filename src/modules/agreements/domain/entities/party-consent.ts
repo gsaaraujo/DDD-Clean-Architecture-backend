@@ -1,6 +1,6 @@
 import { Entity } from '@core/domain/helpers/entity';
-import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 
 import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
 import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';
@@ -22,9 +22,9 @@ export class PartyConsent extends Entity<PartyConsentProps> {
     return this.props.status;
   }
 
-  public static create(props: PartyConsentProps): PartyConsent {
+  public static create(props: PartyConsentProps): Either<DomainError, PartyConsent> {
     const partyConsent = new PartyConsent(props);
-    return partyConsent;
+    return right(partyConsent);
   }
 
   public static reconstitute(id: string, props: PartyConsentProps): PartyConsent {

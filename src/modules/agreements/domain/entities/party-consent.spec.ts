@@ -3,14 +3,11 @@ import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/curre
 import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';
 
 describe('PartyConsent', () => {
-  beforeEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  it('should create PartyConsent', () => {
+  it('should create a party consent', () => {
     const sut = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED });
 
-    expect(sut).toBeInstanceOf(PartyConsent);
+    expect(sut.isRight()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(PartyConsent);
   });
 
   it('should reconstitute PartyConsent', () => {
@@ -21,8 +18,9 @@ describe('PartyConsent', () => {
     expect(sut).toBeInstanceOf(PartyConsent);
   });
 
-  it('should accept agreement', () => {
-    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.PENDING });
+  it('should accept the agreement', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.PENDING })
+      .value as PartyConsent;
 
     const sut = fakePartyConsent.acceptAgreement();
 
@@ -30,8 +28,9 @@ describe('PartyConsent', () => {
     expect(fakePartyConsent.status).toStrictEqual(PartyConsentStatus.ACCEPTED);
   });
 
-  it('should deny agreement', () => {
-    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.PENDING });
+  it('should deny the agreement', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.PENDING })
+      .value as PartyConsent;
 
     const sut = fakePartyConsent.denyAgreement();
 
@@ -39,8 +38,9 @@ describe('PartyConsent', () => {
     expect(fakePartyConsent.status).toStrictEqual(PartyConsentStatus.DENIED);
   });
 
-  it('should cancel agreement', () => {
-    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED });
+  it('should cancel the agreement', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED })
+      .value as PartyConsent;
 
     const sut = fakePartyConsent.cancelAgreement();
 
@@ -48,8 +48,9 @@ describe('PartyConsent', () => {
     expect(fakePartyConsent.status).toStrictEqual(PartyConsentStatus.CANCELED);
   });
 
-  it('should paid agreement', () => {
-    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED });
+  it('should pay the agreement', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED })
+      .value as PartyConsent;
 
     const sut = fakePartyConsent.payAgreement();
 
@@ -57,99 +58,43 @@ describe('PartyConsent', () => {
     expect(fakePartyConsent.status).toStrictEqual(PartyConsentStatus.PAID);
   });
 
-  it('should return CurrentStatusMustBePendingError when accept agreement and the current PartyConsentStatus is not "PENDING"', () => {
-    const fakePartyConsent1 = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED });
-    const fakePartyConsent2 = PartyConsent.create({ status: PartyConsentStatus.DENIED });
-    const fakePartyConsent3 = PartyConsent.create({ status: PartyConsentStatus.CANCELED });
-    const fakePartyConsent4 = PartyConsent.create({ status: PartyConsentStatus.PAID });
+  it('should return CurrentStatusMustBePendingError when accepting the agreement and the current PartyConsentStatus is not PENDING', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED })
+      .value as PartyConsent;
 
-    const sut1 = fakePartyConsent1.acceptAgreement();
-    const sut2 = fakePartyConsent2.acceptAgreement();
-    const sut3 = fakePartyConsent3.acceptAgreement();
-    const sut4 = fakePartyConsent4.acceptAgreement();
+    const sut = fakePartyConsent.acceptAgreement();
 
-    expect(sut1.isLeft()).toBeTruthy();
-    expect(sut1.value).toBeInstanceOf(CurrentStatusMustBePendingError);
-
-    expect(sut2.isLeft()).toBeTruthy();
-    expect(sut2.value).toBeInstanceOf(CurrentStatusMustBePendingError);
-
-    expect(sut3.isLeft()).toBeTruthy();
-    expect(sut3.value).toBeInstanceOf(CurrentStatusMustBePendingError);
-
-    expect(sut4.isLeft()).toBeTruthy();
-    expect(sut4.value).toBeInstanceOf(CurrentStatusMustBePendingError);
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(CurrentStatusMustBePendingError);
   });
 
-  it('should return CurrentStatusMustBePendingError when deny agreement and the current PartyConsentStatus is not "PENDING"', () => {
-    const fakePartyConsent1 = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED });
-    const fakePartyConsent2 = PartyConsent.create({ status: PartyConsentStatus.DENIED });
-    const fakePartyConsent3 = PartyConsent.create({ status: PartyConsentStatus.CANCELED });
-    const fakePartyConsent4 = PartyConsent.create({ status: PartyConsentStatus.PAID });
+  it('should return CurrentStatusMustBePendingError when denying the agreement and the current PartyConsentStatus is not PENDING', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.ACCEPTED })
+      .value as PartyConsent;
 
-    const sut1 = fakePartyConsent1.denyAgreement();
-    const sut2 = fakePartyConsent2.denyAgreement();
-    const sut3 = fakePartyConsent3.denyAgreement();
-    const sut4 = fakePartyConsent4.denyAgreement();
+    const sut = fakePartyConsent.denyAgreement();
 
-    expect(sut1.isLeft()).toBeTruthy();
-    expect(sut1.value).toBeInstanceOf(CurrentStatusMustBePendingError);
-
-    expect(sut2.isLeft()).toBeTruthy();
-    expect(sut2.value).toBeInstanceOf(CurrentStatusMustBePendingError);
-
-    expect(sut3.isLeft()).toBeTruthy();
-    expect(sut3.value).toBeInstanceOf(CurrentStatusMustBePendingError);
-
-    expect(sut4.isLeft()).toBeTruthy();
-    expect(sut4.value).toBeInstanceOf(CurrentStatusMustBePendingError);
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(CurrentStatusMustBePendingError);
   });
 
-  it('should return CurrentStatusMustBeAcceptedError when cancel agreement and the current PartyConsentStatus is not "ACCEPTED"', () => {
-    const fakePartyConsent1 = PartyConsent.create({ status: PartyConsentStatus.PENDING });
-    const fakePartyConsent2 = PartyConsent.create({ status: PartyConsentStatus.DENIED });
-    const fakePartyConsent3 = PartyConsent.create({ status: PartyConsentStatus.CANCELED });
-    const fakePartyConsent4 = PartyConsent.create({ status: PartyConsentStatus.PAID });
+  it('should return CurrentStatusMustBeAcceptedError when canceling the agreement and the current PartyConsentStatus is not ACCEPTED', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.PENDING })
+      .value as PartyConsent;
 
-    const sut1 = fakePartyConsent1.cancelAgreement();
-    const sut2 = fakePartyConsent2.cancelAgreement();
-    const sut3 = fakePartyConsent3.cancelAgreement();
-    const sut4 = fakePartyConsent4.cancelAgreement();
+    const sut = fakePartyConsent.cancelAgreement();
 
-    expect(sut1.isLeft()).toBeTruthy();
-    expect(sut1.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
-
-    expect(sut2.isLeft()).toBeTruthy();
-    expect(sut2.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
-
-    expect(sut3.isLeft()).toBeTruthy();
-    expect(sut3.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
-
-    expect(sut4.isLeft()).toBeTruthy();
-    expect(sut4.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
   });
 
-  it('should return CurrentStatusMustBeAcceptedError when paid agreement and the current PartyConsentStatus is not "ACCEPTED"', () => {
-    const fakePartyConsent1 = PartyConsent.create({ status: PartyConsentStatus.PENDING });
-    const fakePartyConsent2 = PartyConsent.create({ status: PartyConsentStatus.DENIED });
-    const fakePartyConsent3 = PartyConsent.create({ status: PartyConsentStatus.CANCELED });
-    const fakePartyConsent4 = PartyConsent.create({ status: PartyConsentStatus.PAID });
+  it('should return CurrentStatusMustBeAcceptedError when paying the agreement and the current PartyConsentStatus is not ACCEPTED', () => {
+    const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.PENDING })
+      .value as PartyConsent;
 
-    const sut1 = fakePartyConsent1.payAgreement();
-    const sut2 = fakePartyConsent2.payAgreement();
-    const sut3 = fakePartyConsent3.payAgreement();
-    const sut4 = fakePartyConsent4.payAgreement();
+    const sut = fakePartyConsent.payAgreement();
 
-    expect(sut1.isLeft()).toBeTruthy();
-    expect(sut1.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
-
-    expect(sut2.isLeft()).toBeTruthy();
-    expect(sut2.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
-
-    expect(sut3.isLeft()).toBeTruthy();
-    expect(sut3.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
-
-    expect(sut4.isLeft()).toBeTruthy();
-    expect(sut4.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(CurrentStatusMustBeAcceptedError);
   });
 });
