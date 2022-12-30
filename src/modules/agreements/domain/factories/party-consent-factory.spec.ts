@@ -4,7 +4,7 @@ import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/pa
 describe('party-consent-factory', () => {
   it('should create a party consent with default values', () => {
     const fakeNotification = PartyConsent.reconstitute('d7d2be15-34d8-43b8-9593-0d2df52c85c4', {
-      status: PartyConsentStatus.ACCEPTED,
+      status: PartyConsentStatus.PENDING,
     });
 
     const sut = makePartyConsent();

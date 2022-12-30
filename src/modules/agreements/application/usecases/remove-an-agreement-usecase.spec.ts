@@ -1,6 +1,6 @@
-import { Agreement } from '@agreements/domain/entities/agreement';
-import { OwingItem } from '@agreements/domain/value-objects/owing-item';
-import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
+import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 import { RemoveAnAgreementUsecase } from '@agreements/application/usecases/remove-an-agreement-usecase';
@@ -18,28 +18,13 @@ describe('RemoveAnAgreementUsecase', () => {
   });
 
   it('should remove agreement', async () => {
-    const fakeAgreement = Agreement.reconstitute('21e9856b-8fef-47d9-94b7-88d3402bcd23', {
-      debtorPartyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
-      creditorPartyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      createdAt: new Date(),
-      owingItem: OwingItem.reconstitute({
-        amount: 2,
-        isCurrency: false,
-        description: 'any description',
-      }),
-      creditorPartyConsent: PartyConsent.reconstitute('713ad656-c1e9-4895-842c-0f1ee8138e65', {
-        status: PartyConsentStatus.PENDING,
-      }),
-      debtorPartyConsent: PartyConsent.reconstitute('597fe0fa-8f6a-4240-b054-adcd9f1f0415', {
-        status: PartyConsentStatus.PENDING,
-      }),
-    });
+    const fakeAgreement = makeAgreement();
 
     fakeAgreementRepository.agreements = [fakeAgreement];
 
     const sut = await removeAnAgreementUsecase.execute({
-      partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
-      agreementId: '21e9856b-8fef-47d9-94b7-88d3402bcd23',
+      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -51,8 +36,8 @@ describe('RemoveAnAgreementUsecase', () => {
     fakeAgreementRepository.agreements = [];
 
     const sut = await removeAnAgreementUsecase.execute({
-      partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
-      agreementId: '21e9856b-8fef-47d9-94b7-88d3402bcd23',
+      partyId: 'efb26144-e2ea-4737-82e2-710877961d2e',
+      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
     });
 
     expect(sut.isLeft()).toBeTruthy();
@@ -60,19 +45,8 @@ describe('RemoveAnAgreementUsecase', () => {
   });
 
   it('should return CannotRemoveAgreementError if both creditor and debtor consent of the agreement are not pending', async () => {
-    const fakeAgreement = Agreement.reconstitute('21e9856b-8fef-47d9-94b7-88d3402bcd23', {
-      debtorPartyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
-      creditorPartyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      createdAt: new Date(),
-      owingItem: OwingItem.reconstitute({
-        amount: 2,
-        isCurrency: false,
-        description: 'any description',
-      }),
-      creditorPartyConsent: PartyConsent.reconstitute('713ad656-c1e9-4895-842c-0f1ee8138e65', {
-        status: PartyConsentStatus.ACCEPTED,
-      }),
-      debtorPartyConsent: PartyConsent.reconstitute('597fe0fa-8f6a-4240-b054-adcd9f1f0415', {
+    const fakeAgreement = makeAgreement({
+      creditorPartyConsent: makePartyConsent({
         status: PartyConsentStatus.ACCEPTED,
       }),
     });
@@ -80,8 +54,8 @@ describe('RemoveAnAgreementUsecase', () => {
     fakeAgreementRepository.agreements = [fakeAgreement];
 
     const sut = await removeAnAgreementUsecase.execute({
-      partyId: '5bbeec93-1049-4209-88ef-195f5acb28bc',
-      agreementId: '21e9856b-8fef-47d9-94b7-88d3402bcd23',
+      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
     });
 
     expect(sut.isLeft()).toBeTruthy();
