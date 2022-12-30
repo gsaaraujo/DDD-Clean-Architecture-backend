@@ -6,15 +6,11 @@ import { ItemAmountLimitError } from '@agreements/domain/errors/item-amount-limi
 import { CurrencyItemAmountLimitError } from '@agreements/domain/errors/currency-amount-limit-error';
 import { CurrencyAmountMustBeInCentsError } from '@agreements/domain/errors/currency-amount-must-be-in-cents-error';
 
-type OwingItemProps = {
+export type OwingItemProps = {
   amount: number;
   isCurrency: boolean;
   description?: string;
 };
-
-type OwingItemCreate = OwingItemProps;
-
-type OwingItemReconstitute = OwingItemProps;
 
 export class OwingItem extends ValueObject<OwingItemProps> {
   public get amount(): number {
@@ -29,7 +25,7 @@ export class OwingItem extends ValueObject<OwingItemProps> {
     return this.props.description ?? 'No description';
   }
 
-  public static create(props: OwingItemCreate): Either<DomainError, OwingItem> {
+  public static create(props: OwingItemProps): Either<DomainError, OwingItem> {
     if (props.isCurrency && !Number.isInteger(props.amount)) {
       const error = new CurrencyAmountMustBeInCentsError('Currency amount must be in cents');
       return left(error);
@@ -51,7 +47,7 @@ export class OwingItem extends ValueObject<OwingItemProps> {
     return right(owingItem);
   }
 
-  public static reconstitute(props: OwingItemReconstitute): OwingItem {
+  public static reconstitute(props: OwingItemProps): OwingItem {
     const owingItem = new OwingItem(props);
     return owingItem;
   }

@@ -6,7 +6,7 @@ import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
 import { CreditorAndDebtorCannotBeTheSameError } from '@agreements/domain/errors/creditor-and-debtor-cannot-be-the-same-error';
 
-type AgreementProps = {
+export type AgreementProps = {
   debtorPartyId: string;
   creditorPartyId: string;
 

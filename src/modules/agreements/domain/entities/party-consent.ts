@@ -13,7 +13,7 @@ export enum PartyConsentStatus {
   PAID = 'PAID',
 }
 
-type PartyConsentProps = {
+export type PartyConsentProps = {
   status: PartyConsentStatus;
 };
 
