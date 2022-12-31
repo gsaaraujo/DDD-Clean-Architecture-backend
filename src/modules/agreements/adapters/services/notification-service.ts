@@ -1,6 +1,5 @@
 export type NotificationDTO = {
   recipientPartyId: string;
-
   title: string;
   content: string;
 };

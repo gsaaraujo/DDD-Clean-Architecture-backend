@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { NotificationProps } from '@agreements/domain/entities/notification';
-
-import { INotificationService } from '@agreements/adapters/services/notification-service';
+import {
+  NotificationDTO,
+  INotificationService,
+} from '@agreements/adapters/services/notification-service';
 
 export class FakeNotificationService implements INotificationService {
-  async send(notificationDTO: NotificationProps): Promise<void> {
+  async send(notificationDTO: NotificationDTO): Promise<void> {
     return;
   }
 }

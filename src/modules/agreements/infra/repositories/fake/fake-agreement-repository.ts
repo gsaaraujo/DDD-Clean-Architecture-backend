@@ -1,19 +1,16 @@
 import { Agreement } from '@agreements/domain/entities/agreement';
 
-import {
-  AgreementDTO,
-  IAgreementRepository,
-} from '@agreements/adapters/repositories/agreement-repository';
+import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class FakeAgreementRepository implements IAgreementRepository {
-  public agreements: AgreementDTO[] = [];
+  public agreements: Agreement[] = [];
 
   public async exists(id: string): Promise<boolean> {
     const agreement = this.agreements.find((agreement) => agreement.id === id);
     return !!agreement;
   }
 
-  public async create(agreement: AgreementDTO): Promise<AgreementDTO> {
+  public async create(agreement: Agreement): Promise<Agreement> {
     this.agreements.push(agreement);
     return agreement;
   }

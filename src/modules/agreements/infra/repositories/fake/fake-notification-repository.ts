@@ -1,15 +1,12 @@
-import { NotificationProps } from '@agreements/domain/entities/notification';
+import { Notification } from '@agreements/domain/entities/notification';
 
-import {
-  NotificationDTO,
-  INotificationRepository,
-} from '@agreements/adapters/repositories/notification-repository';
+import { INotificationRepository } from '@agreements/adapters/repositories/notification-repository';
 
 export class FakeNotificationRepository implements INotificationRepository {
-  public notifications: NotificationDTO[] = [];
+  public notifications: Notification[] = [];
 
-  async create(notificationDTO: NotificationProps): Promise<NotificationProps> {
-    this.notifications.push(notificationDTO);
-    return notificationDTO;
+  async create(notification: Notification): Promise<Notification> {
+    this.notifications.push(notification);
+    return notification;
   }
 }

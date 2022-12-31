@@ -9,7 +9,6 @@ import { CreditorAndDebtorCannotBeTheSameError } from '@agreements/domain/errors
 export type AgreementProps = {
   debtorPartyId: string;
   creditorPartyId: string;
-
   createdAt: Date;
   owingItem: OwingItem;
   debtorPartyConsent: PartyConsent;

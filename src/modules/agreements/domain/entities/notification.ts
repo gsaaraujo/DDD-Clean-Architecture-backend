@@ -7,7 +7,6 @@ import { NotificationHasAlreadyBeenReadError } from '@agreements/domain/errors/n
 
 export type NotificationProps = {
   recipientPartyId: string;
-
   title: string;
   content: string;
   createdAt: Date;

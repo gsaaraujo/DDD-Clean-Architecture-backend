@@ -1,7 +1,5 @@
-import { NotificationProps } from '@agreements/domain/entities/notification';
-
-export type NotificationDTO = NotificationProps;
+import { Notification } from '@agreements/domain/entities/notification';
 
 export interface INotificationRepository {
-  create(notificationDTO: NotificationDTO): Promise<NotificationDTO>;
+  create(notification: Notification): Promise<Notification>;
 }

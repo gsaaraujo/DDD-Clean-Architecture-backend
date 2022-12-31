@@ -46,13 +46,7 @@ export class NotifyPartyUsecase implements INotifyPartyUsecase {
 
     const notification = notificationOrError.value;
 
-    await this.notificationRepository.create({
-      title: notification.title,
-      readAt: notification.readAt,
-      content: notification.content,
-      createdAt: notification.createdAt,
-      recipientPartyId: notification.recipientPartyId,
-    });
+    await this.notificationRepository.create(notification);
 
     this.notificationService.send({
       recipientPartyId: input.partyId,
