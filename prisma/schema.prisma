@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @db.VarChar(36)
+  email     String   @unique @db.VarChar(255)
+  password  String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  Profile Profile?
+}
+
+model Profile {
+  id        String   @id @db.VarChar(36)
+  name      String   @db.VarChar(255)
+  imageUrl  String?  @db.VarChar(255)
+  updatedAt DateTime @updatedAt()
+  createdAt DateTime @default(now())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  Notification      Notification[]
+  DebtorAgreement   Agreement[]    @relation("debtorParty")
+  CreditorAgreement Agreement[]    @relation("creditorParty")
+}
+
+enum PartyStatus {
+  PENDING
+  ACCEPTED
+  DENIED
+  CANCELED
+  PAID
+}
+
+model Agreement {
+  id             String      @id @db.VarChar(36)
+  madeAt         DateTime
+  amount         Int
+  isCurrency     Boolean
+  description    String?     @db.VarChar(255)
+  debtorStatus   PartyStatus
+  creditorStatus PartyStatus
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt()
+
+  debtorPartyId String  @unique
+  debtorParty   Profile @relation("debtorParty", fields: [debtorPartyId], references: [id])
+
+  creditorPartyId String  @unique
+  creditorParty   Profile @relation("creditorParty", fields: [creditorPartyId], references: [id])
+}
+
+model Notification {
+  id        String    @id @db.VarChar(36)
+  title     String    @db.VarChar(255)
+  content   String    @db.VarChar(255)
+  sentAt    DateTime
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
+
+  recipientPartyId String  @unique
+  RecipientParty   Profile @relation(fields: [recipientPartyId], references: [id])
+}
