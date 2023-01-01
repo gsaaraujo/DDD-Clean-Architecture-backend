@@ -7,7 +7,7 @@ import { MockBaseError } from '@core/domain/errors/mocks/mock-base-error';
 import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
 
 import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
-import { PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';

@@ -1,5 +1,5 @@
-import { Entity } from '@core/domain/helpers/entity';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { ValueObject } from '@core/domain/helpers/value-object';
 import { Either, left, right } from '@core/domain/helpers/either';
 
 import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
@@ -17,7 +17,7 @@ export type PartyConsentProps = {
   status: PartyConsentStatus;
 };
 
-export class PartyConsent extends Entity<PartyConsentProps> {
+export class PartyConsent extends ValueObject<PartyConsentProps> {
   public get status(): PartyConsentStatus {
     return this.props.status;
   }
@@ -27,8 +27,8 @@ export class PartyConsent extends Entity<PartyConsentProps> {
     return right(partyConsent);
   }
 
-  public static reconstitute(id: string, props: PartyConsentProps): PartyConsent {
-    return new PartyConsent(props, id);
+  public static reconstitute(props: PartyConsentProps): PartyConsent {
+    return new PartyConsent(props);
   }
 
   public acceptAgreement(): Either<DomainError, void> {

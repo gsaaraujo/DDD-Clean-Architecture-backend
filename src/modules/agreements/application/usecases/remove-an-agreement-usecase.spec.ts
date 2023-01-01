@@ -1,4 +1,4 @@
-import { PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
 import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
 

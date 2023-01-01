@@ -2,7 +2,7 @@ import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
 import { ApplicationError } from '@core/domain/errors/application-error';
 
-import { PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import {
   IRemoveAnAgreementUsecase,
   RemoveAnAgreementUsecaseInput,

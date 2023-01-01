@@ -1,7 +1,7 @@
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
-import { PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
 
 import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';

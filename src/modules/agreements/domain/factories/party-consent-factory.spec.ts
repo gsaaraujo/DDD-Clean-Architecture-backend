@@ -1,9 +1,9 @@
 import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
-import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 
 describe('party-consent-factory', () => {
   it('should create a party consent with default values', () => {
-    const fakeNotification = PartyConsent.reconstitute('d7d2be15-34d8-43b8-9593-0d2df52c85c4', {
+    const fakeNotification = PartyConsent.reconstitute({
       status: PartyConsentStatus.PENDING,
     });
 
@@ -13,7 +13,7 @@ describe('party-consent-factory', () => {
   });
 
   it('should create a party consent with override title value', () => {
-    const fakeNotification = PartyConsent.reconstitute('d7d2be15-34d8-43b8-9593-0d2df52c85c4', {
+    const fakeNotification = PartyConsent.reconstitute({
       status: PartyConsentStatus.DENIED,
     });
 

@@ -1,6 +1,6 @@
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 import { Agreement, AgreementProps } from '@agreements/domain/entities/agreement';
-import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 
 type MakeAgreementProps = Partial<AgreementProps>;
 
@@ -13,10 +13,10 @@ export const makeAgreement = (props?: MakeAgreementProps) => {
       amount: 2,
       isCurrency: false,
     }),
-    creditorPartyConsent: PartyConsent.reconstitute('713ad656-c1e9-4895-842c-0f1ee8138e65', {
+    creditorPartyConsent: PartyConsent.reconstitute({
       status: PartyConsentStatus.PENDING,
     }),
-    debtorPartyConsent: PartyConsent.reconstitute('597fe0fa-8f6a-4240-b054-adcd9f1f0415', {
+    debtorPartyConsent: PartyConsent.reconstitute({
       status: PartyConsentStatus.PENDING,
     }),
     ...props,

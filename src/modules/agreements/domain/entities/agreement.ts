@@ -3,7 +3,7 @@ import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
 
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
-import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { CreditorAndDebtorCannotBeTheSameError } from '@agreements/domain/errors/creditor-and-debtor-cannot-be-the-same-error';
 
 export type AgreementProps = {

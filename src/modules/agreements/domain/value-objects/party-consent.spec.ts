@@ -1,4 +1,4 @@
-import { PartyConsent, PartyConsentStatus } from '@agreements/domain/entities/party-consent';
+import { PartyConsent, PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { CurrentStatusMustBePendingError } from '@agreements/domain/errors/current-status-must-be-pending-error';
 import { CurrentStatusMustBeAcceptedError } from '@agreements/domain/errors/current-status-must-be-accepted-error';
 
@@ -11,7 +11,7 @@ describe('PartyConsent', () => {
   });
 
   it('should reconstitute PartyConsent', () => {
-    const sut = PartyConsent.reconstitute('d7d2be15-34d8-43b8-9593-0d2df52c85c4', {
+    const sut = PartyConsent.reconstitute({
       status: PartyConsentStatus.ACCEPTED,
     });
 
