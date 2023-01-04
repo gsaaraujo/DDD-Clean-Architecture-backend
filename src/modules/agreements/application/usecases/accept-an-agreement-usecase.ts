@@ -22,7 +22,7 @@ export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
   async execute(
     input: AcceptAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, AcceptAnAgreementUsecaseOutput>> {
-    const agreement = await this.agreementRepository.findByIdAndPartyId(
+    const agreement = await this.agreementRepository.findOneByIdAndPartyId(
       input.agreementId,
       input.partyId,
     );

@@ -22,7 +22,7 @@ export class PayAnAgreementUsecase implements IPayAnAgreementUsecase {
   async execute(
     input: PayAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, PayAnAgreementUsecaseOutput>> {
-    const agreement = await this.agreementRepository.findByIdAndPartyId(
+    const agreement = await this.agreementRepository.findOneByIdAndPartyId(
       input.agreementId,
       input.partyId,
     );

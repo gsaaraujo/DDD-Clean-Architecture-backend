@@ -50,31 +50,31 @@ describe('fake-agreement-repository', () => {
     });
   });
 
-  describe('findById', () => {
+  describe('findOneById', () => {
     it('should find and return an agreement with the given agreementId', async () => {
       const fakeAgreement = makeAgreement();
 
       fakeAgreementRepository.agreements.push(fakeAgreement);
 
-      const sut = await fakeAgreementRepository.findById('9f3a766c-eb64-4b6b-91a1-36b4b501476e');
+      const sut = await fakeAgreementRepository.findOneById('9f3a766c-eb64-4b6b-91a1-36b4b501476e');
 
       expect(sut).toStrictEqual(fakeAgreement);
     });
 
     it('should return null if no agreement was found with the given id', async () => {
-      const sut = await fakeAgreementRepository.findById('9f3a766c-eb64-4b6b-91a1-36b4b501476e');
+      const sut = await fakeAgreementRepository.findOneById('9f3a766c-eb64-4b6b-91a1-36b4b501476e');
 
       expect(sut).toBeNull();
     });
   });
 
-  describe('findByIdAndPartyId', () => {
+  describe('findOneByIdAndPartyId', () => {
     it('should find and return an agreement with the given agreementId and partyId', async () => {
       const fakeAgreement = makeAgreement();
 
       fakeAgreementRepository.agreements.push(fakeAgreement);
 
-      const sut = await fakeAgreementRepository.findByIdAndPartyId(
+      const sut = await fakeAgreementRepository.findOneByIdAndPartyId(
         '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
         '331c6804-cd7d-420e-b8b8-50fcc5201e32',
       );
@@ -83,7 +83,7 @@ describe('fake-agreement-repository', () => {
     });
 
     it('should return null if no agreement was found with the given agreementId and partyId', async () => {
-      const sut = await fakeAgreementRepository.findByIdAndPartyId(
+      const sut = await fakeAgreementRepository.findOneByIdAndPartyId(
         '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
         '331c6804-cd7d-420e-b8b8-50fcc5201e32',
       );

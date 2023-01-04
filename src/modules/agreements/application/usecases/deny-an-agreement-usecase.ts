@@ -22,7 +22,7 @@ export class DenyAnAgreementUsecase implements IDenyAnAgreementUsecase {
   async execute(
     input: DenyAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, DenyAnAgreementUsecaseOutput>> {
-    const agreement = await this.agreementRepository.findByIdAndPartyId(
+    const agreement = await this.agreementRepository.findOneByIdAndPartyId(
       input.agreementId,
       input.partyId,
     );

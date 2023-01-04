@@ -15,7 +15,7 @@ export class FakeAgreementRepository implements IAgreementRepository {
     return agreement;
   }
 
-  public async findById(id: string): Promise<Agreement | null> {
+  public async findOneById(id: string): Promise<Agreement | null> {
     const agreement = this.agreements.find((agreement) => agreement.id === id);
 
     if (!agreement) return null;
@@ -30,7 +30,7 @@ export class FakeAgreementRepository implements IAgreementRepository {
     return agreements;
   }
 
-  public async findByIdAndPartyId(id: string, partyId: string): Promise<Agreement | null> {
+  public async findOneByIdAndPartyId(id: string, partyId: string): Promise<Agreement | null> {
     const agreement = this.agreements.find(
       (agreement) =>
         agreement.id === id &&

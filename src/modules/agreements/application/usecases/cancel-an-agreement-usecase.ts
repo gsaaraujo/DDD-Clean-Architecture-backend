@@ -22,7 +22,7 @@ export class CancelAnAgreementUsecase implements ICancelAnAgreementUsecase {
   async execute(
     input: CancelAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, CancelAnAgreementUsecaseOutput>> {
-    const agreement = await this.agreementRepository.findByIdAndPartyId(
+    const agreement = await this.agreementRepository.findOneByIdAndPartyId(
       input.agreementId,
       input.partyId,
     );

@@ -20,7 +20,7 @@ export class RemoveAnAgreementUsecase implements IRemoveAnAgreementUsecase {
   async execute(
     input: RemoveAnAgreementUsecaseInput,
   ): Promise<Either<DomainError | ApplicationError, RemoveAnAgreementUsecaseOutput>> {
-    const agreement = await this.agreementRepository.findByIdAndPartyId(
+    const agreement = await this.agreementRepository.findOneByIdAndPartyId(
       input.agreementId,
       input.partyId,
     );
