@@ -41,21 +41,17 @@ export class FakeAgreementRepository implements IAgreementRepository {
     return agreement;
   }
 
-  public async update(updatedAgreement: Agreement): Promise<Agreement | null> {
+  public async update(updatedAgreement: Agreement): Promise<Agreement> {
     const agreementIndex = this.agreements.findIndex(
       (agreement) => agreement.id === updatedAgreement.id,
     );
 
-    if (agreementIndex === -1) return null;
     this.agreements[agreementIndex] = updatedAgreement;
     return updatedAgreement;
   }
 
-  public async delete(id: string): Promise<boolean> {
+  public async delete(id: string): Promise<void> {
     const agreementIndex = this.agreements.findIndex((agreement) => agreement.id === id);
-
-    if (agreementIndex === -1) return false;
     this.agreements.splice(agreementIndex, 1);
-    return true;
   }
 }

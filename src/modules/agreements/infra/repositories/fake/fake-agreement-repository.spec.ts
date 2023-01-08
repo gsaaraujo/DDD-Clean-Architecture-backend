@@ -99,7 +99,7 @@ describe('fake-agreement-repository', () => {
   });
 
   describe('update', () => {
-    it('should update and return the updated agreement with the given updated agreement', async () => {
+    it('should update and return the updated agreement with the given agreement', async () => {
       const fakeAgreement = Agreement.create(
         {
           debtorPartyId: 'any_debtor_party_id',
@@ -132,59 +132,17 @@ describe('fake-agreement-repository', () => {
       expect(fakeAgreementRepository.agreements.length).toBe(1);
       expect(fakeAgreementRepository.agreements[0]).toStrictEqual(fakeUpdatedAgreement);
     });
-
-    it('should null if the agreement was no found with the given updated agreement id', async () => {
-      const fakeAgreement = Agreement.create(
-        {
-          debtorPartyId: 'any_debtor_party_id',
-          creditorPartyId: 'any_creditor_party_id',
-          owingItem: OwingItem.create({
-            amount: 2,
-            isCurrency: false,
-          }).value as OwingItem,
-        },
-        '5b8c08a4-3688-4e5b-a518-2e7747ebaa5a',
-      ).value as Agreement;
-
-      const fakeUpdatedAgreement = Agreement.create(
-        {
-          debtorPartyId: 'any_debtor_party_id',
-          creditorPartyId: 'any_creditor_party_id',
-          owingItem: OwingItem.create({
-            amount: 500,
-            isCurrency: true,
-          }).value as OwingItem,
-        },
-        'a0d21aa9-3894-4dc6-aa36-303b7fc490fe',
-      ).value as Agreement;
-
-      fakeAgreementRepository.agreements.push(fakeAgreement);
-
-      const sut = await fakeAgreementRepository.update(fakeUpdatedAgreement);
-
-      expect(sut).toBeNull();
-    });
   });
 
   describe('delete', () => {
-    it('should delete and return true if the agreement was deleted with the given id', async () => {
+    it('should delete a agreement with the given id', async () => {
       const fakeAgreement = makeAgreement();
       fakeAgreementRepository.agreements.push(fakeAgreement);
 
       const sut = await fakeAgreementRepository.delete(fakeAgreement.id);
 
-      expect(sut).toBeTruthy();
+      expect(sut).toBeUndefined();
       expect(fakeAgreementRepository.agreements.length).toBe(0);
-    });
-
-    it('should delete and return false if the agreement was not deleted with the given id', async () => {
-      const fakeAgreement = makeAgreement();
-      fakeAgreementRepository.agreements.push(fakeAgreement);
-
-      const sut = await fakeAgreementRepository.delete('51c369ba-46f4-4382-8db3-b981d8f71feb');
-
-      expect(sut).toBeFalsy();
-      expect(fakeAgreementRepository.agreements.length).toBe(1);
     });
   });
 });
