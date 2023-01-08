@@ -15,12 +15,6 @@ describe('OwingItem', () => {
     expect(sut.value).toBeInstanceOf(OwingItem);
   });
 
-  it('should reconstitute OwingItem', () => {
-    const sut = OwingItem.reconstitute({ amount: 20, description: '', isCurrency: true });
-
-    expect(sut).toBeInstanceOf(OwingItem);
-  });
-
   it("should return CurrencyAmountMustBeInCentsError if it's currency and not a integer", () => {
     const sut = OwingItem.create({ amount: 2.5, description: '', isCurrency: true });
 

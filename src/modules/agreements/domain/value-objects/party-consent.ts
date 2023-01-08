@@ -27,10 +27,6 @@ export class PartyConsent extends ValueObject<PartyConsentProps> {
     return right(partyConsent);
   }
 
-  public static reconstitute(props: PartyConsentProps): PartyConsent {
-    return new PartyConsent(props);
-  }
-
   public acceptAgreement(): Either<DomainError, void> {
     if (this.props.status !== PartyConsentStatus.PENDING) {
       const error = new CurrentStatusMustBePendingError(

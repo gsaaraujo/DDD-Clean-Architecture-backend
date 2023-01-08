@@ -1,6 +1,7 @@
 import { Entity } from '@core/domain/helpers/entity';
-import { Either, left, right } from '@core/domain/helpers/either';
+import { Replace } from '@core/domain/helpers/replace';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 
 import { CharactersLimitError } from '@agreements/domain/errors/characters-limit-error';
 import { NotificationHasAlreadyBeenReadError } from '@agreements/domain/errors/notification-has-already-been-read-error';
@@ -12,8 +13,6 @@ export type NotificationProps = {
   createdAt: Date;
   readAt: Date | null;
 };
-
-type OmitProps = 'createdAt' | 'readAt';
 
 export class Notification extends Entity<NotificationProps> {
   public get recipientPartyId(): string {
@@ -37,7 +36,8 @@ export class Notification extends Entity<NotificationProps> {
   }
 
   public static create(
-    props: Omit<NotificationProps, OmitProps>,
+    props: Replace<NotificationProps, { createdAt?: Date; readAt?: Date | null }>,
+    id?: string,
   ): Either<DomainError, Notification> {
     if (props.title.length < 3 || props.title.length > 80) {
       const error = new CharactersLimitError('Title must be between 3 and 80 characters');
@@ -49,17 +49,16 @@ export class Notification extends Entity<NotificationProps> {
       return left(error);
     }
 
-    const notification = new Notification({
-      ...props,
-      readAt: null,
-      createdAt: new Date(),
-    });
+    const notification = new Notification(
+      {
+        ...props,
+        readAt: null,
+        createdAt: new Date(),
+      },
+      id,
+    );
 
     return right(notification);
-  }
-
-  public static reconstitute(id: string, props: NotificationProps): Notification {
-    return new Notification(props, id);
   }
 
   public hasBeenRead(): Either<NotificationHasAlreadyBeenReadError, void> {

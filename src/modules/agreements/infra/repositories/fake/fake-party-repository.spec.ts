@@ -8,7 +8,7 @@ describe('fake-party-repository', () => {
   });
 
   describe('exists', () => {
-    it('should return true with the given partyId', async () => {
+    it('should return true if party does exist with the given id', async () => {
       fakePartyRepository.partiesIds = [
         '0c87cf42-1369-4e9f-893d-9d0c7709b8b4',
         'ac98db8a-be3f-47c1-ba8d-a52d96c05752',
@@ -20,7 +20,7 @@ describe('fake-party-repository', () => {
       expect(sut).toBeTruthy();
     });
 
-    it('should return false with the given partyId', async () => {
+    it('should return false if party does not exist with the given id', async () => {
       fakePartyRepository.partiesIds = [
         '0c87cf42-1369-4e9f-893d-9d0c7709b8b4',
         'ac98db8a-be3f-47c1-ba8d-a52d96c05752',

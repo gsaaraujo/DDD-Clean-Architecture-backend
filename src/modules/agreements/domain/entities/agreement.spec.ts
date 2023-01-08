@@ -8,14 +8,13 @@ describe('Agreement', () => {
     jest.restoreAllMocks();
   });
 
-  it('should create Agreement', () => {
+  it('should create an agreement', () => {
     const sut = Agreement.create({
-      debtorPartyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
-      creditorPartyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      debtorPartyId: 'any_debtor_party_id',
+      creditorPartyId: 'any_creditor_party_id',
       owingItem: OwingItem.create({
         amount: 2,
         isCurrency: false,
-        description: 'any description',
       }).value as OwingItem,
     });
 
@@ -23,25 +22,27 @@ describe('Agreement', () => {
     expect(sut.value).toBeInstanceOf(Agreement);
   });
 
-  it('should reconstitute Agreement', () => {
-    const sut = Agreement.reconstitute('9f3a766c-eb64-4b6b-91a1-36b4b501476e', {
-      debtorPartyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
-      creditorPartyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      createdAt: new Date(),
-      owingItem: OwingItem.reconstitute({
-        amount: 2,
-        isCurrency: false,
-        description: 'any description',
-      }),
-      creditorPartyConsent: PartyConsent.reconstitute({
-        status: PartyConsentStatus.ACCEPTED,
-      }),
-      debtorPartyConsent: PartyConsent.reconstitute({
-        status: PartyConsentStatus.ACCEPTED,
-      }),
-    });
+  it('should reconstitute an agreement', () => {
+    const sut = Agreement.create(
+      {
+        debtorPartyId: 'any_debtor_party_id',
+        creditorPartyId: 'any_creditor_party_id',
+        owingItem: OwingItem.create({
+          amount: 2,
+          isCurrency: false,
+        }).value as OwingItem,
+        createdAt: new Date(),
+        debtorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.ACCEPTED })
+          .value as PartyConsent,
+        creditorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.ACCEPTED })
+          .value as PartyConsent,
+      },
+      '6fdd179e-030a-4caa-9f15-f35392efd894',
+    );
 
-    expect(sut).toBeInstanceOf(Agreement);
+    expect(sut.isRight()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(Agreement);
+    expect((sut.value as Agreement).id).toBe('6fdd179e-030a-4caa-9f15-f35392efd894');
   });
 
   it('should return CreditorAndDebtorCannotBeTheSameError if creditor and debtor are the same', () => {
@@ -51,7 +52,6 @@ describe('Agreement', () => {
       owingItem: OwingItem.create({
         amount: 2,
         isCurrency: false,
-        description: 'any description',
       }).value as OwingItem,
     });
 

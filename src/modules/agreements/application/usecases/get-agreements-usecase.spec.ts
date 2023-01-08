@@ -24,12 +24,12 @@ describe('GetAgreementsUsecase', () => {
     fakeAgreementRepository.agreements.push(fakeAgreement);
     fakePartyRepository.partiesIds = [
       '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      fakeAgreement.creditorPartyId,
       'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
     ];
 
     const sut = await getAgreementsUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      partyId: fakeAgreement.creditorPartyId,
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -39,12 +39,12 @@ describe('GetAgreementsUsecase', () => {
   it('should get a empty list of agreements', async () => {
     fakePartyRepository.partiesIds = [
       '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      '61fe30ca-8a52-43ec-8331-39cb9bb6af8a',
       'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
     ];
 
     const sut = await getAgreementsUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      partyId: '61fe30ca-8a52-43ec-8331-39cb9bb6af8a',
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -54,7 +54,7 @@ describe('GetAgreementsUsecase', () => {
   it('shold return PartyNotFoundError if party was not found', async () => {
     fakePartyRepository.partiesIds = [
       '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      '61fe30ca-8a52-43ec-8331-39cb9bb6af8a',
       'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
     ];
 

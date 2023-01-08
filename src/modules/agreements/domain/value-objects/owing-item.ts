@@ -1,6 +1,6 @@
+import { DomainError } from '@core/domain/errors/domain-error';
 import { ValueObject } from '@core/domain/helpers/value-object';
 import { Either, left, right } from '@core/domain/helpers/either';
-import { DomainError } from '@core/domain/errors/domain-error';
 
 import { ItemAmountLimitError } from '@agreements/domain/errors/item-amount-limit-error';
 import { CurrencyItemAmountLimitError } from '@agreements/domain/errors/currency-amount-limit-error';
@@ -45,10 +45,5 @@ export class OwingItem extends ValueObject<OwingItemProps> {
 
     const owingItem = new OwingItem(props);
     return right(owingItem);
-  }
-
-  public static reconstitute(props: OwingItemProps): OwingItem {
-    const owingItem = new OwingItem(props);
-    return owingItem;
   }
 }

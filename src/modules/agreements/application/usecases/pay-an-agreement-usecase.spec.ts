@@ -4,10 +4,8 @@ import { left, right } from '@core/domain/helpers/either';
 import { BaseError } from '@core/domain/errors/base-error';
 import { DomainError } from '@core/domain/errors/domain-error';
 import { MockBaseError } from '@core/domain/errors/mocks/mock-base-error';
-import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
 
 import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
-import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
@@ -16,7 +14,7 @@ import { PayAnAgreementUsecase } from '@agreements/application/usecases/pay-an-a
 import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
 describe('pay-an-agreement-usecase', () => {
-  let cancelAnAgreementUsecase: PayAnAgreementUsecase;
+  let payAnAgreementUsecase: PayAnAgreementUsecase;
 
   let mockNotifyPartyUsecase: INotifyPartyUsecase;
   let fakeAgreementRepository: FakeAgreementRepository;
@@ -25,23 +23,22 @@ describe('pay-an-agreement-usecase', () => {
     mockNotifyPartyUsecase = mock<INotifyPartyUsecase>();
     fakeAgreementRepository = new FakeAgreementRepository();
 
-    cancelAnAgreementUsecase = new PayAnAgreementUsecase(
+    payAnAgreementUsecase = new PayAnAgreementUsecase(
       mockNotifyPartyUsecase,
       fakeAgreementRepository,
     );
   });
 
   it('should pay an agreement as creditor and notify the debtor', async () => {
-    const fakeAgreement = makeAgreement({
-      creditorPartyConsent: makePartyConsent({ status: PartyConsentStatus.ACCEPTED }),
-    });
+    const fakeAgreement = makeAgreement();
+    fakeAgreement.creditorPartyConsent.acceptAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
-    const sut = await cancelAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+    const sut = await payAnAgreementUsecase.execute({
+      partyId: fakeAgreement.creditorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -49,23 +46,21 @@ describe('pay-an-agreement-usecase', () => {
 
     expect(mockNotifyPartyUsecase.execute).toHaveBeenCalledWith({
       title: any(),
-      content:
-        'The creditor 331c6804-cd7d-420e-b8b8-50fcc5201e32 has paid his part of the agreement.',
-      partyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
+      content: `The creditor ${fakeAgreement.creditorPartyId} has paid his part of the agreement.`,
+      partyId: fakeAgreement.debtorPartyId,
     });
   });
 
   it('should pay an agreement as debtor and notify the creditor', async () => {
-    const fakeAgreement = makeAgreement({
-      debtorPartyConsent: makePartyConsent({ status: PartyConsentStatus.ACCEPTED }),
-    });
+    const fakeAgreement = makeAgreement();
+    fakeAgreement.debtorPartyConsent.acceptAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
-    const sut = await cancelAnAgreementUsecase.execute({
-      partyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+    const sut = await payAnAgreementUsecase.execute({
+      partyId: fakeAgreement.debtorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -73,19 +68,32 @@ describe('pay-an-agreement-usecase', () => {
 
     expect(mockNotifyPartyUsecase.execute).toHaveBeenCalledWith({
       title: any(),
-      content:
-        'The debtor b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5 has paid his part of the agreement.',
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      content: `The debtor ${fakeAgreement.debtorPartyId} has paid his part of the agreement.`,
+      partyId: fakeAgreement.creditorPartyId,
     });
   });
 
-  it('should return AgreementNotFoundError if agreement was not found', async () => {
+  it('should return AgreementNotFoundError if agreement was not found with the provided partyId', async () => {
     const fakeAgreement = makeAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
 
-    const sut = await cancelAnAgreementUsecase.execute({
+    const sut = await payAnAgreementUsecase.execute({
       partyId: 'efb26144-e2ea-4737-82e2-710877961d2e',
+      agreementId: fakeAgreement.id,
+    });
+
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(AgreementNotFoundError);
+  });
+
+  it('should return AgreementNotFoundError if agreement was not found with the provided agreementId', async () => {
+    const fakeAgreement = makeAgreement();
+
+    fakeAgreementRepository.agreements.push(fakeAgreement);
+
+    const sut = await payAnAgreementUsecase.execute({
+      partyId: fakeAgreement.creditorPartyId,
       agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
     });
 
@@ -93,32 +101,30 @@ describe('pay-an-agreement-usecase', () => {
     expect(sut.value).toBeInstanceOf(AgreementNotFoundError);
   });
 
-  it('should return an error if the payment of the agreement by the creditor fails', async () => {
-    const fakeAgreement = makeAgreement({
-      creditorPartyConsent: makePartyConsent({ status: PartyConsentStatus.PAID }),
-    });
+  it('should return an error if payAgreement by the creditor party fails', async () => {
+    const fakeAgreement = makeAgreement();
+    fakeAgreement.creditorPartyConsent.payAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
 
-    const sut = await cancelAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+    const sut = await payAnAgreementUsecase.execute({
+      partyId: fakeAgreement.creditorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isLeft()).toBeTruthy();
     expect(sut.value).toBeInstanceOf(DomainError);
   });
 
-  it('should return an error if the payment of the agreement by the debtor fails', async () => {
-    const fakeAgreement = makeAgreement({
-      debtorPartyConsent: makePartyConsent({ status: PartyConsentStatus.PAID }),
-    });
+  it('should return an error if payAgreement by the debtor party fails', async () => {
+    const fakeAgreement = makeAgreement();
+    fakeAgreement.debtorPartyConsent.payAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
 
-    const sut = await cancelAnAgreementUsecase.execute({
-      partyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+    const sut = await payAnAgreementUsecase.execute({
+      partyId: fakeAgreement.debtorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isLeft()).toBeTruthy();
@@ -131,9 +137,9 @@ describe('pay-an-agreement-usecase', () => {
     fakeAgreementRepository.agreements.push(fakeAgreement);
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(left(new MockBaseError()));
 
-    const sut = await cancelAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+    const sut = await payAnAgreementUsecase.execute({
+      partyId: fakeAgreement.debtorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isLeft()).toBeTruthy();

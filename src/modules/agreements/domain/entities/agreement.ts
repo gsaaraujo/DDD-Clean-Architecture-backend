@@ -1,6 +1,7 @@
 import { Entity } from '@core/domain/helpers/entity';
-import { Either, left, right } from '@core/domain/helpers/either';
+import { Replace } from '@core/domain/helpers/replace';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 import { PartyConsent, PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
@@ -14,8 +15,6 @@ export type AgreementProps = {
   debtorPartyConsent: PartyConsent;
   creditorPartyConsent: PartyConsent;
 };
-
-type OmitProps = 'createdAt' | 'creditorPartyConsent' | 'debtorPartyConsent';
 
 export class Agreement extends Entity<AgreementProps> {
   public get creditorPartyId(): string {
@@ -42,7 +41,13 @@ export class Agreement extends Entity<AgreementProps> {
     return this.props.debtorPartyConsent;
   }
 
-  public static create(props: Omit<AgreementProps, OmitProps>): Either<DomainError, Agreement> {
+  public static create(
+    props: Replace<
+      AgreementProps,
+      { createdAt?: Date; debtorPartyConsent?: PartyConsent; creditorPartyConsent?: PartyConsent }
+    >,
+    id?: string,
+  ): Either<DomainError, Agreement> {
     if (props.creditorPartyId === props.debtorPartyId) {
       const error = new CreditorAndDebtorCannotBeTheSameError(
         'Creditor and debtor parties cannot be the same',
@@ -50,18 +55,19 @@ export class Agreement extends Entity<AgreementProps> {
       return left(error);
     }
 
-    const agreement = new Agreement({
-      ...props,
-      createdAt: new Date(),
-      debtorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING })
-        .value as PartyConsent,
-      creditorPartyConsent: PartyConsent.create({ status: PartyConsentStatus.PENDING })
-        .value as PartyConsent,
-    });
+    const agreement = new Agreement(
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+        debtorPartyConsent:
+          props.debtorPartyConsent ??
+          (PartyConsent.create({ status: PartyConsentStatus.PENDING }).value as PartyConsent),
+        creditorPartyConsent:
+          props.creditorPartyConsent ??
+          (PartyConsent.create({ status: PartyConsentStatus.PENDING }).value as PartyConsent),
+      },
+      id,
+    );
     return right(agreement);
-  }
-
-  public static reconstitute(id: string, props: AgreementProps): Agreement {
-    return new Agreement(props, id);
   }
 }

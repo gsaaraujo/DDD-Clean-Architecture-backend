@@ -7,7 +7,7 @@ import {
 type MakePartyConsentProps = Partial<PartyConsentProps>;
 
 export const makePartyConsent = (props?: MakePartyConsentProps) => {
-  return PartyConsent.reconstitute({
+  return PartyConsent.create({
     status: PartyConsentStatus.PENDING,
     ...props,
   });

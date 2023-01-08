@@ -1,6 +1,4 @@
-import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
-import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 import { RemoveAnAgreementUsecase } from '@agreements/application/usecases/remove-an-agreement-usecase';
@@ -19,12 +17,11 @@ describe('RemoveAnAgreementUsecase', () => {
 
   it('should remove agreement', async () => {
     const fakeAgreement = makeAgreement();
-
     fakeAgreementRepository.agreements = [fakeAgreement];
 
     const sut = await removeAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+      partyId: fakeAgreement.creditorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -32,11 +29,12 @@ describe('RemoveAnAgreementUsecase', () => {
     expect(fakeAgreementRepository.agreements.length).toBe(0);
   });
 
-  it('should return AgreementNotFoundError if agreement was not found', async () => {
-    fakeAgreementRepository.agreements = [];
+  it('should return AgreementNotFoundError if agreement was not found by the provided id', async () => {
+    const fakeAgreement = makeAgreement();
+    fakeAgreementRepository.agreements = [fakeAgreement];
 
     const sut = await removeAnAgreementUsecase.execute({
-      partyId: 'efb26144-e2ea-4737-82e2-710877961d2e',
+      partyId: fakeAgreement.creditorPartyId,
       agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
     });
 
@@ -44,18 +42,29 @@ describe('RemoveAnAgreementUsecase', () => {
     expect(sut.value).toBeInstanceOf(AgreementNotFoundError);
   });
 
-  it('should return CannotRemoveAgreementError if both creditor and debtor consent of the agreement are not pending', async () => {
-    const fakeAgreement = makeAgreement({
-      creditorPartyConsent: makePartyConsent({
-        status: PartyConsentStatus.ACCEPTED,
-      }),
+  it('should return AgreementNotFoundError if agreement was not found by the provided partyId', async () => {
+    const fakeAgreement = makeAgreement();
+    fakeAgreementRepository.agreements = [fakeAgreement];
+
+    const sut = await removeAnAgreementUsecase.execute({
+      partyId: 'efb26144-e2ea-4737-82e2-710877961d2e',
+      agreementId: fakeAgreement.id,
     });
+
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(AgreementNotFoundError);
+  });
+
+  it('should return CannotRemoveAgreementError if both creditor and debtor consent of the agreement are not pending', async () => {
+    const fakeAgreement = makeAgreement();
+    fakeAgreement.creditorPartyConsent.acceptAgreement();
+    fakeAgreement.debtorPartyConsent.acceptAgreement();
 
     fakeAgreementRepository.agreements = [fakeAgreement];
 
     const sut = await removeAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+      partyId: fakeAgreement.creditorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isLeft()).toBeTruthy();

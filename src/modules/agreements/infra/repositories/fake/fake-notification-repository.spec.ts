@@ -12,9 +12,9 @@ describe('fake-notification-repository', () => {
   describe('create', () => {
     it('should persist and return a notification', async () => {
       const fakeNotification = Notification.create({
+        recipientPartyId: 'any_recipient_party_id',
         title: 'any_title',
         content: 'any_content',
-        recipientPartyId: 'any_recipient_party_id',
       }).value as Notification;
 
       const sut = await fakeNotificationRepository.create(fakeNotification);

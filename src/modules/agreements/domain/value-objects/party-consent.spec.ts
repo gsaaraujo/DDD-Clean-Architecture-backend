@@ -10,14 +10,6 @@ describe('PartyConsent', () => {
     expect(sut.value).toBeInstanceOf(PartyConsent);
   });
 
-  it('should reconstitute PartyConsent', () => {
-    const sut = PartyConsent.reconstitute({
-      status: PartyConsentStatus.ACCEPTED,
-    });
-
-    expect(sut).toBeInstanceOf(PartyConsent);
-  });
-
   it('should accept the agreement', () => {
     const fakePartyConsent = PartyConsent.create({ status: PartyConsentStatus.PENDING })
       .value as PartyConsent;

@@ -4,10 +4,8 @@ import { left, right } from '@core/domain/helpers/either';
 import { BaseError } from '@core/domain/errors/base-error';
 import { DomainError } from '@core/domain/errors/domain-error';
 import { MockBaseError } from '@core/domain/errors/mocks/mock-base-error';
-import { makePartyConsent } from '@agreements/domain/factories/party-consent-factory';
 
 import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
-import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
@@ -38,8 +36,8 @@ describe('deny-an-agreement-usecase', () => {
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
     const sut = await denyAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+      partyId: fakeAgreement.creditorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -47,9 +45,8 @@ describe('deny-an-agreement-usecase', () => {
 
     expect(mockNotifyPartyUsecase.execute).toHaveBeenCalledWith({
       title: any(),
-      content:
-        'The creditor 331c6804-cd7d-420e-b8b8-50fcc5201e32 has denied his part of the agreement.',
-      partyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
+      content: `The creditor ${fakeAgreement.creditorPartyId} has denied his part of the agreement.`,
+      partyId: fakeAgreement.debtorPartyId,
     });
   });
 
@@ -60,8 +57,8 @@ describe('deny-an-agreement-usecase', () => {
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
     const sut = await denyAnAgreementUsecase.execute({
-      partyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+      partyId: fakeAgreement.debtorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isRight()).toBeTruthy();
@@ -71,17 +68,31 @@ describe('deny-an-agreement-usecase', () => {
       title: any(),
       content:
         'The debtor b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5 has denied his part of the agreement.',
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
+      partyId: fakeAgreement.creditorPartyId,
     });
   });
 
-  it('should return AgreementNotFoundError if agreement was not found', async () => {
+  it('should return AgreementNotFoundError if agreement was not found with the provided partyId', async () => {
     const fakeAgreement = makeAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
 
     const sut = await denyAnAgreementUsecase.execute({
       partyId: 'efb26144-e2ea-4737-82e2-710877961d2e',
+      agreementId: fakeAgreement.id,
+    });
+
+    expect(sut.isLeft()).toBeTruthy();
+    expect(sut.value).toBeInstanceOf(AgreementNotFoundError);
+  });
+
+  it('should return AgreementNotFoundError if agreement was not found with the provided agreementId', async () => {
+    const fakeAgreement = makeAgreement();
+
+    fakeAgreementRepository.agreements.push(fakeAgreement);
+
+    const sut = await denyAnAgreementUsecase.execute({
+      partyId: fakeAgreement.creditorPartyId,
       agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
     });
 
@@ -89,32 +100,30 @@ describe('deny-an-agreement-usecase', () => {
     expect(sut.value).toBeInstanceOf(AgreementNotFoundError);
   });
 
-  it('should return an error if the denyance of the agreement by the creditor fails', async () => {
-    const fakeAgreement = makeAgreement({
-      creditorPartyConsent: makePartyConsent({ status: PartyConsentStatus.DENIED }),
-    });
+  it('should return an error if denyAgreement by the creditor party fails', async () => {
+    const fakeAgreement = makeAgreement();
+    fakeAgreement.creditorPartyConsent.denyAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
 
     const sut = await denyAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+      partyId: fakeAgreement.creditorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isLeft()).toBeTruthy();
     expect(sut.value).toBeInstanceOf(DomainError);
   });
 
-  it('should return an error if the denyance of the agreement by the debtor fails', async () => {
-    const fakeAgreement = makeAgreement({
-      debtorPartyConsent: makePartyConsent({ status: PartyConsentStatus.DENIED }),
-    });
+  it('should return an error if denyAgreement by the debtor party fails', async () => {
+    const fakeAgreement = makeAgreement();
+    fakeAgreement.debtorPartyConsent.denyAgreement();
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
 
     const sut = await denyAnAgreementUsecase.execute({
-      partyId: 'b8f7f5e6-7cc2-42f7-bc62-dd86ed78e3f5',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+      partyId: fakeAgreement.debtorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isLeft()).toBeTruthy();
@@ -128,8 +137,8 @@ describe('deny-an-agreement-usecase', () => {
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(left(new MockBaseError()));
 
     const sut = await denyAnAgreementUsecase.execute({
-      partyId: '331c6804-cd7d-420e-b8b8-50fcc5201e32',
-      agreementId: '9f3a766c-eb64-4b6b-91a1-36b4b501476e',
+      partyId: fakeAgreement.debtorPartyId,
+      agreementId: fakeAgreement.id,
     });
 
     expect(sut.isLeft()).toBeTruthy();
