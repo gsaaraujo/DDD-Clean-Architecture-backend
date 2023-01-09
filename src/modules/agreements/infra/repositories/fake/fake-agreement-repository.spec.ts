@@ -1,5 +1,6 @@
+import { makeAgreement } from '@test/factories/agreement-factory';
+
 import { Agreement } from '@agreements/domain/entities/agreement';
-import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 
 import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';

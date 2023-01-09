@@ -1,8 +1,9 @@
 import { any, mock } from 'jest-mock-extended';
 
+import { MockBaseError } from '@test/mocks/mock-base-error';
+
 import { left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
-import { MockBaseError } from '@core/domain/errors/mocks/mock-base-error';
 
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 

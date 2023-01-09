@@ -1,4 +1,4 @@
-import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
+import { makeAgreement } from '@test/factories/agreement-factory';
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
 import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agreements-usecase';

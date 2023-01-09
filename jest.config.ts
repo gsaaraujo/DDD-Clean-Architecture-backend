@@ -11,5 +11,6 @@ export default {
   moduleNameMapper: {
     '@core/(.*)': '<rootDir>/modules/core/$1',
     '@agreements/(.*)': '<rootDir>/modules/agreements/$1',
+    '@test/(.*)': '<rootDir>/../test/$1',
   },
 };

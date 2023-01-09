@@ -1,11 +1,12 @@
 import { any, mock } from 'jest-mock-extended';
 
+import { MockBaseError } from '@test/mocks/mock-base-error';
+import { makeAgreement } from '@test/factories/agreement-factory';
+
 import { left, right } from '@core/domain/helpers/either';
 import { BaseError } from '@core/domain/errors/base-error';
 import { DomainError } from '@core/domain/errors/domain-error';
-import { MockBaseError } from '@core/domain/errors/mocks/mock-base-error';
 
-import { makeAgreement } from '@agreements/domain/factories/agreement-factory';
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';

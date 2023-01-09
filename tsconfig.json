@@ -20,7 +20,8 @@
     "esModuleInterop": true,
     "paths": {
       "@core/*": ["./src/modules/core/*"],
-      "@agreements/*": ["./src/modules/agreements/*"]
+      "@agreements/*": ["./src/modules/agreements/*"],
+      "@test/*": ["./test/*"]
     }
   }
 }
