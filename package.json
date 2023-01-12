@@ -25,6 +25,7 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.8.0",
+    "firebase-admin": "^11.4.1",
     "jest-mock-extended": "^3.0.1",
     "joi": "^17.7.0",
     "prisma": "^4.8.0",
