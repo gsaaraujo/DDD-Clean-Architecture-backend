@@ -1,9 +1,22 @@
-import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
+import { IPartyRepository, PartyDTO } from '@agreements/adapters/repositories/party-repository';
 
 export class FakePartyRepository implements IPartyRepository {
-  public partiesIds: string[] = [];
+  public parties: PartyDTO[] = [];
 
   async exists(id: string): Promise<boolean> {
-    return this.partiesIds.includes(id);
+    const party = this.parties.find((party) => party.id === id);
+    return !!party;
+  }
+
+  async create(partyDTO: PartyDTO): Promise<PartyDTO> {
+    this.parties.push(partyDTO);
+    return partyDTO;
+  }
+
+  async findRegistrationTokenByPartyId(partyId: string): Promise<string | null> {
+    const party = this.parties.find((party) => party.id === partyId);
+
+    if (!party) return null;
+    return party.registrationToken;
   }
 }

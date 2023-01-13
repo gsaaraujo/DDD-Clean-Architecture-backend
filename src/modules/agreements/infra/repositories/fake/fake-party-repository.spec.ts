@@ -1,4 +1,5 @@
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
+import { makeParty } from '@test/factories/party-factory';
 
 describe('fake-party-repository', () => {
   let fakePartyRepository: FakePartyRepository;
@@ -9,27 +10,51 @@ describe('fake-party-repository', () => {
 
   describe('exists', () => {
     it('should return true if party does exist with the given id', async () => {
-      fakePartyRepository.partiesIds = [
-        '0c87cf42-1369-4e9f-893d-9d0c7709b8b4',
-        'ac98db8a-be3f-47c1-ba8d-a52d96c05752',
-        '2fc98ddb-006c-43a6-9f1b-13d9c19a0158',
-      ];
+      const party = makeParty();
+      fakePartyRepository.parties.push(party);
 
-      const sut = await fakePartyRepository.exists('ac98db8a-be3f-47c1-ba8d-a52d96c05752');
+      const sut = await fakePartyRepository.exists(party.id);
 
       expect(sut).toBeTruthy();
     });
 
     it('should return false if party does not exist with the given id', async () => {
-      fakePartyRepository.partiesIds = [
-        '0c87cf42-1369-4e9f-893d-9d0c7709b8b4',
-        'ac98db8a-be3f-47c1-ba8d-a52d96c05752',
-        '2fc98ddb-006c-43a6-9f1b-13d9c19a0158',
-      ];
+      const party = makeParty();
+      fakePartyRepository.parties.push(party);
 
       const sut = await fakePartyRepository.exists('501f2325-755d-4195-b680-c4cc869617a8');
 
       expect(sut).toBeFalsy();
+    });
+  });
+
+  describe('create', () => {
+    it('should persist and return the party', async () => {
+      const party = makeParty();
+
+      const sut = await fakePartyRepository.create(party);
+
+      expect(sut).toStrictEqual(party);
+      expect(fakePartyRepository.parties.length).toBe(1);
+    });
+  });
+
+  describe('findRegistrationTokenByPartyId', () => {
+    it('should find and return the registration token with the given partyId', async () => {
+      const party = makeParty();
+      fakePartyRepository.parties.push(party);
+
+      const sut = await fakePartyRepository.findRegistrationTokenByPartyId(party.id);
+
+      expect(sut).toBe(party.registrationToken);
+    });
+
+    it('should return null if no registration token was found with the given partyId', async () => {
+      const sut = await fakePartyRepository.findRegistrationTokenByPartyId(
+        '34544687-2074-4c57-9ac6-b87946f0df45',
+      );
+
+      expect(sut).toBeNull();
     });
   });
 });
