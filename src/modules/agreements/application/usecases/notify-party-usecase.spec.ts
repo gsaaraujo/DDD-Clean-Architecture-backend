@@ -1,3 +1,5 @@
+import { makeParty } from '@test/factories/party-factory';
+
 import { NotifyPartyUsecase } from '@agreements/application/usecases/notify-party-usecase';
 
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
@@ -24,14 +26,12 @@ describe('notify-party-usecase', () => {
   });
 
   it('should notify the parties', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+    const fakeParty1 = makeParty({ id: '3e41372f-1f25-4b4d-9a04-eafa55e0f259' });
+
+    fakePartyRepository.parties.push(fakeParty1);
 
     const sut = await notifyPartyUsecase.execute({
-      partyId: '7e25135b-7ee3-447a-a722-aa81e0285b26',
+      partyId: '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
       title: 'any_title',
       content: 'any_content',
     });

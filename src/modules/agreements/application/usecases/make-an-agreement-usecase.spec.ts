@@ -1,5 +1,6 @@
 import { any, mock } from 'jest-mock-extended';
 
+import { makeParty } from '@test/factories/party-factory';
 import { MockBaseError } from '@test/mocks/mock-base-error';
 
 import { left, right } from '@core/domain/helpers/either';
@@ -34,11 +35,12 @@ describe('MakeAnAgreementUsecase', () => {
   it('should make an agreement and notify the parties', async () => {
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+
+    const fakeParty1 = makeParty({ id: '3e41372f-1f25-4b4d-9a04-eafa55e0f259' });
+    const fakeParty2 = makeParty({ id: 'a2adf2a3-0c0e-4e91-b131-6beb87b8af35' });
+
+    fakePartyRepository.parties.push(fakeParty1);
+    fakePartyRepository.parties.push(fakeParty2);
 
     const sut = await makeAnAgreementUsecase.execute({
       amount: 2,
@@ -68,11 +70,11 @@ describe('MakeAnAgreementUsecase', () => {
   });
 
   it('should return PartyNotFoundError if the creditor was not found', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+    const fakeParty1 = makeParty({ id: '3e41372f-1f25-4b4d-9a04-eafa55e0f259' });
+    const fakeParty2 = makeParty({ id: 'a2adf2a3-0c0e-4e91-b131-6beb87b8af35' });
+
+    fakePartyRepository.parties.push(fakeParty1);
+    fakePartyRepository.parties.push(fakeParty2);
 
     const sut = await makeAnAgreementUsecase.execute({
       amount: 2,
@@ -87,12 +89,6 @@ describe('MakeAnAgreementUsecase', () => {
   });
 
   it('should return PartyNotFoundError if the debtor was not found', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
-
     const sut = await makeAnAgreementUsecase.execute({
       amount: 2,
       isCurrency: false,
@@ -106,12 +102,6 @@ describe('MakeAnAgreementUsecase', () => {
   });
 
   it('should return PartyNotFoundError if the creditor was not found', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
-
     const sut = await makeAnAgreementUsecase.execute({
       amount: 2,
       isCurrency: false,
@@ -125,11 +115,11 @@ describe('MakeAnAgreementUsecase', () => {
   });
 
   it('should return an error if the creation of the owing item fails', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+    const fakeParty1 = makeParty({ id: '3e41372f-1f25-4b4d-9a04-eafa55e0f259' });
+    const fakeParty2 = makeParty({ id: 'a2adf2a3-0c0e-4e91-b131-6beb87b8af35' });
+
+    fakePartyRepository.parties.push(fakeParty1);
+    fakePartyRepository.parties.push(fakeParty2);
 
     const sut = await makeAnAgreementUsecase.execute({
       amount: 2.5,
@@ -144,11 +134,11 @@ describe('MakeAnAgreementUsecase', () => {
   });
 
   it('should return an error if the creation of the agreement fails', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+    const fakeParty1 = makeParty({ id: '3e41372f-1f25-4b4d-9a04-eafa55e0f259' });
+    const fakeParty2 = makeParty({ id: 'a2adf2a3-0c0e-4e91-b131-6beb87b8af35' });
+
+    fakePartyRepository.parties.push(fakeParty1);
+    fakePartyRepository.parties.push(fakeParty2);
 
     const sut = await makeAnAgreementUsecase.execute({
       amount: 2,
@@ -164,14 +154,13 @@ describe('MakeAnAgreementUsecase', () => {
 
   it('should return an error if the sending of the notification fails', async () => {
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(left(new MockBaseError()));
-
     jest.spyOn(mockNotifyPartyUsecase, 'execute').mockResolvedValueOnce(right(undefined));
 
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '7e25135b-7ee3-447a-a722-aa81e0285b26',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+    const fakeParty1 = makeParty({ id: '7e25135b-7ee3-447a-a722-aa81e0285b26' });
+    const fakeParty2 = makeParty({ id: '3e41372f-1f25-4b4d-9a04-eafa55e0f259' });
+
+    fakePartyRepository.parties.push(fakeParty1);
+    fakePartyRepository.parties.push(fakeParty2);
 
     const sut = await makeAnAgreementUsecase.execute({
       amount: 2,

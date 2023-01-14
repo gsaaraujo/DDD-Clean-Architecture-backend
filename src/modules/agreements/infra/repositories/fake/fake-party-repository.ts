@@ -13,7 +13,7 @@ export class FakePartyRepository implements IPartyRepository {
     return partyDTO;
   }
 
-  async findRegistrationTokenByPartyId(partyId: string): Promise<string | null> {
+  async findOneRegistrationTokenByPartyId(partyId: string): Promise<string | null> {
     const party = this.parties.find((party) => party.id === partyId);
 
     if (!party) return null;

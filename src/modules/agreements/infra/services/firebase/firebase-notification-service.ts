@@ -14,7 +14,7 @@ export class FirebaseNotificationService implements INotificationService {
   ) {}
 
   async send(notificationDTO: NotificationDTO): Promise<void> {
-    const registrationTokenOrNull = await this.partyRepository.findRegistrationTokenByPartyId(
+    const registrationTokenOrNull = await this.partyRepository.findOneRegistrationTokenByPartyId(
       notificationDTO.recipientPartyId,
     );
 

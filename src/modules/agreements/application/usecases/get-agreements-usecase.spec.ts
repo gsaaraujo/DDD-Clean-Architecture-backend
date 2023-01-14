@@ -1,3 +1,4 @@
+import { makeParty } from '@test/factories/party-factory';
 import { makeAgreement } from '@test/factories/agreement-factory';
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
@@ -20,13 +21,10 @@ describe('GetAgreementsUsecase', () => {
 
   it('should get agreements', async () => {
     const fakeAgreement = makeAgreement();
+    const fakeParty = makeParty({ id: fakeAgreement.creditorPartyId });
 
     fakeAgreementRepository.agreements.push(fakeAgreement);
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      fakeAgreement.creditorPartyId,
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+    fakePartyRepository.parties.push(fakeParty);
 
     const sut = await getAgreementsUsecase.execute({
       partyId: fakeAgreement.creditorPartyId,
@@ -37,11 +35,8 @@ describe('GetAgreementsUsecase', () => {
   });
 
   it('should get a empty list of agreements', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '61fe30ca-8a52-43ec-8331-39cb9bb6af8a',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
+    const fakeParty = makeParty({ id: '61fe30ca-8a52-43ec-8331-39cb9bb6af8a' });
+    fakePartyRepository.parties.push(fakeParty);
 
     const sut = await getAgreementsUsecase.execute({
       partyId: '61fe30ca-8a52-43ec-8331-39cb9bb6af8a',
@@ -52,12 +47,6 @@ describe('GetAgreementsUsecase', () => {
   });
 
   it('shold return PartyNotFoundError if party was not found', async () => {
-    fakePartyRepository.partiesIds = [
-      '3e41372f-1f25-4b4d-9a04-eafa55e0f259',
-      '61fe30ca-8a52-43ec-8331-39cb9bb6af8a',
-      'a2adf2a3-0c0e-4e91-b131-6beb87b8af35',
-    ];
-
     const sut = await getAgreementsUsecase.execute({
       partyId: '6760eff7-9e96-44c6-828f-34e490a7df27',
     });

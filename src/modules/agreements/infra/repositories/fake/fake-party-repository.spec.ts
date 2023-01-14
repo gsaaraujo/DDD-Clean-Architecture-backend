@@ -39,18 +39,18 @@ describe('fake-party-repository', () => {
     });
   });
 
-  describe('findRegistrationTokenByPartyId', () => {
+  describe('findOneRegistrationTokenByPartyId', () => {
     it('should find and return the registration token with the given partyId', async () => {
       const party = makeParty();
       fakePartyRepository.parties.push(party);
 
-      const sut = await fakePartyRepository.findRegistrationTokenByPartyId(party.id);
+      const sut = await fakePartyRepository.findOneRegistrationTokenByPartyId(party.id);
 
       expect(sut).toBe(party.registrationToken);
     });
 
     it('should return null if no registration token was found with the given partyId', async () => {
-      const sut = await fakePartyRepository.findRegistrationTokenByPartyId(
+      const sut = await fakePartyRepository.findOneRegistrationTokenByPartyId(
         '34544687-2074-4c57-9ac6-b87946f0df45',
       );
 
