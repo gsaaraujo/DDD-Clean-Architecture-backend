@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { Controller, Patch } from '@nestjs/common';
 
 import { Ok } from '@core/domain/http/status-codes/ok';
 import { HttpResponse } from '@core/domain/http/http-response';
@@ -14,9 +15,11 @@ import {
   RemoveAnAgreementControllerInput,
 } from '@agreements/adapters/controllers/remove-an-agreement-controller';
 
+@Controller('agreements')
 export class RemoveAnAgreementController implements IRemoveAnAgreementController {
   public constructor(private readonly removeAnAgreementUsecase: IRemoveAnAgreementUsecase) {}
 
+  @Patch('remove-an-agreement')
   async handle(input: RemoveAnAgreementControllerInput): Promise<HttpResponse<void>> {
     const schema = Joi.object({
       partyId: Joi.string().uuid(),

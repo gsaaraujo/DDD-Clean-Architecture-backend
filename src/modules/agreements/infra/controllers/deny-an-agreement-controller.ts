@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { Controller, Patch } from '@nestjs/common';
 
 import { Ok } from '@core/domain/http/status-codes/ok';
 import { HttpResponse } from '@core/domain/http/http-response';
@@ -14,9 +15,11 @@ import {
   IDenyAnAgreementController,
 } from '@agreements/adapters/controllers/deny-an-agreement-controller';
 
+@Controller('agreements')
 export class DenyAnAgreementController implements IDenyAnAgreementController {
   public constructor(private readonly denyAnAgreementUsecase: IDenyAnAgreementUsecase) {}
 
+  @Patch('deny-an-agreement')
   async handle(input: DenyAnAgreementControllerInput): Promise<HttpResponse<void>> {
     const schema = Joi.object({
       partyId: Joi.string().uuid(),

@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { Controller, Patch } from '@nestjs/common';
 
 import { Ok } from '@core/domain/http/status-codes/ok';
 import { HttpResponse } from '@core/domain/http/http-response';
@@ -14,9 +15,11 @@ import {
   PayAnAgreementControllerInput,
 } from '@agreements/adapters/controllers/pay-an-agreement-controller';
 
+@Controller('agreements')
 export class PayAnAgreementController implements IPayAnAgreementController {
   public constructor(private readonly payAnAgreementUsecase: IPayAnAgreementUsecase) {}
 
+  @Patch('pay-an-agreement')
   async handle(input: PayAnAgreementControllerInput): Promise<HttpResponse<void>> {
     const schema = Joi.object({
       partyId: Joi.string().uuid(),

@@ -19,7 +19,7 @@ import {
 export class GetAgreementsController implements IGetAgreementsController {
   public constructor(private readonly getAgreementsUsecase: IGetAgreementsUsecase) {}
 
-  @Get('make-an-agreement')
+  @Get('get-agreements')
   async handle(
     input: GetAgreementsControllerInput,
   ): Promise<HttpResponse<GetAgreementsControllerOutput>> {
