@@ -1,6 +1,7 @@
 import { mock } from 'jest-mock-extended';
 
 import { MockDomainError } from '@test/mocks/mock-domain-error';
+import { MockApplicationError } from '@test/mocks/mock-application-error';
 
 import { left, right } from '@core/domain/helpers/either';
 import { HttpResponseType } from '@core/domain/http/http-response';
@@ -110,6 +111,25 @@ describe('remove-an-agreement-controller', () => {
     expect(mockRemoveAnAgreementsUsecase.execute).toBeCalledWith({
       partyId: 'df061cf8-4444-4b52-b7d4-f2d6fb8cd796',
       agreementId: '68ed8204-db1e-46dd-b323-c9d7793cc3d9',
+    });
+  });
+
+  it('should return InternalServerError if usecase returns a unexpected application error', async () => {
+    jest
+      .spyOn(mockRemoveAnAgreementsUsecase, 'execute')
+      .mockResolvedValueOnce(left(new MockApplicationError()));
+
+    const sut = await removeAgreementsController.handle({
+      partyId: '10427361-4c02-4ba9-8fb3-8fbc05141bf2',
+      agreementId: 'bfbe9768-dc26-4bdb-9ec8-d15906accf6d',
+    });
+
+    expect(sut.status).toBe(500);
+    expect(sut.body).toBeUndefined();
+    expect(sut.type).toStrictEqual(HttpResponseType.ERROR);
+    expect(mockRemoveAnAgreementsUsecase.execute).toBeCalledWith({
+      partyId: '10427361-4c02-4ba9-8fb3-8fbc05141bf2',
+      agreementId: 'bfbe9768-dc26-4bdb-9ec8-d15906accf6d',
     });
   });
 });

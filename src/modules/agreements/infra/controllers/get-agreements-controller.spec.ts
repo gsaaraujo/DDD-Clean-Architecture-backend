@@ -1,6 +1,7 @@
 import { mock } from 'jest-mock-extended';
 
 import { makeAgreement } from '@test/factories/agreement-factory';
+import { MockApplicationError } from '@test/mocks/mock-application-error';
 
 import { left, right } from '@core/domain/helpers/either';
 import { HttpResponseType } from '@core/domain/http/http-response';
@@ -57,7 +58,23 @@ describe('get-agreements-controller', () => {
     expect(sut.status).toBe(404);
     expect(sut.body).toBeUndefined();
     expect(sut.type).toStrictEqual(HttpResponseType.ERROR);
-    expect(mockGetAgreementsUsecase.execute).toBeCalledTimes(1);
+    expect(mockGetAgreementsUsecase.execute).toBeCalledWith({
+      partyId: 'c6809672-1ce4-425a-b942-e7d09f488bc5',
+    });
+  });
+
+  it('should return InternalServerError if usecase returns a unexpected application error', async () => {
+    jest
+      .spyOn(mockGetAgreementsUsecase, 'execute')
+      .mockResolvedValueOnce(left(new MockApplicationError()));
+
+    const sut = await getAgreementsController.handle({
+      partyId: 'c6809672-1ce4-425a-b942-e7d09f488bc5',
+    });
+
+    expect(sut.status).toBe(500);
+    expect(sut.body).toBeUndefined();
+    expect(sut.type).toStrictEqual(HttpResponseType.ERROR);
     expect(mockGetAgreementsUsecase.execute).toBeCalledWith({
       partyId: 'c6809672-1ce4-425a-b942-e7d09f488bc5',
     });
