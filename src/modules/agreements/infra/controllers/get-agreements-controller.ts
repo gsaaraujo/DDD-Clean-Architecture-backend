@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 
 import { Ok } from '@core/domain/http/status-codes/ok';
 import { HttpResponse } from '@core/domain/http/http-response';
@@ -17,7 +17,10 @@ import {
 
 @Controller('agreements')
 export class GetAgreementsController implements IGetAgreementsController {
-  public constructor(private readonly getAgreementsUsecase: IGetAgreementsUsecase) {}
+  public constructor(
+    @Inject('IGetAgreementsUsecase')
+    private readonly getAgreementsUsecase: IGetAgreementsUsecase,
+  ) {}
 
   @Get('get-agreements')
   async handle(
