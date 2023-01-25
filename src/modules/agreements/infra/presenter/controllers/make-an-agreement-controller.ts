@@ -1,26 +1,30 @@
-import { Post, Body, Controller } from '@nestjs/common';
 import Joi from 'joi';
-
-import { Ok } from '@core/domain/http/status-codes/ok';
-import { HttpResponse } from '@core/domain/http/http-response';
-import { Conflict } from '@core/domain/http/status-codes/conflict';
-import { NotFound } from '@core/domain/http/status-codes/not-found';
-import { BadRequest } from '@core/domain/http/status-codes/bad-request';
-import { InternalServerError } from '@core/domain/http/status-codes/internal-server-error';
+import {
+  Post,
+  Body,
+  Controller,
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { IMakeAnAgreementUsecase } from '@agreements/domain/usecases/make-an-agreement-usecase';
 
-import {
-  IMakeAnAgreementController,
-  MakeAnAgreementControllerInput,
-} from '@agreements/adapters/controllers/make-an-agreement-controller';
+export type MakeAnAgreementControllerInput = {
+  amount: number;
+  isCurrency: boolean;
+  description?: string;
+  debtorPartyId: string;
+  creditorPartyId: string;
+};
 
 @Controller('agreements')
-export class MakeAnAgreementController implements IMakeAnAgreementController {
+export class MakeAnAgreementController {
   public constructor(private readonly makeAnAgreementUsecase: IMakeAnAgreementUsecase) {}
 
   @Post('make-an-agreement')
-  async handle(@Body() input: MakeAnAgreementControllerInput): Promise<HttpResponse> {
+  async handle(@Body() input: MakeAnAgreementControllerInput) {
     const schema = Joi.object({
       isCurrency: Joi.boolean(),
       amount: Joi.number().max(255),
@@ -31,9 +35,7 @@ export class MakeAnAgreementController implements IMakeAnAgreementController {
 
     const { error: validationError } = schema.validate(input);
 
-    if (validationError) {
-      return new BadRequest(validationError.message);
-    }
+    if (validationError) throw new BadRequestException(validationError.message);
 
     const makeAnAgreementOrError = await this.makeAnAgreementUsecase.execute({
       amount: input.amount,
@@ -43,24 +45,23 @@ export class MakeAnAgreementController implements IMakeAnAgreementController {
       creditorPartyId: input.creditorPartyId,
     });
 
-    if (makeAnAgreementOrError.isRight()) return new Ok();
-
+    if (makeAnAgreementOrError.isRight()) return;
     const error = makeAnAgreementOrError.value;
 
     if (error.type === 'DomainError') {
-      return new Conflict(error.message);
+      throw new ConflictException(error.message);
     }
 
     if (error.type === 'ApplicationError') {
       switch (error.name) {
         case 'CreditorPartyNotFoundError':
-          return new NotFound(error.message);
+          throw new NotFoundException(error.message);
 
         case 'DebtorPartyNotFoundError':
-          return new NotFound(error.message);
+          throw new NotFoundException(error.message);
       }
     }
 
-    return new InternalServerError('Internal server error');
+    throw new InternalServerErrorException('Internal server error');
   }
 }

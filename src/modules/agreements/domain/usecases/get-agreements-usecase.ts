@@ -6,7 +6,7 @@ export type GetAgreementsUsecaseInput = {
   partyId: string;
 };
 
-export type GetAgreementsUsecaseOutput = Agreement[];
+export type GetAgreementsUsecaseOutput = Agreement;
 
 export interface IGetAgreementsUsecase
-  extends Usecase<GetAgreementsUsecaseInput, GetAgreementsUsecaseOutput> {}
+  extends Usecase<GetAgreementsUsecaseInput, GetAgreementsUsecaseOutput[]> {}

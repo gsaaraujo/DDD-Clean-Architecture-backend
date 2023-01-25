@@ -21,7 +21,7 @@ export class GetAgreementsUsecase implements IGetAgreementsUsecase {
 
   async execute(
     input: GetAgreementsUsecaseInput,
-  ): Promise<Either<DomainError | ApplicationError, GetAgreementsUsecaseOutput>> {
+  ): Promise<Either<DomainError | ApplicationError, GetAgreementsUsecaseOutput[]>> {
     const partyExists = await this.partyRepository.exists(input.partyId);
 
     if (!partyExists) {

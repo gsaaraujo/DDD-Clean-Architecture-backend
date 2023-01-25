@@ -3,12 +3,12 @@ import { PrismaClient } from '@prisma/client';
 
 import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agreements-usecase';
 
-import { GetAgreementsController } from '@agreements/infra/controllers/get-agreements-controller';
-import { PrismaPartyRepository } from '@agreements/infra/repositories/prisma/prisma-party-repository';
-import { PrismaAgreementRepository } from '@agreements/infra/repositories/prisma/prisma-agreement-repository';
+import { GetAgreementsController } from '@agreements/infra/presenter/controllers/get-agreements-controller';
 
 import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
 import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
+import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
+import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
 @Module({
   controllers: [GetAgreementsController],
@@ -18,18 +18,16 @@ import { IAgreementRepository } from '@agreements/adapters/repositories/agreemen
       useValue: new PrismaClient(),
     },
     {
-      provide: PrismaPartyRepository,
-      inject: [PrismaClient],
-      useFactory: (prismaClient: PrismaClient) => new PrismaPartyRepository(prismaClient),
+      provide: FakePartyRepository,
+      useFactory: () => new FakePartyRepository(),
     },
     {
-      provide: PrismaAgreementRepository,
-      inject: [PrismaClient],
-      useFactory: (prismaClient: PrismaClient) => new PrismaAgreementRepository(prismaClient),
+      provide: FakeAgreementRepository,
+      useFactory: () => new FakeAgreementRepository(),
     },
     {
       provide: 'IGetAgreementsUsecase',
-      inject: [PrismaPartyRepository, PrismaAgreementRepository],
+      inject: [FakePartyRepository, FakeAgreementRepository],
       useFactory: (partyRepository: IPartyRepository, agreementRepository: IAgreementRepository) =>
         new GetAgreementsUsecase(partyRepository, agreementRepository),
     },
