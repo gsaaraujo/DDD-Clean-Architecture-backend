@@ -2,6 +2,7 @@ import Joi from 'joi';
 import {
   Post,
   Body,
+  Inject,
   Controller,
   ConflictException,
   NotFoundException,
@@ -21,7 +22,10 @@ export type MakeAnAgreementControllerInput = {
 
 @Controller('agreements')
 export class MakeAnAgreementController {
-  public constructor(private readonly makeAnAgreementUsecase: IMakeAnAgreementUsecase) {}
+  public constructor(
+    @Inject('IMakeAnAgreementUsecase')
+    private readonly makeAnAgreementUsecase: IMakeAnAgreementUsecase,
+  ) {}
 
   @Post('make-an-agreement')
   async handle(@Body() input: MakeAnAgreementControllerInput) {

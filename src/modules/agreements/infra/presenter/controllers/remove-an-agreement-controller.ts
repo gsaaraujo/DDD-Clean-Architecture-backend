@@ -2,6 +2,7 @@ import Joi from 'joi';
 import {
   Param,
   Patch,
+  Inject,
   Controller,
   NotFoundException,
   ConflictException,
@@ -13,7 +14,10 @@ import { IRemoveAnAgreementUsecase } from '@agreements/domain/usecases/remove-an
 
 @Controller('agreements')
 export class RemoveAnAgreementController {
-  public constructor(private readonly removeAnAgreementUsecase: IRemoveAnAgreementUsecase) {}
+  public constructor(
+    @Inject('IRemoveAnAgreementUsecase')
+    private readonly removeAnAgreementUsecase: IRemoveAnAgreementUsecase,
+  ) {}
 
   @Patch('remove-an-agreement')
   async handle(@Param('partyId') partyId: string, @Param('agreementId') agreementId: string) {

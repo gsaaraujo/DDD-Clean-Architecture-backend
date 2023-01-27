@@ -2,6 +2,7 @@ import Joi from 'joi';
 import {
   Param,
   Patch,
+  Inject,
   Controller,
   NotFoundException,
   ConflictException,
@@ -13,7 +14,10 @@ import { IDenyAnAgreementUsecase } from '@agreements/domain/usecases/deny-an-agr
 
 @Controller('agreements')
 export class DenyAnAgreementController {
-  public constructor(private readonly denyAnAgreementUsecase: IDenyAnAgreementUsecase) {}
+  public constructor(
+    @Inject('IDenyAnAgreementUsecase')
+    private readonly denyAnAgreementUsecase: IDenyAnAgreementUsecase,
+  ) {}
 
   @Patch('deny-an-agreement/:partyId/:agreementId')
   async handle(@Param('partyId') partyId: string, @Param('agreementId') agreementId: string) {

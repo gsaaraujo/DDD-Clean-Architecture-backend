@@ -2,6 +2,7 @@ import Joi from 'joi';
 import {
   Param,
   Patch,
+  Inject,
   Controller,
   NotFoundException,
   ConflictException,
@@ -13,7 +14,10 @@ import { IPayAnAgreementUsecase } from '@agreements/domain/usecases/pay-an-agree
 
 @Controller('agreements')
 export class PayAnAgreementController {
-  public constructor(private readonly payAnAgreementUsecase: IPayAnAgreementUsecase) {}
+  public constructor(
+    @Inject('IPayAnAgreementUsecase')
+    private readonly payAnAgreementUsecase: IPayAnAgreementUsecase,
+  ) {}
 
   @Patch('pay-an-agreement/:partyId/:agreementId')
   async handle(@Param('partyId') partyId: string, @Param('agreementId') agreementId: string) {
