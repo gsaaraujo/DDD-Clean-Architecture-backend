@@ -1,4 +1,4 @@
-import { makeAgreement } from '@test/factories/agreement-factory';
+import { makeAgreement } from '@agreements/tests/factories/agreement-factory';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 import { RemoveAnAgreementUsecase } from '@agreements/application/usecases/remove-an-agreement-usecase';
@@ -6,7 +6,7 @@ import { CannotRemoveAgreementError } from '@agreements/application/errors/canno
 
 import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
-describe('RemoveAnAgreementUsecase', () => {
+describe('remove-an-agreement-usecase', () => {
   let removeAnAgreementUsecase: RemoveAnAgreementUsecase;
   let fakeAgreementRepository: FakeAgreementRepository;
 

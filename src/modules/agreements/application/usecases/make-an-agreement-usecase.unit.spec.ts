@@ -1,10 +1,11 @@
 import { any, mock } from 'jest-mock-extended';
 
-import { makeParty } from '@test/factories/party-factory';
-import { MockBaseError } from '@test/mocks/mock-base-error';
+import { MockBaseError } from '@core/tests/mocks/mock-base-error';
 
 import { left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
+
+import { makeParty } from '@agreements/tests/factories/party-factory';
 
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
@@ -14,7 +15,7 @@ import { MakeAnAgreementUsecase } from '@agreements/application/usecases/make-an
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
 import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
-describe('MakeAnAgreementUsecase', () => {
+describe('make-an-agreement-usecase', () => {
   let makeAnAgreementUsecase: MakeAnAgreementUsecase;
   let fakeAgreementRepository: FakeAgreementRepository;
   let mockNotifyPartyUsecase: INotifyPartyUsecase;

@@ -21,7 +21,7 @@
     "paths": {
       "@core/*": ["./src/modules/core/*"],
       "@agreements/*": ["./src/modules/agreements/*"],
-      "@test/*": ["./test/*"]
+      "@test/*": ["src/modules/core/tests/*"]
     }
   }
 }

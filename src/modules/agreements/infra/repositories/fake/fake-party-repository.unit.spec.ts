@@ -1,5 +1,6 @@
+import { makeParty } from '@agreements/tests/factories/party-factory';
+
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
-import { makeParty } from '@test/factories/party-factory';
 
 describe('fake-party-repository', () => {
   let fakePartyRepository: FakePartyRepository;

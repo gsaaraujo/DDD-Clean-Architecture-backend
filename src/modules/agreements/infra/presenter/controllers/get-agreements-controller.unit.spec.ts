@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { makeAgreement } from '@test/factories/agreement-factory';
-import { MockUnexpectedError } from '@test/mocks/mock-unexpected-error';
+import { makeAgreement } from '@agreements/tests/factories/agreement-factory';
+import { MockUnexpectedError } from '@core/tests/mocks/mock-unexpected-error';
 
 import { left, right } from '@core/domain/helpers/either';
 

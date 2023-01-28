@@ -6,8 +6,8 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
-import { MockDomainError } from '@test/mocks/mock-domain-error';
-import { MockUnexpectedError } from '@test/mocks/mock-unexpected-error';
+import { MockDomainError } from '@core/tests/mocks/mock-domain-error';
+import { MockUnexpectedError } from '@core/tests/mocks/mock-unexpected-error';
 
 import { left, right } from '@core/domain/helpers/either';
 

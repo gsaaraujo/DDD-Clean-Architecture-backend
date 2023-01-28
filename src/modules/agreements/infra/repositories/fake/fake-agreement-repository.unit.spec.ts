@@ -1,4 +1,4 @@
-import { makeAgreement } from '@test/factories/agreement-factory';
+import { makeAgreement } from '@agreements/tests/factories/agreement-factory';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';

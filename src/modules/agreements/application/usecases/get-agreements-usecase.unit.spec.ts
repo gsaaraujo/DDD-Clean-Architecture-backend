@@ -1,5 +1,5 @@
-import { makeParty } from '@test/factories/party-factory';
-import { makeAgreement } from '@test/factories/agreement-factory';
+import { makeParty } from '@agreements/tests/factories/party-factory';
+import { makeAgreement } from '@agreements/tests/factories/agreement-factory';
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
 import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agreements-usecase';
@@ -7,7 +7,7 @@ import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agree
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
 import { FakeAgreementRepository } from '@agreements/infra/repositories/fake/fake-agreement-repository';
 
-describe('GetAgreementsUsecase', () => {
+describe('get-agreements-usecase', () => {
   let getAgreementsUsecase: GetAgreementsUsecase;
   let fakePartyRepository: FakePartyRepository;
   let fakeAgreementRepository: FakeAgreementRepository;
