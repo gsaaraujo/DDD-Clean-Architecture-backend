@@ -1,4 +1,4 @@
-import { IPartyRepository, PartyDTO } from '@agreements/adapters/repositories/party-repository';
+import { IPartyRepository, PartyDTO } from '@agreements/application/repositories/party-repository';
 
 export class FakePartyRepository implements IPartyRepository {
   public parties: PartyDTO[] = [];

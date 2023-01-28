@@ -12,10 +12,10 @@ import { AcceptAnAgreementUsecase } from '@agreements/application/usecases/accep
 import { CancelAnAgreementUsecase } from '@agreements/application/usecases/cancel-an-agreement-usecase';
 import { RemoveAnAgreementUsecase } from '@agreements/application/usecases/remove-an-agreement-usecase';
 
-import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
-import { INotificationService } from '@agreements/adapters/services/notification-service';
-import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
-import { INotificationRepository } from '@agreements/adapters/repositories/notification-repository';
+import { IPartyRepository } from '@agreements/application/repositories/party-repository';
+import { INotificationService } from '@agreements/application/services/notification-service';
+import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
+import { INotificationRepository } from '@agreements/application/repositories/notification-repository';
 
 import { PrismaPartyRepository } from '@agreements/infra/repositories/prisma/prisma-party-repository';
 import { GetAgreementsController } from '@agreements/infra/presenter/controllers/get-agreements-controller';

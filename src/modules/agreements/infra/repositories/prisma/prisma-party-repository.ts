@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
 import { PrismaClient } from '@prisma/client';
 
-import { IPartyRepository, PartyDTO } from '@agreements/adapters/repositories/party-repository';
-import { PartyMapper } from './mappers/prisma-party-repository';
+import { IPartyRepository, PartyDTO } from '@agreements/application/repositories/party-repository';
+import { PartyMapper } from '@agreements/infra/repositories/prisma/mappers/prisma-party-repository';
 
 export class PrismaPartyRepository implements IPartyRepository {
   public constructor(private readonly prismaClient: PrismaClient) {}

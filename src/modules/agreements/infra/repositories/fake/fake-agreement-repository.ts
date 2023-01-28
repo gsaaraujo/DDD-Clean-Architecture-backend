@@ -1,6 +1,6 @@
 import { Agreement } from '@agreements/domain/entities/agreement';
 
-import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
+import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
 
 export class FakeAgreementRepository implements IAgreementRepository {
   public agreements: Agreement[] = [];

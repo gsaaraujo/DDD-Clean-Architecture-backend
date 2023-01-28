@@ -1,5 +1,5 @@
-import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 import { ApplicationError } from '@core/domain/errors/application-error';
 
 import {
@@ -9,9 +9,8 @@ import {
 } from '@agreements/domain/usecases/accept-an-agreement-usecase';
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
+import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
-
-import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class AcceptAnAgreementUsecase implements IAcceptAnAgreementUsecase {
   public constructor(

@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 import { ApplicationError } from '@core/domain/errors/application-error';
 
 import {
@@ -10,11 +8,10 @@ import {
 } from '@agreements/domain/usecases/notify-party-usecase';
 import { Notification } from '@agreements/domain/entities/notification';
 
+import { IPartyRepository } from '@agreements/application/repositories/party-repository';
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
-
-import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
-import { INotificationService } from '@agreements/adapters/services/notification-service';
-import { INotificationRepository } from '@agreements/adapters/repositories/notification-repository';
+import { INotificationService } from '@agreements/application/services/notification-service';
+import { INotificationRepository } from '@agreements/application/repositories/notification-repository';
 
 export class NotifyPartyUsecase implements INotifyPartyUsecase {
   public constructor(

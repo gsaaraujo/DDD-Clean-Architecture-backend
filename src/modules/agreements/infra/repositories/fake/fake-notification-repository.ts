@@ -1,6 +1,6 @@
 import { Notification } from '@agreements/domain/entities/notification';
 
-import { INotificationRepository } from '@agreements/adapters/repositories/notification-repository';
+import { INotificationRepository } from '@agreements/application/repositories/notification-repository';
 
 export class FakeNotificationRepository implements INotificationRepository {
   public notifications: Notification[] = [];

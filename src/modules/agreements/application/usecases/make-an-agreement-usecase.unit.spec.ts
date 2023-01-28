@@ -6,7 +6,6 @@ import { left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
 
 import { makeParty } from '@agreements/domain/tests/factories/party-factory';
-
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';

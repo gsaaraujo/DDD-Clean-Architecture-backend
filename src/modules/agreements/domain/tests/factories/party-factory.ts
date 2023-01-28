@@ -1,4 +1,4 @@
-import { PartyDTO } from '@agreements/adapters/repositories/party-repository';
+import { PartyDTO } from '@agreements/application/repositories/party-repository';
 
 type MakePartyDTO = Partial<PartyDTO>;
 

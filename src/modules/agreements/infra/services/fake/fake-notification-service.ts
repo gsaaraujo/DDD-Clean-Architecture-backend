@@ -3,7 +3,7 @@
 import {
   NotificationDTO,
   INotificationService,
-} from '@agreements/adapters/services/notification-service';
+} from '@agreements/application/services/notification-service';
 
 export class FakeNotificationService implements INotificationService {
   async send(notificationDTO: NotificationDTO): Promise<void> {

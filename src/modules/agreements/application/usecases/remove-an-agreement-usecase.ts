@@ -1,5 +1,5 @@
-import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 import { ApplicationError } from '@core/domain/errors/application-error';
 
 import { PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
@@ -9,10 +9,9 @@ import {
   RemoveAnAgreementUsecaseOutput,
 } from '@agreements/domain/usecases/remove-an-agreement-usecase';
 
+import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 import { CannotRemoveAgreementError } from '@agreements/application/errors/cannot-remove-agreement-error';
-
-import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
 
 export class RemoveAnAgreementUsecase implements IRemoveAnAgreementUsecase {
   public constructor(private readonly agreementRepository: IAgreementRepository) {}

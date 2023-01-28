@@ -1,5 +1,5 @@
-import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 import { ApplicationError } from '@core/domain/errors/application-error';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
@@ -11,10 +11,9 @@ import {
   MakeAnAgreementUsecaseOutput,
 } from '@agreements/domain/usecases/make-an-agreement-usecase';
 
+import { IPartyRepository } from '@agreements/application/repositories/party-repository';
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
-
-import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
-import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
+import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
 
 export class MakeAnAgreementUsecase implements IMakeAnAgreementUsecase {
   public constructor(

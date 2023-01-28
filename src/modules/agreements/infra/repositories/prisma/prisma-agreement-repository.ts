@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
 
-import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
+import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
 
 import { PrismaAgreementMapper } from '@agreements/infra/repositories/prisma/mappers/prisma-agreement-mapper';
 

@@ -1,5 +1,5 @@
-import { Either, left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
+import { Either, left, right } from '@core/domain/helpers/either';
 import { ApplicationError } from '@core/domain/errors/application-error';
 
 import {
@@ -8,10 +8,9 @@ import {
   GetAgreementsUsecaseOutput,
 } from '@agreements/domain/usecases/get-agreements-usecase';
 
+import { IPartyRepository } from '@agreements/application/repositories/party-repository';
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
-
-import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
-import { IAgreementRepository } from '@agreements/adapters/repositories/agreement-repository';
+import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
 
 export class GetAgreementsUsecase implements IGetAgreementsUsecase {
   public constructor(

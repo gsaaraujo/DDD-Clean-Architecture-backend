@@ -4,8 +4,8 @@ import { Message } from 'firebase-admin/lib/messaging/messaging-api';
 import {
   NotificationDTO,
   INotificationService,
-} from '@agreements/adapters/services/notification-service';
-import { IPartyRepository } from '@agreements/adapters/repositories/party-repository';
+} from '@agreements/application/services/notification-service';
+import { IPartyRepository } from '@agreements/application/repositories/party-repository';
 
 export class FirebaseNotificationService implements INotificationService {
   public constructor(
