@@ -1,4 +1,4 @@
-import { makeParty } from '@agreements/tests/factories/party-factory';
+import { makeParty } from '@agreements/domain/tests/factories/party-factory';
 
 import { NotifyPartyUsecase } from '@agreements/application/usecases/notify-party-usecase';
 

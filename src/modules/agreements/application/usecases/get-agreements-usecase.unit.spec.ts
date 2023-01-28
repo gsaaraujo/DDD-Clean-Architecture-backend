@@ -1,5 +1,5 @@
-import { makeParty } from '@agreements/tests/factories/party-factory';
-import { makeAgreement } from '@agreements/tests/factories/agreement-factory';
+import { makeParty } from '@agreements/domain/tests/factories/party-factory';
+import { makeAgreement } from '@agreements/domain/tests/factories/agreement-factory';
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
 import { GetAgreementsUsecase } from '@agreements/application/usecases/get-agreements-usecase';

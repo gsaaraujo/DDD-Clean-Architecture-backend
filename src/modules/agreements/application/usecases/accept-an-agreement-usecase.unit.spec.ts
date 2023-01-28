@@ -6,7 +6,7 @@ import { left, right } from '@core/domain/helpers/either';
 import { BaseError } from '@core/domain/errors/base-error';
 import { DomainError } from '@core/domain/errors/domain-error';
 
-import { makeAgreement } from '@agreements/tests/factories/agreement-factory';
+import { makeAgreement } from '@agreements/domain/tests/factories/agreement-factory';
 
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 

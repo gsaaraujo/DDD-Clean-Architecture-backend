@@ -5,7 +5,7 @@ import { MockBaseError } from '@core/tests/mocks/mock-base-error';
 import { left, right } from '@core/domain/helpers/either';
 import { DomainError } from '@core/domain/errors/domain-error';
 
-import { makeParty } from '@agreements/tests/factories/party-factory';
+import { makeParty } from '@agreements/domain/tests/factories/party-factory';
 
 import { INotifyPartyUsecase } from '@agreements/domain/usecases/notify-party-usecase';
 

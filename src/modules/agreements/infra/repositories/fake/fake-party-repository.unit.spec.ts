@@ -1,4 +1,4 @@
-import { makeParty } from '@agreements/tests/factories/party-factory';
+import { makeParty } from '@agreements/domain/tests/factories/party-factory';
 
 import { FakePartyRepository } from '@agreements/infra/repositories/fake/fake-party-repository';
 

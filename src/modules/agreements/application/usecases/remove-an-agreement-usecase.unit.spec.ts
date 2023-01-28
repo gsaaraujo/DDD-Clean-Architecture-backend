@@ -1,4 +1,4 @@
-import { makeAgreement } from '@agreements/tests/factories/agreement-factory';
+import { makeAgreement } from '@agreements/domain/tests/factories/agreement-factory';
 
 import { AgreementNotFoundError } from '@agreements/application/errors/agreement-not-found-error';
 import { RemoveAnAgreementUsecase } from '@agreements/application/usecases/remove-an-agreement-usecase';
