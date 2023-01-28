@@ -16,7 +16,7 @@ import { IMakeAnAgreementUsecase } from '@agreements/domain/usecases/make-an-agr
 import { DebtorPartyNotFoundError } from '@agreements/application/errors/debtor-party-not-found-error';
 import { CreditorPartyNotFoundError } from '@agreements/application/errors/creditor-party-not-found-error';
 
-import { MakeAnAgreementController } from '@agreements/infra/presenter/controllers/make-an-agreement-controller';
+import { MakeAnAgreementController } from '@agreements/infra/controllers/make-an-agreement-controller';
 
 describe('make-an-agreement-controller.spec', () => {
   let makeAnAgreementController: MakeAnAgreementController;

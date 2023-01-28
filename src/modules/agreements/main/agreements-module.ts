@@ -17,17 +17,17 @@ import { INotificationService } from '@agreements/application/services/notificat
 import { IAgreementRepository } from '@agreements/application/repositories/agreement-repository';
 import { INotificationRepository } from '@agreements/application/repositories/notification-repository';
 
+import { GetAgreementsController } from '@agreements/infra/controllers/get-agreements-controller';
+import { PayAnAgreementController } from '@agreements/infra/controllers/pay-an-agreement-controller';
 import { PrismaPartyRepository } from '@agreements/infra/repositories/prisma/prisma-party-repository';
-import { GetAgreementsController } from '@agreements/infra/presenter/controllers/get-agreements-controller';
+import { MakeAnAgreementController } from '@agreements/infra/controllers/make-an-agreement-controller';
+import { DenyAnAgreementController } from '@agreements/infra/controllers/deny-an-agreement-controller';
+import { AcceptAnAgreementController } from '@agreements/infra/controllers/accept-an-agreement-controller';
+import { CancelAnAgreementController } from '@agreements/infra/controllers/cancel-an-agreement-controller';
+import { RemoveAnAgreementController } from '@agreements/infra/controllers/remove-an-agreement-controller';
 import { PrismaAgreementRepository } from '@agreements/infra/repositories/prisma/prisma-agreement-repository';
-import { PayAnAgreementController } from '@agreements/infra/presenter/controllers/pay-an-agreement-controller';
 import { FirebaseNotificationService } from '@agreements/infra/services/firebase/firebase-notification-service';
-import { DenyAnAgreementController } from '@agreements/infra/presenter/controllers/deny-an-agreement-controller';
-import { MakeAnAgreementController } from '@agreements/infra/presenter/controllers/make-an-agreement-controller';
 import { PrismaNotificationRepository } from '@agreements/infra/repositories/prisma/prisma-notification-repository';
-import { AcceptAnAgreementController } from '@agreements/infra/presenter/controllers/accept-an-agreement-controller';
-import { CancelAnAgreementController } from '@agreements/infra/presenter/controllers/cancel-an-agreement-controller';
-import { RemoveAnAgreementController } from '@agreements/infra/presenter/controllers/remove-an-agreement-controller';
 
 @Module({
   controllers: [

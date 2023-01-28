@@ -14,7 +14,7 @@ import { IGetAgreementsUsecase } from '@agreements/domain/usecases/get-agreement
 
 import { PartyNotFoundError } from '@agreements/application/errors/party-not-found-error';
 
-import { GetAgreementsController } from '@agreements/infra/presenter/controllers/get-agreements-controller';
+import { GetAgreementsController } from '@agreements/infra/controllers/get-agreements-controller';
 
 describe('get-agreements-controller', () => {
   let getAgreementsController: GetAgreementsController;
