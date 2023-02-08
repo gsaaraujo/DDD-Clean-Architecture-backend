@@ -6,7 +6,7 @@ export class NotificationMapper {
   public static toDomain(notificationORM: NotificationORM): Notification {
     return Notification.create(
       {
-        recipientPartyId: notificationORM.recipientPartyId,
+        recipientPartyId: notificationORM.recipientProfileId,
         title: notificationORM.title,
         readAt: notificationORM.readAt,
         content: notificationORM.content,
@@ -19,7 +19,7 @@ export class NotificationMapper {
   public static toPersistence(notification: Notification): NotificationORM {
     return {
       id: notification.id,
-      recipientPartyId: notification.recipientPartyId,
+      recipientProfileId: notification.recipientPartyId,
       title: notification.title,
       readAt: notification.readAt,
       content: notification.content,

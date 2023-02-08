@@ -1,15 +1,18 @@
-import { Agreement as AgreementORM } from '@prisma/client';
+import { Agreement as AgreementORM, AgreementProfile as AgreementProfileORM } from '@prisma/client';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
 import { OwingItem } from '@agreements/domain/value-objects/owing-item';
 import { PartyConsent, PartyConsentStatus } from '@agreements/domain/value-objects/party-consent';
 
 export class PrismaAgreementMapper {
-  public static toDomain(agreementORM: AgreementORM): Agreement {
+  public static toDomain(
+    agreementORM: AgreementORM,
+    agreementProfileORM: AgreementProfileORM,
+  ): Agreement {
     return Agreement.create(
       {
-        debtorPartyId: agreementORM.debtorPartyId,
-        creditorPartyId: agreementORM.creditorPartyId,
+        debtorPartyId: agreementProfileORM.debtorProfileId,
+        creditorPartyId: agreementProfileORM.creditorProfileId,
         createdAt: agreementORM.madeAt,
         owingItem: OwingItem.create({
           amount: agreementORM.amount,
@@ -29,8 +32,6 @@ export class PrismaAgreementMapper {
   public static toPersistence(agreement: Agreement): AgreementORM {
     return {
       id: agreement.id,
-      debtorPartyId: agreement.debtorPartyId,
-      creditorPartyId: agreement.creditorPartyId,
       madeAt: agreement.createdAt,
       amount: agreement.owingItem.amount,
       isCurrency: agreement.owingItem.isCurrency,

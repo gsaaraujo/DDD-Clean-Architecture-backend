@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { PrismaClient } from '@prisma/client';
 
 import { Agreement } from '@agreements/domain/entities/agreement';
@@ -10,62 +11,119 @@ export class PrismaAgreementRepository implements IAgreementRepository {
   public constructor(private readonly prismaClient: PrismaClient) {}
 
   async exists(id: string): Promise<boolean> {
-    const agreement = await this.prismaClient.agreement.findUnique({
+    const agreementORM = await this.prismaClient.agreement.findUnique({
       where: { id },
     });
 
-    return !!agreement;
+    return !!agreementORM;
   }
 
   async create(agreement: Agreement): Promise<Agreement> {
-    const newAgreement = await this.prismaClient.agreement.create({
-      data: PrismaAgreementMapper.toPersistence(agreement),
-    });
+    const [agreementORM, agreementProfileORM] = await this.prismaClient.$transaction([
+      this.prismaClient.agreement.create({
+        data: PrismaAgreementMapper.toPersistence(agreement),
+      }),
+      this.prismaClient.agreementProfile.create({
+        data: {
+          id: randomUUID(),
+          agreementId: agreement.id,
+          debtorProfileId: agreement.debtorPartyId,
+          creditorProfileId: agreement.creditorPartyId,
+        },
+      }),
+    ]);
 
-    return PrismaAgreementMapper.toDomain(newAgreement);
+    return PrismaAgreementMapper.toDomain(agreementORM, agreementProfileORM);
   }
 
   async update(agreement: Agreement): Promise<Agreement> {
-    const agreementUpdated = await this.prismaClient.agreement.update({
-      where: { id: agreement.id },
-      data: PrismaAgreementMapper.toPersistence(agreement),
-    });
+    const [agreementORM, agreementProfileORM] = await this.prismaClient.$transaction([
+      this.prismaClient.agreement.update({
+        where: { id: agreement.id },
+        data: PrismaAgreementMapper.toPersistence(agreement),
+      }),
+      this.prismaClient.agreementProfile.update({
+        where: { agreementId: agreement.id },
+        data: {
+          agreementId: agreement.id,
+          debtorProfileId: agreement.debtorPartyId,
+          creditorProfileId: agreement.creditorPartyId,
+        },
+      }),
+    ]);
 
-    return PrismaAgreementMapper.toDomain(agreementUpdated);
+    return PrismaAgreementMapper.toDomain(agreementORM, agreementProfileORM);
   }
 
   async findOneById(id: string): Promise<Agreement | null> {
-    const agreement = await this.prismaClient.agreement.findUnique({
+    const agreementORM = await this.prismaClient.agreement.findUnique({
       where: { id },
     });
 
-    if (!agreement) return null;
-    return PrismaAgreementMapper.toDomain(agreement);
+    if (!agreementORM) return null;
+
+    const agreementProfileORM = await this.prismaClient.agreementProfile.findUnique({
+      where: { id: agreementORM.id },
+    });
+
+    if (!agreementProfileORM) return null;
+
+    return PrismaAgreementMapper.toDomain(agreementORM, agreementProfileORM);
   }
 
   async findOneByIdAndPartyId(id: string, partyId: string): Promise<Agreement | null> {
-    const agreement = await this.prismaClient.agreement.findFirst({
+    const agreementORM = await this.prismaClient.agreement.findFirst({
+      where: { id },
+    });
+
+    if (!agreementORM) return null;
+
+    const agreementProfileORM = await this.prismaClient.agreementProfile.findFirst({
       where: {
-        id,
-        OR: [{ debtorPartyId: partyId }, { creditorPartyId: partyId }],
+        OR: [{ debtorProfileId: partyId }, { creditorProfileId: partyId }],
       },
     });
 
-    if (!agreement) return null;
-    return PrismaAgreementMapper.toDomain(agreement);
+    if (!agreementProfileORM) return null;
+
+    return PrismaAgreementMapper.toDomain(agreementORM, agreementProfileORM);
   }
 
   async findAllByPartyId(partyId: string): Promise<Agreement[]> {
-    const agreements = await this.prismaClient.agreement.findMany({
+    const agreementProfileORMs = await this.prismaClient.agreementProfile.findMany({
       where: {
-        OR: [{ debtorPartyId: partyId }, { creditorPartyId: partyId }],
+        OR: [{ debtorProfileId: partyId }, { creditorProfileId: partyId }],
       },
     });
 
-    return agreements.map((agreement) => PrismaAgreementMapper.toDomain(agreement));
+    const agreementORMs = await Promise.all(
+      agreementProfileORMs.map((agreementProfileORM) =>
+        this.prismaClient.agreement.findUnique({
+          where: { id: agreementProfileORM.id },
+        }),
+      ),
+    );
+
+    const agreements: Agreement[] = [];
+
+    for (const agreementProfileORM of agreementProfileORMs) {
+      const agreementORM = agreementORMs.find(
+        (agreementORM) => agreementORM?.id === agreementProfileORM.agreementId,
+      );
+
+      if (agreementORM !== undefined) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        agreements.push(PrismaAgreementMapper.toDomain(agreementORM!, agreementProfileORM));
+      }
+    }
+
+    return agreements;
   }
 
   async delete(id: string): Promise<void> {
-    await this.prismaClient.agreement.delete({ where: { id } });
+    await this.prismaClient.$transaction([
+      this.prismaClient.agreement.delete({ where: { id } }),
+      this.prismaClient.agreementProfile.delete({ where: { agreementId: id } }),
+    ]);
   }
 }

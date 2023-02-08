@@ -24,7 +24,10 @@
     "test:debug": "dotenv -e .env.test -- node --config jest-all.json --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
 
     "test:unit": "dotenv -e .env.test -- jest --config jest-unit.json",
-    "test:integration": "dotenv -e .env.test -- jest --config jest-integration.json"
+    "test:integration": "dotenv -e .env.test -- jest --config jest-integration.json",
+
+    "migrate:dev": "dotenv -e .env.test -- prisma migrate dev",
+    "migrate:deploy": "dotenv -e .env.test -- prisma migrate deploy"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
