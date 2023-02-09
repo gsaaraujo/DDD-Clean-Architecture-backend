@@ -29,17 +29,6 @@ describe('fake-party-repository', () => {
     });
   });
 
-  describe('create', () => {
-    it('should persist and return the party', async () => {
-      const party = makeParty();
-
-      const sut = await fakePartyRepository.create(party);
-
-      expect(sut).toStrictEqual(party);
-      expect(fakePartyRepository.parties.length).toBe(1);
-    });
-  });
-
   describe('findOneRegistrationTokenByPartyId', () => {
     it('should find and return the registration token with the given partyId', async () => {
       const party = makeParty();

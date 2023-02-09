@@ -1,8 +1,6 @@
-import { randomUUID } from 'crypto';
 import { PrismaClient } from '@prisma/client';
 
-import { IPartyRepository, PartyDTO } from '@agreements/application/repositories/party-repository';
-import { PartyMapper } from '@agreements/infra/repositories/prisma/mappers/prisma-party-repository';
+import { IPartyRepository } from '@agreements/application/repositories/party-repository';
 
 export class PrismaPartyRepository implements IPartyRepository {
   public constructor(private readonly prismaClient: PrismaClient) {}
@@ -13,18 +11,6 @@ export class PrismaPartyRepository implements IPartyRepository {
     });
 
     return !!user;
-  }
-
-  async create(partyDTO: PartyDTO): Promise<PartyDTO> {
-    const newParty = await this.prismaClient.userDeviceToken.create({
-      data: {
-        id: randomUUID(),
-        userId: partyDTO.id,
-        token: partyDTO.registrationToken,
-      },
-    });
-
-    return PartyMapper.toDTO(newParty);
   }
 
   async findOneRegistrationTokenByPartyId(partyId: string): Promise<string | null> {

@@ -6,9 +6,9 @@ import {
 
 type MakePartyConsentProps = Partial<PartyConsentProps>;
 
-export const makePartyConsent = (props?: MakePartyConsentProps) => {
+export const makePartyConsent = (props?: MakePartyConsentProps): PartyConsent => {
   return PartyConsent.create({
     status: PartyConsentStatus.PENDING,
     ...props,
-  });
+  }).value as PartyConsent;
 };

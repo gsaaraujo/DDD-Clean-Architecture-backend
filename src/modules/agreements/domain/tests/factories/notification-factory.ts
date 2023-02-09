@@ -2,7 +2,7 @@ import { Notification, NotificationProps } from '@agreements/domain/entities/not
 
 type MakeNotificationProps = Partial<Omit<NotificationProps, 'createdAt' | 'readAt'>>;
 
-export const makeNotification = (props?: MakeNotificationProps) => {
+export const makeNotification = (props?: MakeNotificationProps): Notification => {
   return Notification.create({
     recipientPartyId: 'd5e4c4e4-6844-4c5b-8304-ec64ecfe8011',
     readAt: null,
@@ -10,5 +10,5 @@ export const makeNotification = (props?: MakeNotificationProps) => {
     createdAt: new Date(),
     content: 'any_content',
     ...props,
-  });
+  }).value as Notification;
 };

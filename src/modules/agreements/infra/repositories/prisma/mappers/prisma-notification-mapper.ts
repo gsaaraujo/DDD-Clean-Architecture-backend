@@ -2,7 +2,7 @@ import { Notification as NotificationORM } from '@prisma/client';
 
 import { Notification } from '@agreements/domain/entities/notification';
 
-export class NotificationMapper {
+export class PrismaNotificationMapper {
   public static toDomain(notificationORM: NotificationORM): Notification {
     return Notification.create(
       {
@@ -10,7 +10,7 @@ export class NotificationMapper {
         title: notificationORM.title,
         readAt: notificationORM.readAt,
         content: notificationORM.content,
-        createdAt: notificationORM.createdAt,
+        createdAt: notificationORM.sentAt,
       },
       notificationORM.id,
     ).value as Notification;
