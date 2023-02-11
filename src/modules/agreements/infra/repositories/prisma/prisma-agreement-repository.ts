@@ -121,9 +121,6 @@ export class PrismaAgreementRepository implements IAgreementRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.prismaClient.$transaction([
-      this.prismaClient.agreement.delete({ where: { id } }),
-      this.prismaClient.agreementProfile.delete({ where: { agreementId: id } }),
-    ]);
+    await this.prismaClient.agreement.delete({ where: { id } });
   }
 }

@@ -94,7 +94,7 @@ import { PrismaNotificationRepository } from '@agreements/infra/repositories/pri
     },
     {
       provide: 'ICancelAnAgreementUsecase',
-      inject: [PrismaPartyRepository, PrismaAgreementRepository],
+      inject: [NotifyPartyUsecase, PrismaAgreementRepository],
       useFactory: (
         notifyPartyUsecase: INotifyPartyUsecase,
         agreementRepository: IAgreementRepository,
@@ -102,7 +102,7 @@ import { PrismaNotificationRepository } from '@agreements/infra/repositories/pri
     },
     {
       provide: 'IDenyAnAgreementUsecase',
-      inject: [PrismaPartyRepository, PrismaAgreementRepository],
+      inject: [NotifyPartyUsecase, PrismaAgreementRepository],
       useFactory: (
         notifyPartyUsecase: INotifyPartyUsecase,
         agreementRepository: IAgreementRepository,
@@ -110,7 +110,7 @@ import { PrismaNotificationRepository } from '@agreements/infra/repositories/pri
     },
     {
       provide: 'IPayAnAgreementUsecase',
-      inject: [PrismaPartyRepository, PrismaAgreementRepository],
+      inject: [NotifyPartyUsecase, PrismaAgreementRepository],
       useFactory: (
         notifyPartyUsecase: INotifyPartyUsecase,
         agreementRepository: IAgreementRepository,

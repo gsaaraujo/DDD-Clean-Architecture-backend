@@ -10,7 +10,7 @@ import { makeProfileORM } from '@agreements/tests/factories/profile-orm-factory'
 import { makeAgreementORM } from '@agreements/tests/factories/agreement-orm-factory';
 import { makeAgreementProfileORM } from '@agreements/tests/factories/agreement-profile-orm-factory';
 
-describe('accept-an-agreement', () => {
+describe('deny-an-agreement', () => {
   const prismaClient = new PrismaClient();
   let nestApplication: INestApplication;
 
@@ -24,6 +24,12 @@ describe('accept-an-agreement', () => {
   });
 
   beforeAll(async () => {
+    const testingModule: TestingModule = await Test.createTestingModule({
+      imports: [AgreementsModule],
+    }).compile();
+
+    nestApplication = testingModule.createNestApplication();
+    await nestApplication.init();
     const debtorUserORM = makeUserORM({
       id: '9399bb27-9a23-4e1e-9665-e20022bc65cc',
       email: 'edward.elric@gmail.com',
@@ -79,12 +85,12 @@ describe('accept-an-agreement', () => {
     await nestApplication.close();
   });
 
-  it('should accept an agreement', async () => {
+  it('should deny an agreement', async () => {
     const partyId = 'e3248c4c-dd0c-4f20-98b4-68bd1ec8b799';
     const agreementId = '1170ed3f-3dd0-49ec-8249-fe042627233a';
 
     const result = await request(nestApplication.getHttpServer()).patch(
-      `/agreements/accept-an-agreement/${partyId}/${agreementId}`,
+      `/agreements/deny-an-agreement/${partyId}/${agreementId}`,
     );
 
     expect(result.statusCode).toBe(200);

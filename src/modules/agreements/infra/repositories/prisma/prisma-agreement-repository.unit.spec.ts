@@ -165,7 +165,9 @@ describe('prisma-agreement-repository', () => {
 
   describe('delete', () => {
     it('should return void with the given party agreement id', async () => {
-      jest.spyOn(mockPrismaClient, '$transaction').mockResolvedValueOnce(undefined);
+      const agreementORM = makeAgreementORM();
+
+      jest.spyOn(mockPrismaClient.agreement, 'delete').mockResolvedValueOnce(agreementORM);
 
       const sut = await prismaAgreementRepository.delete('any_party_id');
 

@@ -1,8 +1,8 @@
 import Joi from 'joi';
 import {
   Param,
-  Patch,
   Inject,
+  Delete,
   Controller,
   NotFoundException,
   ConflictException,
@@ -19,7 +19,7 @@ export class RemoveAnAgreementController {
     private readonly removeAnAgreementUsecase: IRemoveAnAgreementUsecase,
   ) {}
 
-  @Patch('remove-an-agreement')
+  @Delete('remove-an-agreement/:partyId/:agreementId')
   async handle(@Param('partyId') partyId: string, @Param('agreementId') agreementId: string) {
     const schema = Joi.object({
       partyId: Joi.string().uuid(),

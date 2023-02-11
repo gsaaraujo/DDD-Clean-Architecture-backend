@@ -1,7 +1,7 @@
 import request from 'supertest';
-import { PrismaClient } from '@prisma/client';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaClient, PartyStatus as PartyStatusORM } from '@prisma/client';
 
 import { AgreementsModule } from '@agreements/main/agreements-module';
 
@@ -10,7 +10,7 @@ import { makeProfileORM } from '@agreements/tests/factories/profile-orm-factory'
 import { makeAgreementORM } from '@agreements/tests/factories/agreement-orm-factory';
 import { makeAgreementProfileORM } from '@agreements/tests/factories/agreement-profile-orm-factory';
 
-describe('accept-an-agreement', () => {
+describe('pay-an-agreement', () => {
   const prismaClient = new PrismaClient();
   let nestApplication: INestApplication;
 
@@ -44,7 +44,10 @@ describe('accept-an-agreement', () => {
       userId: creditorUserORM.id,
     });
 
-    const agreementORM = makeAgreementORM({ id: '1170ed3f-3dd0-49ec-8249-fe042627233a' });
+    const agreementORM = makeAgreementORM({
+      id: '1170ed3f-3dd0-49ec-8249-fe042627233a',
+      creditorStatus: PartyStatusORM.ACCEPTED,
+    });
 
     const agreementProfileORM = makeAgreementProfileORM({
       agreementId: agreementORM.id,
@@ -79,12 +82,12 @@ describe('accept-an-agreement', () => {
     await nestApplication.close();
   });
 
-  it('should accept an agreement', async () => {
+  it('should pay an agreement', async () => {
     const partyId = 'e3248c4c-dd0c-4f20-98b4-68bd1ec8b799';
     const agreementId = '1170ed3f-3dd0-49ec-8249-fe042627233a';
 
     const result = await request(nestApplication.getHttpServer()).patch(
-      `/agreements/accept-an-agreement/${partyId}/${agreementId}`,
+      `/agreements/pay-an-agreement/${partyId}/${agreementId}`,
     );
 
     expect(result.statusCode).toBe(200);
