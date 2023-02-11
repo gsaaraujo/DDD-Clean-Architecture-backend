@@ -24,8 +24,8 @@ export class PrismaNotificationMapper {
       readAt: notification.readAt,
       content: notification.content,
       sentAt: notification.createdAt,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date('2023-01-01'),
+      updatedAt: new Date('2023-01-01'),
     };
   }
 }

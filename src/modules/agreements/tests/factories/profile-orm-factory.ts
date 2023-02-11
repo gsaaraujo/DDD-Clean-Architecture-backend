@@ -8,8 +8,8 @@ export const makeProfileORM = (props?: MakeProfileORMProps): ProfileORM => {
     userId: 'ca433baf-a316-4634-95a5-8978555bd895',
     imageUrl: null,
     name: 'Edward Elric',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-01'),
+    updatedAt: new Date('2023-01-01'),
     ...props,
   };
 };

@@ -2,6 +2,9 @@ import { OwingItem, OwingItemProps } from '@agreements/domain/value-objects/owin
 
 type MakeOwingItem = Partial<OwingItemProps>;
 
-export const makeOwingItem = (props?: MakeOwingItem): OwingItem => {
-  return OwingItem.create({ amount: 20, isCurrency: true, ...props }).value as OwingItem;
+export const makeOwingItem = (id?: string, props?: MakeOwingItem): OwingItem => {
+  return OwingItem.create(
+    { amount: 20, isCurrency: true, ...props },
+    id ?? 'a47db200-2a13-4b88-a155-c8d7aca1c26c',
+  ).value as OwingItem;
 };

@@ -72,7 +72,7 @@ export class PrismaAgreementRepository implements IAgreementRepository {
   }
 
   async findOneByIdAndPartyId(id: string, partyId: string): Promise<Agreement | null> {
-    const agreementORM = await this.prismaClient.agreement.findFirst({
+    const agreementORM = await this.prismaClient.agreement.findUnique({
       where: { id },
     });
 

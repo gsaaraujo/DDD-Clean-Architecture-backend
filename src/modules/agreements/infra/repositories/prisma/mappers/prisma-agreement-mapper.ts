@@ -38,8 +38,8 @@ export class PrismaAgreementMapper {
       description: agreement.owingItem.description,
       debtorStatus: agreement.debtorPartyConsent.status,
       creditorStatus: agreement.creditorPartyConsent.status,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date('2023-01-01'),
+      updatedAt: new Date('2023-01-01'),
     };
   }
 

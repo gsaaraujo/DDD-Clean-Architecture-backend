@@ -8,11 +8,11 @@ export const makeAgreementORM = (props?: MakeAgreementORMProps): AgreementORM =>
     amount: 2,
     isCurrency: false,
     description: null,
-    madeAt: new Date(),
+    madeAt: new Date('2023-01-01'),
     creditorStatus: PartyStatusORM.PENDING,
     debtorStatus: PartyStatusORM.PENDING,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-01'),
+    updatedAt: new Date('2023-01-01'),
     ...props,
   };
 };

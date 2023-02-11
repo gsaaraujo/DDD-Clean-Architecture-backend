@@ -7,8 +7,8 @@ export const makeUserORM = (props?: MakeUserORMProps): UserORM => {
     id: 'e5f34463-00cd-4193-9cae-08b9733ee313',
     email: 'edward.elric@gmail.com',
     password: '123456789',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-01'),
+    updatedAt: new Date('2023-01-01'),
     ...props,
   };
 };

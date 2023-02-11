@@ -8,10 +8,10 @@ export const makeNotificationORM = (props?: MakeNotificationORMProps): Notificat
     recipientProfileId: '1f9e2b14-450a-49b7-a199-83f01b126144',
     title: 'any_title',
     content: 'any_content',
-    sentAt: new Date(),
+    sentAt: new Date('2023-01-01'),
     readAt: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-01'),
+    updatedAt: new Date('2023-01-01'),
     ...props,
   };
 };
