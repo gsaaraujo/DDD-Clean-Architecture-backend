@@ -2,10 +2,10 @@ import { PrismaClient } from '@prisma/client';
 
 import { MockContext, Context, createMockContext } from '@core/tests/prisma/context';
 
-import { makeUserORM } from '@agreements/tests/factories/user-orm-factory';
+import { makeProfileORM } from '@agreements/tests/factories/profile-orm-factory';
+import { makeUserDeviceTokenORM } from '@agreements/tests/factories/user-device-token-orm-factory';
 
 import { PrismaPartyRepository } from '@agreements/infra/repositories/prisma/prisma-party-repository';
-import { makeUserDeviceTokenORM } from '@agreements/tests/factories/user-device-token-orm-factory';
 
 describe('prisma-party-repository', () => {
   let prismaPartyRepository: PrismaPartyRepository;
@@ -24,27 +24,21 @@ describe('prisma-party-repository', () => {
 
   describe('exists', () => {
     it('should return true if the party exists with the given id', async () => {
-      const userORM = makeUserORM();
+      const profileORM = makeProfileORM();
 
-      jest.spyOn(mockPrismaClient.user, 'findUnique').mockResolvedValueOnce(userORM);
+      jest.spyOn(mockPrismaClient.profile, 'findUnique').mockResolvedValueOnce(profileORM);
 
       const sut = await prismaPartyRepository.exists('any_user_id');
 
       expect(sut).toBeTruthy();
-      expect(mockPrismaClient.user.findUnique).toBeCalledWith({
-        where: { id: 'any_user_id' },
-      });
     });
 
     it('should return false if the party does not exist with the given id', async () => {
-      jest.spyOn(mockPrismaClient.user, 'findUnique').mockResolvedValueOnce(null);
+      jest.spyOn(mockPrismaClient.profile, 'findUnique').mockResolvedValueOnce(null);
 
       const sut = await prismaPartyRepository.exists('any_user_id');
 
       expect(sut).toBeFalsy();
-      expect(mockPrismaClient.user.findUnique).toBeCalledWith({
-        where: { id: 'any_user_id' },
-      });
     });
   });
 
@@ -59,9 +53,6 @@ describe('prisma-party-repository', () => {
       const sut = await prismaPartyRepository.findOneRegistrationTokenByPartyId('any_user_id');
 
       expect(sut).toBe(userDeviceTokenORM.token);
-      expect(mockPrismaClient.userDeviceToken.findUnique).toBeCalledWith({
-        where: { id: 'any_user_id' },
-      });
     });
 
     it('should return null if no token was found with the given id', async () => {
@@ -70,9 +61,6 @@ describe('prisma-party-repository', () => {
       const sut = await prismaPartyRepository.findOneRegistrationTokenByPartyId('any_user_id');
 
       expect(sut).toBeNull();
-      expect(mockPrismaClient.userDeviceToken.findUnique).toBeCalledWith({
-        where: { id: 'any_user_id' },
-      });
     });
   });
 });

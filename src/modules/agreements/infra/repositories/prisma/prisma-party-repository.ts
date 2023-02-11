@@ -6,7 +6,7 @@ export class PrismaPartyRepository implements IPartyRepository {
   public constructor(private readonly prismaClient: PrismaClient) {}
 
   async exists(id: string): Promise<boolean> {
-    const user = await this.prismaClient.user.findUnique({
+    const user = await this.prismaClient.profile.findUnique({
       where: { id },
     });
 
