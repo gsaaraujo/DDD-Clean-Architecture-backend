@@ -124,7 +124,7 @@ import { PrismaNotificationRepository } from '@agreements/infra/repositories/pri
     },
     {
       provide: 'IMakeAnAgreementUsecase',
-      inject: [PrismaPartyRepository, PrismaAgreementRepository],
+      inject: [NotifyPartyUsecase, PrismaPartyRepository, PrismaAgreementRepository],
       useFactory: (
         notifyPartyUsecase: INotifyPartyUsecase,
         partyRepository: IPartyRepository,

@@ -99,7 +99,7 @@ export class PrismaAgreementRepository implements IAgreementRepository {
     const agreementORMs = await Promise.all(
       agreementProfileORMs.map((agreementProfileORM) =>
         this.prismaClient.agreement.findUnique({
-          where: { id: agreementProfileORM.id },
+          where: { id: agreementProfileORM.agreementId },
         }),
       ),
     );
