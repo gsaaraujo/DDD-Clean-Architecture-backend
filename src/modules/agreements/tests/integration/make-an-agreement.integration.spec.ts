@@ -64,7 +64,7 @@ describe('make-an-agreement', () => {
   });
 
   it('should make an agreement', async () => {
-    const result = await request(nestApplication.getHttpServer())
+    const sut = await request(nestApplication.getHttpServer())
       .post(`/agreements/make-an-agreement`)
       .send({
         amount: 2,
@@ -74,6 +74,6 @@ describe('make-an-agreement', () => {
         creditorPartyId: 'e3248c4c-dd0c-4f20-98b4-68bd1ec8b799',
       });
 
-    expect(result.statusCode).toBe(201);
+    expect(sut.statusCode).toBe(201);
   });
 });

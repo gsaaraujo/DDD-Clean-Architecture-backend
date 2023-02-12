@@ -2,7 +2,7 @@ version: '2.16'
 
 services:
   db1:
-    image: postgres:alpine
+    image: postgres:15.2-alpine
     restart: always
     container_name: yom-db-development
     ports:
@@ -13,7 +13,7 @@ services:
       POSTGRES_DB: yom-db-development
 
   db2:
-    image: postgres:alpine
+    image: postgres:15.2-alpine
     restart: always
     container_name: yom-db-tests
     ports:

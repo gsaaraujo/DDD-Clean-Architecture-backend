@@ -9,10 +9,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
-import { Agreement } from '@agreements/domain/entities/agreement';
 import { IGetAgreementsUsecase } from '@agreements/domain/usecases/get-agreements-usecase';
 
-export type GetAgreementsControllerOutput = Agreement;
+import { AgreementVM } from '@agreements/infra/view-models/agreement-vm';
 
 @Controller('agreements')
 export class GetAgreementsController {
@@ -22,7 +21,7 @@ export class GetAgreementsController {
   ) {}
 
   @Get('get-agreements/:partyId')
-  async handle(@Param('partyId') partyId: string): Promise<GetAgreementsControllerOutput[]> {
+  async handle(@Param('partyId') partyId: string): Promise<AgreementVM[]> {
     const schema = Joi.object({
       partyId: Joi.string().uuid(),
     });
@@ -36,7 +35,23 @@ export class GetAgreementsController {
 
     if (agreementsOrError.isRight()) {
       const agreements = agreementsOrError.value;
-      return agreements;
+      return agreements.map((agreement) => ({
+        id: agreement.id,
+        debtorPartyId: agreement.debtorPartyId,
+        creditorPartyId: agreement.creditorPartyId,
+        createdAt: agreement.createdAt,
+        owingItem: {
+          amount: agreement.owingItem.amount,
+          isCurrency: agreement.owingItem.isCurrency,
+          description: agreement.owingItem.description,
+        },
+        debtorPartyConsent: {
+          status: agreement.debtorPartyConsent.status,
+        },
+        creditorPartyConsent: {
+          status: agreement.debtorPartyConsent.status,
+        },
+      }));
     }
 
     const error = agreementsOrError.value;

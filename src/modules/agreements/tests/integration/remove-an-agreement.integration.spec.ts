@@ -86,10 +86,10 @@ describe('remove-an-agreement', () => {
     const partyId = 'e3248c4c-dd0c-4f20-98b4-68bd1ec8b799';
     const agreementId = '1170ed3f-3dd0-49ec-8249-fe042627233a';
 
-    const result = await request(nestApplication.getHttpServer()).delete(
+    const sut = await request(nestApplication.getHttpServer()).delete(
       `/agreements/remove-an-agreement/${partyId}/${agreementId}`,
     );
 
-    expect(result.statusCode).toBe(200);
+    expect(sut.statusCode).toBe(200);
   });
 });

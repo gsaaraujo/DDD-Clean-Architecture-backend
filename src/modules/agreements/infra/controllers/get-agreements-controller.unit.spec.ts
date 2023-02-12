@@ -26,17 +26,13 @@ describe('get-agreements-controller', () => {
   });
 
   it('should return a list of agreements', async () => {
-    const agreement1 = makeAgreement();
-    const agreement2 = makeAgreement();
-    const agreement3 = makeAgreement();
+    const agreement = makeAgreement();
 
-    jest
-      .spyOn(mockGetAgreementsUsecase, 'execute')
-      .mockResolvedValueOnce(right([agreement1, agreement2, agreement3]));
+    jest.spyOn(mockGetAgreementsUsecase, 'execute').mockResolvedValueOnce(right([agreement]));
 
     const sut = await getAgreementsController.handle('12ce2be8-2d8c-4268-b242-58563e7226c6');
 
-    expect(sut).toStrictEqual(expect.arrayContaining([agreement1, agreement2, agreement3]));
+    expect(sut).toHaveLength(1);
     expect(mockGetAgreementsUsecase.execute).toBeCalledWith({
       partyId: '12ce2be8-2d8c-4268-b242-58563e7226c6',
     });

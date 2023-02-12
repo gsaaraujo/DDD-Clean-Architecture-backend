@@ -82,11 +82,11 @@ describe('accept-an-agreement', () => {
   it('should get a list of agreements', async () => {
     const partyId = 'e3248c4c-dd0c-4f20-98b4-68bd1ec8b799';
 
-    const result = await request(nestApplication.getHttpServer()).get(
+    const sut = await request(nestApplication.getHttpServer()).get(
       `/agreements/get-agreements/${partyId}`,
     );
 
-    expect(result.statusCode).toBe(200);
-    expect(result.body).toHaveLength(1);
+    expect(sut.statusCode).toBe(200);
+    expect(sut.body).toHaveLength(1);
   });
 });
