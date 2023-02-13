@@ -23,8 +23,7 @@
     "test:unit:watch": "dotenv -e .env.test -- jest --config jest-unit.json --watch",
     "test:integration": "dotenv -e .env.test -- jest --config jest-integration.json",
     "test:integration:watch": "dotenv -e .env.test -- jest --config jest-integration.json --watch",
-    "migrate:dev": "dotenv -e .env.test -- prisma migrate dev",
-    "migrate:deploy": "dotenv -e .env.test -- prisma migrate deploy"
+    "migrate:dev": "dotenv -e .env.development -e .env.test -- prisma migrate dev"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
