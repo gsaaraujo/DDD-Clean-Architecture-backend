@@ -21,3 +21,8 @@ The main goal is to reach maintainability.
 So the project structure ended up like this.
 
 ![alt Lovely](github/assets/structure.png)
+
+## To conclude ...
+- Structure follows Clean Architecture
+- Domain follows Domain Driven Design
+- Unit and integration tests (mandatory !)
